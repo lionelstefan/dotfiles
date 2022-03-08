@@ -34,7 +34,7 @@ set timeoutlen=500
 set wildmenu
 set wildmode=full:longest
 set showcmd
-" set t_Co=256
+set t_Co=256
 set termguicolors
 set hlsearch
 set incsearch
@@ -76,21 +76,23 @@ call plug#begin()
     Plug 'ap/vim-css-color'
 	Plug 'ThePrimeagen/git-worktree.nvim'
 	Plug 'kyazdani42/nvim-web-devicons'
+	Plug 'tpope/vim-surround'
 call plug#end()
 
-"gruvbox
-" autocmd vimenter * ++nested colorscheme gruvbox
-" let g:gruvbox_italic=1
-" let g:gruvbox_transparent_bg = 1
-" let g:gruvbox_contrast_dark = 'hard'
-" let g:gruvbox_contrast_light = 'soft'
+" colorscheme spaceduck
 
-colorscheme spaceduck
+" gruvbox
+autocmd vimenter * ++nested colorscheme gruvbox
+let g:gruvbox_italic            = 1
+let g:gruvbox_bold              = 0
+let g:gruvbox_transparent_bg    = 1
+let g:gruvbox_contrast_dark     = 'hard'
+let g:gruvbox_contrast_light    = 'soft'
 
 " Airline 
 let g:airline_powerline_fonts = 1
 let g:airline_section_c = '%F'
-let g:airline_theme = 'challenger_deep'
+let g:airline_theme = 'gruvbox'
 if !exists('g:airline_symbols')
     let g:airline_symbols = {}
 endif
@@ -103,7 +105,7 @@ let g:airline#extensions#bufferline#enabled = 1
 let g:airline#extensions#bufferline#overwrite_variables = 1
 
 "Tmuxline
-let g:tmuxline_theme = 'molokai'
+" let g:tmuxline_theme = 'molokai'
 
 " unicode symbols
 let g:airline_left_sep = '»'
@@ -152,7 +154,6 @@ let g:NERDSpaceDelims = 1
 let g:NERDCommentEmptyLines = 1
 let g:NERDCommentEmptyLines = 0
 let g:NERDToggleCheckAllLines = 1
-let g:NERDCompactSexyComs = 1
 
 "Treesitter
 lua <<EOF
@@ -242,11 +243,13 @@ vnoremap cc :call nerdcommenter#Comment("x","toggle")<CR>
 nnoremap cc :call nerdcommenter#Comment('n',"toggle")<CR>
 
 "Scroll
-nnoremap <C-j> 10jzz0
-nnoremap <C-k> 10kzz0
+nnoremap <C-j>      10jzz0
+nnoremap <C-k>      10kzz0
+nnoremap <PageUp>   20kzz0
+nnoremap <PageDown> 20jzz0
 
 "Easy SO %
-nnoremap vso :so ~/dotfiles/nvim/init.vim<cr><esc>
+nnoremap <leader>r :so ~/dotfiles/nvim/init.vim<cr><esc>
 
 "moving bunch of lines
 vnoremap J :m '>+1<CR>gv=gv

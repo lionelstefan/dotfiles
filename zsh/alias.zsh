@@ -1,6 +1,11 @@
+alias c="clear"
+alias x="exit"
+alias r="source ~/.zshrc"
 alias ll="exa -al --icons"
 alias ls="exa -al --icons"
 alias zz="z $OLDPWD"
+alias vsc="code ."
+alias vim="nvim"
 function dev()
 {
   sudo service php7.3-fpm start
