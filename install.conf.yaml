@@ -2,16 +2,12 @@
     link:
       relink: true
 
-- shell:
-  - description: Validating sudo credentials
-    command: "sudo --validate"
-
 - clean: ['~']
 
 - link:
     ~/.zshrc: .zshrc
     ~/.config/nvim/init.vim: nvim/init.vim
     ~/.tmux.conf: tmux/tmux.conf
-
+    ~/tmuxline.conf: tmux/tmuxline.conf
 - shell:
   - [git submodule update --init --recursive, Installing submodules]

@@ -40,6 +40,7 @@ set hlsearch
 set incsearch
 set ignorecase
 set smartcase
+set scl=yes
 
 call plug#begin()
     Plug 'junegunn/vim-plug'
@@ -62,6 +63,7 @@ call plug#begin()
 	Plug 'psliwka/vim-smoothie'
 	Plug 'nvim-lua/plenary.nvim'
     Plug 'nvim-telescope/telescope.nvim'
+    Plug 'nvim-telescope/telescope-project.nvim'
     Plug 'Yggdroot/indentLine'
     Plug 'morhetz/gruvbox'
     Plug 'bluz71/vim-moonfly-colors'
@@ -71,6 +73,9 @@ call plug#begin()
     else
       Plug 'mhinz/vim-signify', { 'branch': 'legacy' }
     endif
+    Plug 'ap/vim-css-color'
+	Plug 'ThePrimeagen/git-worktree.nvim'
+	Plug 'kyazdani42/nvim-web-devicons'
 call plug#end()
 
 "gruvbox
@@ -171,6 +176,8 @@ require'nvim-treesitter.configs'.setup {
 }
 
 require("telescope").load_extension "file_browser"
+require("telescope").load_extension "git_worktree"
+require("telescope").load_extension "project"
 EOF
 
 "Startify
@@ -203,6 +210,12 @@ nnoremap <silent> fg :Telescope live_grep<CR>
 nnoremap <silent> fb :Telescope buffers<CR>
 nnoremap <silent> fw :Telescope file_browser<CR>
 
+"highlight yank
+augroup highlight_yank
+    autocmd!
+    autocmd TextYankPost * silent! lua require'vim.highlight'.on_yank("IncSearch", 1000)
+augroup END
+
 "Remaps
 "Indent
 nnoremap <Tab> >>
@@ -210,16 +223,25 @@ nnoremap <S-Tab> <<
 vnoremap <Tab> >>
 vnoremap <S-Tab> <<
 
+"replace
+nnoremap rr :%s/
+
+"Change working dir
+nnoremap cd :cd 
+
 "Buffer cycle
 map bn :bn<cr>
 map bp :bp<cr>
 map bd :bd<cr> 
 
+"Telescope Projects
+nnoremap cp :lua require'telescope'.extensions.project.project{}<CR>
+
 "NERDCommenter 
 vnoremap cc :call nerdcommenter#Comment("x","toggle")<CR>
 nnoremap cc :call nerdcommenter#Comment('n',"toggle")<CR>
 
-"Scrol
+"Scroll
 nnoremap <C-j> 10jzz0
 nnoremap <C-k> 10kzz0
 
