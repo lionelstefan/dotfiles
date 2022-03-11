@@ -6,6 +6,7 @@ alias ls="exa -al --icons"
 alias zz="z $OLDPWD"
 alias vsc="code ."
 alias vim="nvim"
+alias tmux="tmux -u -2"
 function dev()
 {
   sudo service php7.3-fpm start

@@ -10,6 +10,9 @@ source ~/dotfiles/zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source ~/dotfiles/zsh/z.sh
 source ~/dotfiles/zsh/alias.zsh
 
+export PATH=~/.npm-global/bin:$PATH
+export TERM=xterm-256color
+
 # Lines configured by zsh-newuser-install
 HISTFILE=~/.histfile
 HISTSIZE=1000
