@@ -1,8 +1,7 @@
-
 -- Remaps
 
 local map = vim.api.nvim_set_keymap
-map('n', ';w', ':w<CR>', {noremap=true})
+map('n', '<leader>w', ':w<CR>', {noremap=true})
 map('n', ';q', ':q<CR>', {noremap=true})
 
 -- Indent
@@ -18,9 +17,9 @@ map('n', 'rr', ':%s/', {noremap=true})
 map('n', 'cd', ':cd ', {noremap=true})
 
 -- Buffer cycle
-map('n', 'bn', ':bn<CR>', {noremap=false})
-map('n', 'bp', ':bp<CR>', {noremap=false})
-map('n', 'qq', ':bd<CR>', {noremap=false})
+map('n', '<leader>1', ':bp<CR>', {noremap=false})
+map('n', '<leader>2', ':bn<CR>', {noremap=false})
+map('n', '<leader>q', ':bd<CR>', {noremap=false})
 
 -- Telescope
 map('n', 'ff', '<CMD>Telescope find_files<CR>', {noremap=true})
@@ -30,10 +29,6 @@ map('n', 'fw', '<CMD>Telescope file_browser<CR>', {noremap=true})
 
 -- Telescope Projects
 map('n', 'cp', '<CMD>lua require("telescope").extensions.project.project{}<CR>', {noremap=true})
-
--- NERDCommenter 
-map('v', 'cc', '<plug>NERDCommenterToggle', {noremap=true})
-map('n', 'cc', '<plug>NERDCommenterToggle', {noremap=true})
 
 -- Scroll
 map('n', '<C-j>', '10jzz0', {noremap=true})

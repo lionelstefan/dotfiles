@@ -39,8 +39,11 @@ vim.o.incsearch = true
 vim.o.ignorecase = true
 vim.o.smartcase = true
 vim.o.scl = 'yes'
-vim.o.completeopt = 'menu,menuone,noselect'
+vim.o.completeopt =  'menu,menuone,noselect' 
 vim.o.lazyredraw = true
+vim.o.scrolloff = 7
+vim.o.undofile = true
+vim.o.sessionoptions="blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal"
 
 require("indent_blankline").setup {
     space_char_blankline = " ",
@@ -52,11 +55,13 @@ vim.o.list = true
 vim.opt.listchars:append("space:⋅")
 
 require("plugins")
-require("plugins.airline")
+require("impatient")
+require("plugins.lualine")
 require("plugins.telescope")
 require("plugins.nerdcommenter")
 require("plugins.lsp")
 require("plugins.treesitter")
+require("plugins.bufferline")
 
 -- PHP VIM
 vim.g['php_var_selector_is_identifier'] = 1
@@ -65,13 +70,13 @@ vim.g['php_sql_query'] = 1
 
 -- gruvbox
 vim.cmd[[
-    autocmd vimenter * ++nested colorscheme gruvbox
+    autocmd vimenter * ++nested colorscheme gruvbox8_hard
     syntax enable
     filetype indent on
     filetype plugin indent on
 ]]
 
-vim.g['gruvbox_italic'] = 1
+vim.g['gruvbox_italics'] = 0
 vim.g['gruvbox_bold'] = 0
 vim.g['gruvbox_transparent_bg'] = 1
 vim.g['gruvbox_contrast_dark'] = 'hard'

@@ -11,6 +11,9 @@ require'nvim-treesitter.configs'.setup {
         "yaml",
         "python"
     },
+    context_commentstring = {
+        enable = true
+    },
     autotag = {
       enable = true,
       filetypes = { "html", "php", "xml" }
