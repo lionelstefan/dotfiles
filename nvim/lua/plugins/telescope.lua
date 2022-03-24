@@ -10,6 +10,7 @@ require("telescope").setup{
                 ["|<CR>"] = actions.file_vsplit,
                 ["_<CR>"] = actions.file_split
             },
-        }
+        },
     }
 }
+

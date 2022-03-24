@@ -18,6 +18,19 @@ require("lualine").setup {
         colored = false
       },
       'diagnostics'
-    }
+    },
+    lualine_c = {
+      {
+        'filename',
+        file_status = true,
+        path = 1,
+        shorting_target = 40,
+        symbols = {
+          modified = '[M]',
+          readonly = '[R]',
+          unnamed = '[NONAME]'
+        }
+      }
+    },
   }
 }

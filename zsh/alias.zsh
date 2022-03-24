@@ -6,7 +6,13 @@ alias ls="exa -al --icons"
 alias zz="z $OLDPWD"
 alias vsc="code ."
 alias vim="nvim"
-alias tmux="tmux -u -2"
+alias t="tmux -u -2"
+alias tl="tmux list-session"
+alias lg="lazygit"
+function ta()
+{
+  tmux attach-session -t $1
+}
 function dev()
 {
   sudo service php7.3-fpm start
