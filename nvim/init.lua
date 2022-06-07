@@ -63,14 +63,19 @@ require("plugins.lsp")
 require("plugins.treesitter")
 require("plugins.bufferline")
 
+-- GITBLAME
+vim.g['gitblame_enabled'] = 1
+vim.g['gitblame_message_template'] = '<author> • <sha> • <date> • <summary>'
+
 -- PHP VIM
 vim.g['php_var_selector_is_identifier'] = 1
 vim.g['php_html_load'] = 1
 vim.g['php_sql_query'] = 1
 
 -- gruvbox
+-- autocmd vimenter * ++nested colorscheme gruvbox8_hard
 vim.cmd[[
-    autocmd vimenter * ++nested colorscheme gruvbox8_hard
+    autocmd vimenter * ++nested colorscheme gruvbox
     syntax enable
     filetype indent on
     filetype plugin indent on

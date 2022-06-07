@@ -33,16 +33,8 @@ return require('packer').startup(function()
 	use 'nvim-telescope/telescope-project.nvim'
 	use 'nvim-telescope/telescope-file-browser.nvim'
 	use 'lukas-reineke/indent-blankline.nvim'
-	use 'lifepillar/vim-gruvbox8'
-	use {
-		'lewis6991/gitsigns.nvim', 
-		requires = {
-			'nvim-lua/plenary.nvim'
-		},
-		config = function()
-			require("gitsigns").setup()
-		end
-	}
+	-- use 'lifepillar/vim-gruvbox8'
+	use 'ellisonleao/gruvbox.nvim'
 	use 'akinsho/bufferline.nvim'
 	use 'neovim/nvim-lspconfig'
 	use 'hrsh7th/cmp-nvim-lsp'
