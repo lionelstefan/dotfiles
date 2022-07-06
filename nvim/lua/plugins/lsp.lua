@@ -8,7 +8,7 @@ local on_attach = function( client, bufnr )
 	}
 
     require("illuminate").on_attach(client)
-	buf_set_keymap('n', 'kf', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+	buf_set_keymap('n', 'kf', '<cmd>lua vim.lsp.buf.format {async=true}<CR>', opts)
 end
 
 local servers = {
