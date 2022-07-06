@@ -128,6 +128,14 @@ local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protoco
 require("lspconfig").intelephense.setup{
     on_attach = on_attach,
     capabilities = capabilities,
+    settings = {
+      intelephense = {
+        format = {
+          enable = true,
+          braces = "allman"
+        }
+      }
+    }
 }
 
 require("lspconfig").html.setup{
