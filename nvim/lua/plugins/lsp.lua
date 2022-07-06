@@ -16,7 +16,8 @@ local servers = {
     'html',
     'cssls',
     'jsonls',
-    'tsserver'
+    'tsserver',
+    'pyright'
 }
 
 local kind_icons = {
@@ -146,6 +147,11 @@ require("lspconfig").cssls.setup{
 }
 
 require("lspconfig").tsserver.setup{
+    on_attach = on_attach,
+    capabilities = capabilities,
+}
+
+require("lspconfig").pyright.setup{
     on_attach = on_attach,
     capabilities = capabilities,
 }
