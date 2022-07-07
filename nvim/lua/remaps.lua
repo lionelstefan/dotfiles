@@ -10,6 +10,9 @@ map('n', '<S-Tab>', '<<', {noremap=true})
 map('v', '<Tab>', ':><CR>gv', {noremap=true})
 map('v', '<S-Tab>', ':<<CR>gv', {noremap=true})
 
+-- clear highlight
+map('n', '<esc>', ':noh<CR><esc>', {noremap=true})
+
 -- replace
 map('n', 'rr', ':%s/', {noremap=true})
 
