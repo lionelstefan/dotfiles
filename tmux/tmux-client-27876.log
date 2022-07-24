@@ -1,0 +1,47 @@
+1657612298.347488 client started (27876): version 3.0a, socket /tmp/tmux-1000/default, protocol 8
+1657612298.347502 on Linux 5.4.72-microsoft-standard-WSL2 #1 SMP Wed Oct 28 23:40:43 UTC 2020; libevent 2.1.11-stable (poll)
+1657612298.347508 socket is /tmp/tmux-1000/default
+1657612298.347513 trying connect
+1657612298.347550 add peer 0x55c3ca4c0330: 6 ((nil))
+1657612298.347579 sending message 100 to peer 0x55c3ca4c0330 (4 bytes)
+1657612298.347582 sending message 101 to peer 0x55c3ca4c0330 (15 bytes)
+1657612298.347583 sending message 102 to peer 0x55c3ca4c0330 (11 bytes)
+1657612298.347585 sending message 108 to peer 0x55c3ca4c0330 (33 bytes)
+1657612298.347587 sending message 104 to peer 0x55c3ca4c0330 (0 bytes)
+1657612298.347588 sending message 107 to peer 0x55c3ca4c0330 (4 bytes)
+1657612298.347590 sending message 105 to peer 0x55c3ca4c0330 (39 bytes)
+1657612298.347591 sending message 105 to peer 0x55c3ca4c0330 (26 bytes)
+1657612298.347593 sending message 105 to peer 0x55c3ca4c0330 (24 bytes)
+1657612298.347595 sending message 105 to peer 0x55c3ca4c0330 (16 bytes)
+1657612298.347596 sending message 105 to peer 0x55c3ca4c0330 (17 bytes)
+1657612298.347598 sending message 105 to peer 0x55c3ca4c0330 (21 bytes)
+1657612298.347599 sending message 105 to peer 0x55c3ca4c0330 (21 bytes)
+1657612298.347600 sending message 105 to peer 0x55c3ca4c0330 (21 bytes)
+1657612298.347602 sending message 105 to peer 0x55c3ca4c0330 (16 bytes)
+1657612298.347603 sending message 105 to peer 0x55c3ca4c0330 (32 bytes)
+1657612298.347605 sending message 105 to peer 0x55c3ca4c0330 (16 bytes)
+1657612298.347606 sending message 105 to peer 0x55c3ca4c0330 (40 bytes)
+1657612298.347608 sending message 105 to peer 0x55c3ca4c0330 (10 bytes)
+1657612298.347609 sending message 105 to peer 0x55c3ca4c0330 (12 bytes)
+1657612298.347611 sending message 105 to peer 0x55c3ca4c0330 (3344 bytes)
+1657612298.347616 sending message 105 to peer 0x55c3ca4c0330 (37 bytes)
+1657612298.347618 sending message 105 to peer 0x55c3ca4c0330 (19 bytes)
+1657612298.347619 sending message 105 to peer 0x55c3ca4c0330 (8 bytes)
+1657612298.347621 sending message 105 to peer 0x55c3ca4c0330 (20 bytes)
+1657612298.347622 sending message 105 to peer 0x55c3ca4c0330 (36 bytes)
+1657612298.347624 sending message 105 to peer 0x55c3ca4c0330 (13 bytes)
+1657612298.347625 sending message 105 to peer 0x55c3ca4c0330 (18 bytes)
+1657612298.347627 sending message 105 to peer 0x55c3ca4c0330 (18 bytes)
+1657612298.347629 sending message 105 to peer 0x55c3ca4c0330 (29 bytes)
+1657612298.347630 sending message 105 to peer 0x55c3ca4c0330 (28 bytes)
+1657612298.347632 sending message 105 to peer 0x55c3ca4c0330 (25 bytes)
+1657612298.347633 sending message 105 to peer 0x55c3ca4c0330 (32 bytes)
+1657612298.347635 sending message 105 to peer 0x55c3ca4c0330 (16 bytes)
+1657612298.347636 sending message 105 to peer 0x55c3ca4c0330 (20 bytes)
+1657612298.347638 sending message 106 to peer 0x55c3ca4c0330 (0 bytes)
+1657612298.347639 sending message 200 to peer 0x55c3ca4c0330 (4 bytes)
+1657612298.347641 client loop enter
+1657612298.347906 peer 0x55c3ca4c0330 message 211
+1657612298.347912 client_write: sessions should be nested with care, unset $TMUX to force\n
+1657612298.347933 peer 0x55c3ca4c0330 message 203
+1657612298.347936 client loop exit

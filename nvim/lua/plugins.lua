@@ -1,5 +1,17 @@
+vim.cmd [[packadd packer.nvim]]
+
 return require('packer').startup(function()
 	use 'wbthomason/packer.nvim'
+	use {
+		'ellisonleao/gruvbox.nvim',
+		config = function()
+			require('gruvbox').setup({
+				contrast = "dark",
+				italic = false,
+				bold = false,
+			})
+		end
+	}
 	use 'nathom/filetype.nvim'
 	use 'lewis6991/impatient.nvim'
 	use 'nvim-lua/popup.nvim'
@@ -33,8 +45,6 @@ return require('packer').startup(function()
 	use 'nvim-telescope/telescope-project.nvim'
 	use 'nvim-telescope/telescope-file-browser.nvim'
 	use 'lukas-reineke/indent-blankline.nvim'
-	-- use 'lifepillar/vim-gruvbox8'
-	use 'ellisonleao/gruvbox.nvim'
 	use 'akinsho/bufferline.nvim'
 	use 'neovim/nvim-lspconfig'
 	use 'hrsh7th/cmp-nvim-lsp'

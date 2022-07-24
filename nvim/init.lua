@@ -4,7 +4,7 @@ vim.o.path = vim.o.path .. '**'
 vim.o.confirm = true
 vim.o.cmdheight = 2
 vim.o.hidden = true
-vim.o.clipboard = ''
+vim.o.clipboard = 'unnamedplus'
 vim.o.wrap = false
 vim.o.encoding = 'utf-8'
 vim.o.fileencoding = 'utf-8'
@@ -45,10 +45,14 @@ vim.o.scrolloff = 7
 vim.o.undofile = true
 vim.o.sessionoptions="blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal"
 
+vim.cmd[[highlight IndentBlankLineIndent1 guifg=#666666 gui=nocombine]]
 require("indent_blankline").setup {
     space_char_blankline = " ",
     show_current_context = true,
     show_current_context_start = true,
+    char_highlight_list = {
+        "IndentBlankLineIndent1"
+    }
 }
 
 vim.o.list = true
@@ -63,6 +67,16 @@ require("plugins.lsp")
 require("plugins.treesitter")
 require("plugins.bufferline")
 
+-- gruvbox
+-- autocmd vimenter * ++nested colorscheme gruvbox8_hard
+vim.cmd[[
+    autocmd VimEnter * ++nested colorscheme gruvbox
+    colorscheme gruvbox
+    syntax enable
+    filetype indent on
+    filetype plugin indent on
+]]
+
 -- GITBLAME
 vim.g['gitblame_enabled'] = 1
 vim.g['gitblame_message_template'] = '<author> • <sha> • <date> • <summary>'
@@ -71,20 +85,5 @@ vim.g['gitblame_message_template'] = '<author> • <sha> • <date> • <summary
 vim.g['php_var_selector_is_identifier'] = 1
 vim.g['php_html_load'] = 1
 vim.g['php_sql_query'] = 1
-
--- gruvbox
--- autocmd vimenter * ++nested colorscheme gruvbox8_hard
-vim.cmd[[
-    autocmd vimenter * ++nested colorscheme gruvbox
-    syntax enable
-    filetype indent on
-    filetype plugin indent on
-]]
-
-vim.g['gruvbox_italics'] = 0
-vim.g['gruvbox_bold'] = 0
-vim.g['gruvbox_transparent_bg'] = 1
-vim.g['gruvbox_contrast_dark'] = 'hard'
-vim.g['gruvbox_contrast_light'] = 'soft'
 
 require("remaps")

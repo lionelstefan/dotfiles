@@ -12,12 +12,12 @@ local on_attach = function( client, bufnr )
 end
 
 local servers = {
-    'intelephense',
-    'html',
-    'cssls',
-    'jsonls',
-    'tsserver',
-    'pyright'
+  'intelephense',
+  'html',
+  'cssls',
+  'jsonls',
+  'tsserver',
+  'pyright'
 }
 
 local kind_icons = {
@@ -157,6 +157,7 @@ require("lspconfig").cssls.setup{
 require("lspconfig").tsserver.setup{
     on_attach = on_attach,
     capabilities = capabilities,
+    filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx" }
 }
 
 require("lspconfig").pyright.setup{
