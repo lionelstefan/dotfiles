@@ -16,7 +16,6 @@ return require('packer').startup(function()
 	use 'lewis6991/impatient.nvim'
 	use 'nvim-lua/popup.nvim'
 	use 'nvim-lua/plenary.nvim'
-	use 'ryanoasis/vim-devicons'
 	use 'kyazdani42/nvim-web-devicons'
 	use {
 		'nvim-lualine/lualine.nvim',
@@ -28,8 +27,6 @@ return require('packer').startup(function()
 	use 'JoosepAlviste/nvim-ts-context-commentstring'
 	use 'RRethy/nvim-treesitter-endwise'
 	use 'machakann/vim-sandwich'
-	use 'sheerun/vim-polyglot'
-	use 'ludovicchabant/vim-gutentags'
 	use 'tpope/vim-fugitive'
 	use 'sindrets/diffview.nvim'
 	use 'f-person/git-blame.nvim'

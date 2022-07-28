@@ -86,4 +86,10 @@ vim.g['php_var_selector_is_identifier'] = 1
 vim.g['php_html_load'] = 1
 vim.g['php_sql_query'] = 1
 
+-- GUTENTAGS
+vim.g['gutentags_ctags_exclude'] = [[
+    \ '/node_modules/*',
+    \ '/.git/*'
+]]
+
 require("remaps")

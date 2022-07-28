@@ -11,6 +11,9 @@ require("telescope").setup{
                 ["_<CR>"] = actions.file_split
             },
         },
+		file_ignore_patters = {
+			"node_modules"
+		}
     }
 }
 
