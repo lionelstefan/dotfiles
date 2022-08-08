@@ -71,10 +71,10 @@ require("plugins.bufferline")
 -- autocmd vimenter * ++nested colorscheme gruvbox8_hard
 vim.cmd[[
     autocmd VimEnter * ++nested colorscheme gruvbox
+    autocmd BufEnter * syntax enable
+    autocmd BufEnter * filetype indent on
+    autocmd BufEnter * filetype plugin indent on
     colorscheme gruvbox
-    syntax enable
-    filetype indent on
-    filetype plugin indent on
 ]]
 
 -- GITBLAME

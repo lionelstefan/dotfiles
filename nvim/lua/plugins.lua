@@ -22,7 +22,6 @@ return require('packer').startup(function()
 		requires = {'kyazdani42/nvim-web-devicons'}
 	}
 	use 'StanAngeloff/php.vim'
-	use 'jiangmiao/auto-pairs'
 	use 'nvim-treesitter/nvim-treesitter'
 	use 'JoosepAlviste/nvim-ts-context-commentstring'
 	use 'RRethy/nvim-treesitter-endwise'
@@ -38,6 +37,13 @@ return require('packer').startup(function()
 	}
 	use 'p00f/nvim-ts-rainbow'
 	use 'windwp/nvim-ts-autotag'
+	use {
+		'windwp/nvim-autopairs',
+		config = function() require("nvim-autopairs").setup{
+			check_ts = true 
+		}
+		end
+	}
 	use 'nvim-telescope/telescope.nvim'
 	use 'nvim-telescope/telescope-project.nvim'
 	use 'nvim-telescope/telescope-file-browser.nvim'
@@ -56,7 +62,7 @@ return require('packer').startup(function()
 		'rmagatti/auto-session',
 		config = function()
 			require('auto-session').setup {
-			log_level = 'info',
+				log_level = 'info',
 			}
 		end
 	}

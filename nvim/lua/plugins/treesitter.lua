@@ -16,7 +16,7 @@ require'nvim-treesitter.configs'.setup {
     },
     autotag = {
       enable = true,
-      filetypes = { "html", "php", "xml", "javascript", "jsx", "typescript", "tsx"}
+      filetypes = {}
     },
     highlight = {
         enable = true,
