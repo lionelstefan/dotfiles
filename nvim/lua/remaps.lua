@@ -25,7 +25,7 @@ map('n', '<leader>2', ':bn<CR>', {noremap=false})
 map('n', '<leader>q', ':bd<CR>', {noremap=false})
 
 -- Telescope
-map('n', 'ff', '<CMD>Telescope find_files<CR>', {noremap=true})
+map('n', 'ff', '<CMD>Telescope find_files hidden=true<CR>', {noremap=true})
 map('n', 'fg', '<CMD>Telescope live_grep<CR>', {noremap=true})
 map('n', 'fb', '<CMD>Telescope buffers<CR>', {noremap=true})
 map('n', 'fw', '<CMD>Telescope file_browser<CR>', {noremap=true})

@@ -33,3 +33,41 @@ source ~/powerlevel10k/powerlevel10k.zsh-theme
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# pnpm
+export PNPM_HOME="/home/lionelstefan/.local/share/pnpm"
+export PATH="$PNPM_HOME:$PATH"
+# pnpm end
+
+# homebrew
+export PATH="/home/lionelstefan/homebrew/bin:$PATH"
+
+# java
+# export JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64"
+# export PATH="$PATH:$JAVA_HOME/bin"
+
+#android
+# export ANDROID_SDK_ROOT="/home/lionelstefan/Android"
+# export ANDROID_HOME="/home/lionelstefan/Android"
+
+# export PATH="$PATH:$ANDROID_SDK_ROOT/plaftorm-tools"
+# export PATH="$PATH:$ANDROID_HOME/bin"
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+# export SDKMAN_DIR="$HOME/.sdkman"
+# [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+
+export WSL_HOST=$(tail -1 /etc/resolv.conf | cut -d' ' -f2)
+export ADB_SERVER_SOCKET=tcp:$WSL_HOST:5037
+
+#wslhostpatcher
+# /mnt/c/wsl/wslhostpatcher/WSLHostPatcher.exe
+
+#set MACHINE IP ADDRESS (WIFI) FOR EXPO
+# export REACT_NATIVE_PACKAGER_HOSTNAME=$(netsh.exe interface ip show address "Wi-Fi" | grep 'IP Address' | sed -r 's/^.*IP Address:\W*//')
+
+#rhromedriver
+export PATH="$PATH:/usr/bin/chromedriver"
+
+#xclip
+export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2}'):0

@@ -1,3 +1,23 @@
+-- DISABLE BUILTIN PLUGIN
+vim.g["loaded_2html_plugin"] = 1
+vim.g["loaded_getscript"] = 1
+vim.g["loaded_getscriptPlugin"] = 1
+vim.g["loaded_gzip"] = 1
+vim.g["loaded_logipat"] = 1
+vim.g["loaded_netrw"] = 1
+vim.g["loaded_netrwPlugin"] = 1
+vim.g["loaded_netrwSettings"] = 1
+vim.g["loaded_netrwFileHandlers"] = 1
+vim.g["loaded_matchit"] = 1
+vim.g["loaded_matchparen"] = 1
+vim.g["loaded_tar"] = 1
+vim.g["loaded_tarPlugin"] = 1
+vim.g["loaded_rrhelper"] = 1
+vim.g["loaded_vimball"] = 1
+vim.g["loaded_vimballPlugin"] = 1
+vim.g["loaded_zip"] = 1
+vim.g["loaded_zipPlugin"] = 1
+
 vim.o.background = 'dark'
 vim.o.colorcolumn = '80'
 vim.o.path = vim.o.path .. '**'
@@ -39,43 +59,12 @@ vim.o.incsearch = true
 vim.o.ignorecase = true
 vim.o.smartcase = true
 vim.o.scl = 'yes'
-vim.o.completeopt =  'menu,menuone,noselect' 
-vim.o.lazyredraw = true
+vim.o.completeopt = 'menu,menuone,noselect'
+vim.o.lazyredraw = false
 vim.o.scrolloff = 7
 vim.o.undofile = true
 vim.o.sessionoptions="blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal"
-
-vim.cmd[[highlight IndentBlankLineIndent1 guifg=#666666 gui=nocombine]]
-require("indent_blankline").setup {
-    space_char_blankline = " ",
-    show_current_context = true,
-    show_current_context_start = true,
-    char_highlight_list = {
-        "IndentBlankLineIndent1"
-    }
-}
-
 vim.o.list = true
-vim.opt.listchars:append("space:⋅")
-
-require("plugins")
-require("impatient")
-require("plugins.lualine")
-require("plugins.telescope")
-require("plugins.nerdcommenter")
-require("plugins.lsp")
-require("plugins.treesitter")
-require("plugins.bufferline")
-
--- gruvbox
--- autocmd vimenter * ++nested colorscheme gruvbox8_hard
-vim.cmd[[
-    autocmd VimEnter * ++nested colorscheme gruvbox
-    autocmd BufEnter * syntax enable
-    autocmd BufEnter * filetype indent on
-    autocmd BufEnter * filetype plugin indent on
-    colorscheme gruvbox
-]]
 
 -- GITBLAME
 vim.g['gitblame_enabled'] = 1
@@ -86,10 +75,24 @@ vim.g['php_var_selector_is_identifier'] = 1
 vim.g['php_html_load'] = 1
 vim.g['php_sql_query'] = 1
 
--- GUTENTAGS
-vim.g['gutentags_ctags_exclude'] = [[
-    \ '/node_modules/*',
-    \ '/.git/*'
+-- GRUVBOX BABY
+vim.g['gruvbox_baby_function_style'] = "NONE"
+vim.g['gruvbox_baby_background_color'] = "dark"
+vim.g['gruvbox_baby_comment_style'] = "NONE"
+
+-- gruvbox
+-- autocmd vimenter * ++nested colorscheme gruvbox8_hard
+-- autocmd VimEnter * ++nested colorscheme gruvbox
+-- autocmd BufEnter * ++nested colorscheme gruvbox-baby
+-- colorscheme gruvbox
+vim.cmd[[
+    autocmd BufEnter * syntax enable
+    autocmd BufEnter * filetype indent on
+    autocmd BufEnter * filetype plugin indent on
+    colorscheme gruvbox-baby
 ]]
 
+-- require("plugins.nerdcommenter")
+require("plugins.treesitter")
+require("plugins")
 require("remaps")
