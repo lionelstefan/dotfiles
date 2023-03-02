@@ -1,23 +1,4 @@
 -- DISABLE BUILTIN PLUGIN
-vim.g["loaded_2html_plugin"] = 1
-vim.g["loaded_getscript"] = 1
-vim.g["loaded_getscriptPlugin"] = 1
-vim.g["loaded_gzip"] = 1
-vim.g["loaded_logipat"] = 1
-vim.g["loaded_netrw"] = 1
-vim.g["loaded_netrwPlugin"] = 1
-vim.g["loaded_netrwSettings"] = 1
-vim.g["loaded_netrwFileHandlers"] = 1
-vim.g["loaded_matchit"] = 1
-vim.g["loaded_matchparen"] = 1
-vim.g["loaded_tar"] = 1
-vim.g["loaded_tarPlugin"] = 1
-vim.g["loaded_rrhelper"] = 1
-vim.g["loaded_vimball"] = 1
-vim.g["loaded_vimballPlugin"] = 1
-vim.g["loaded_zip"] = 1
-vim.g["loaded_zipPlugin"] = 1
-
 vim.o.background = 'dark'
 vim.o.colorcolumn = '80'
 vim.o.path = vim.o.path .. '**'
@@ -60,11 +41,26 @@ vim.o.ignorecase = true
 vim.o.smartcase = true
 vim.o.scl = 'yes'
 vim.o.completeopt = 'menu,menuone,noselect'
-vim.o.lazyredraw = false
+vim.o.lazyredraw = true
 vim.o.scrolloff = 7
 vim.o.undofile = true
 vim.o.sessionoptions="blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal"
 vim.o.list = true
+
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable", -- latest stable release
+    lazypath,
+  })
+end
+vim.opt.rtp:prepend(lazypath)
+
+require("plugins")
 
 -- GITBLAME
 vim.g['gitblame_enabled'] = 1
@@ -76,23 +72,26 @@ vim.g['php_html_load'] = 1
 vim.g['php_sql_query'] = 1
 
 -- GRUVBOX BABY
-vim.g['gruvbox_baby_function_style'] = "NONE"
-vim.g['gruvbox_baby_background_color'] = "dark"
-vim.g['gruvbox_baby_comment_style'] = "NONE"
-
--- gruvbox
--- autocmd vimenter * ++nested colorscheme gruvbox8_hard
+-- vim.g['gruvbox_baby_function_style'] = "NONE"
+-- vim.g['gruvbox_baby_background_color'] = "dark"
+-- vim.g['gruvbox_baby_comment_style'] = "NONE"
 -- autocmd VimEnter * ++nested colorscheme gruvbox
--- autocmd BufEnter * ++nested colorscheme gruvbox-baby
--- colorscheme gruvbox
+
+require'gruvbox'.setup({
+	undercurl = false,
+	underline = false,
+	italic = false,
+	bold = false,
+	contrast = "hard",
+})
+
 vim.cmd[[
-    autocmd BufEnter * syntax enable
-    autocmd BufEnter * filetype indent on
-    autocmd BufEnter * filetype plugin indent on
-    colorscheme gruvbox-baby
+    autocmd VimEnter * syntax enable
+    autocmd VimEnter * filetype indent on
+    autocmd VimEnter * filetype plugin indent on
+	colorscheme gruvbox
+	augroup end
 ]]
 
 -- require("plugins.nerdcommenter")
-require("plugins.treesitter")
-require("plugins")
 require("remaps")

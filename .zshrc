@@ -30,6 +30,29 @@ source ~/powerlevel10k/powerlevel10k.zsh-theme
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
+#SSH AGENT
+env=~/.ssh/agent.env
+
+agent_load_env () { test -f "$env" && . "$env" >| /dev/null ; }
+
+agent_start () {
+    (umask 077; ssh-agent >| "$env")
+    . "$env" >| /dev/null ; }
+
+agent_load_env
+
+# agent_run_state: 0=agent running w/ key; 1=agent w/o key; 2=agent not running
+agent_run_state=$(ssh-add -l >| /dev/null 2>&1; echo $?)
+
+if [ ! "$SSH_AUTH_SOCK" ] || [ $agent_run_state = 2 ]; then
+    agent_start
+    ssh-add
+elif [ "$SSH_AUTH_SOCK" ] && [ $agent_run_state = 1 ]; then
+    ssh-add
+fi
+
+unset env
+
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
@@ -43,22 +66,23 @@ export PATH="$PNPM_HOME:$PATH"
 export PATH="/home/lionelstefan/homebrew/bin:$PATH"
 
 # java
-# export JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64"
-# export PATH="$PATH:$JAVA_HOME/bin"
+export JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64"
+export PATH="$PATH:$JAVA_HOME/bin"
 
 #android
 # export ANDROID_SDK_ROOT="/home/lionelstefan/Android"
-# export ANDROID_HOME="/home/lionelstefan/Android"
+export ANDROID_SDK_ROOT="$ANDROID_SDK_ROOT"
+export ANDROID_HOME="/home/lionelstefan/Android"
 
-# export PATH="$PATH:$ANDROID_SDK_ROOT/plaftorm-tools"
-# export PATH="$PATH:$ANDROID_HOME/bin"
+export PATH="$PATH:$ANDROID_HOME/plaftorm-tools"
+export PATH="$PATH:$ANDROID_HOME/cmdline-tools/tools/bin"
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
-# export SDKMAN_DIR="$HOME/.sdkman"
-# [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 
-export WSL_HOST=$(tail -1 /etc/resolv.conf | cut -d' ' -f2)
-export ADB_SERVER_SOCKET=tcp:$WSL_HOST:5037
+# export WSL_HOST=$(tail -1 /etc/resolv.conf | cut -d' ' -f2)
+# export ADB_SERVER_SOCKET=tcp:$WSL_HOST:5037
 
 #wslhostpatcher
 # /mnt/c/wsl/wslhostpatcher/WSLHostPatcher.exe
@@ -71,3 +95,12 @@ export PATH="$PATH:/usr/bin/chromedriver"
 
 #xclip
 export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2}'):0
+
+#GOOGLE_APPLICATION_CREDENTIALS
+export GOOGLE_APPLICATION_CREDENTIALS="/mnt/c/wsl/dragon-sea-view/dragon-sea-view-firebase-adminsdk-9omas-edcaca9f42.json"
+
+#GOLANG
+export PATH="$PATH:/usr/local/go/bin"
+export GOPATH=$HOME/go
+export PATH="$GOPATH/bin:$PATH"
+export GIT_EDITOR="nvim"

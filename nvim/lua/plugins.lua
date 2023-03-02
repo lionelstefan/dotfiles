@@ -1,114 +1,106 @@
-vim.cmd [[packadd packer.nvim]]
-
-local function plugins(use)
-	use {'wbthomason/packer.nvim'}
-	use {'luisiacc/gruvbox-baby'}
-	use {'nathom/filetype.nvim'}
-	use { "nvim-lua/plenary.nvim", module = "plenary" }
-	use {
+require("lazy").setup({
+	{'folke/lazy.nvim'},
+	{'luisiacc/gruvbox-baby'},
+	{'ellisonleao/gruvbox.nvim'},
+	{'nathom/filetype.nvim'},
+	{
 		'kyazdani42/nvim-web-devicons',
-		module = 'nvim-web-devicons',
 		config = function()
 			require("nvim-web-devicons").setup {
 				default = true
 			}
 		end
-	}
-	use {
+	},
+	{
 		'nvim-lualine/lualine.nvim',
 		event = "VimEnter",
-		after = "nvim-treesitter",
 		config = function()
-			require("plugins.lualine").setup()
+			require("configs.lualine")
 		end,
-		wants = 'nvim-web-devicons',
-		requires = {
-			"kyazdani42/nvim-web-devicons"
-		}
-	}
-	use {
+		dependencies = {
+			'kyazdani42/nvim-web-devicons'
+		},
+	},
+	{
 		'StanAngeloff/php.vim',
 		ft = {"php"}
-	}
-	use {
+	},
+	{
 		'machakann/vim-sandwich',
 		event = "InsertEnter"
-	}
-	use {
+	},
+	{
 		'tpope/vim-fugitive',
 		event="BufReadPre"
-	}
-	use {'sindrets/diffview.nvim'}
-	use {
+	},
+	{'sindrets/diffview.nvim'},
+	{
 		'f-person/git-blame.nvim',
 		event="BufRead"
-	}
-	use {
+	},
+	{
 		'numToStr/Comment.nvim',
-		event = "BufRead",
-		config = function()
-			require("Comment").setup()
-		end,
-		event="BufRead"
-	}
+	},
 -- TREESITTER
-	use {
-		'nvim-treesitter/nvim-treesitter'
-	}
-	use {
-		"p00f/nvim-ts-rainbow"
-	}
-	use {
-		"RRethy/nvim-treesitter-endwise"
-	}
-	use {
-		"JoosepAlviste/nvim-ts-context-commentstring"
-	}
-	use {
-		"nvim-treesitter/nvim-treesitter-context"
-	}
-	use {
-		"windwp/nvim-ts-autotag"
-	}
-	use {
-		'windwp/nvim-autopairs',
-		event = "BufWinEnter",
-		requires = {
-			"nvim-treesitter"
-		},
-		module = {
-			'nvim-autopairs.completion.cmp',
-			'nvim-autopairs'
-		}
-	}
-	use {
-		'nvim-telescope/telescope.nvim',
-		event = "BufWinEnter",
+	{
+		'nvim-treesitter/nvim-treesitter',
 		config = function()
-			require("plugins.telescope").setup()
+			require("configs.treesitter")
+		end,
+		event = "BufRead",
+		lazy = true
+	},
+	{
+		"p00f/nvim-ts-rainbow",
+		event = "BufRead",
+		lazy = true,
+	},
+	{
+		"RRethy/nvim-treesitter-endwise",
+		event = "BufRead",
+		lazy = true,
+	},
+	{
+		"JoosepAlviste/nvim-ts-context-commentstring",
+		event = "BufRead",
+		lazy = true,
+	},
+	{
+		"nvim-treesitter/nvim-treesitter-context",
+		event = "BufRead",
+		lazy = true,
+	},
+	{
+		"windwp/nvim-ts-autotag",
+		event = "BufRead",
+		lazy = true,
+	},
+	{
+		'windwp/nvim-autopairs',
+		event = "BufRead",
+		lazy = true,
+		config = function()
+			require("nvim-autopairs").setup{
+				check_ts = true
+			}
+		end,
+	},
+	{
+		'nvim-telescope/telescope.nvim',
+		config = function()
+			require("configs.telescope")
 		end,
 		cmd = { "Telescope" },
-		module = {
-			"telescope",
-			"telescope.builtin"
-		},
-		wants = {
-			"plenary.nvim",
-			"popup.nvim",
-			"telescope-project.nvim",
-			"telescope-file-browser.nvim"
-		},
-		requires = {
+		dependencies = {
 			"nvim-lua/plenary.nvim",
 			"nvim-lua/popup.nvim",
 			"nvim-telescope/telescope-project.nvim",
 			"nvim-telescope/telescope-file-browser.nvim"
 		}
-	}
-	use {
+	},
+	{
 		'lukas-reineke/indent-blankline.nvim',
 		event = "BufRead",
-		requires = "nvim-treesitter",
 		config = function()
 			vim.cmd[[highlight IndentBlankLineIndent1 guifg=#666666 gui=nocombine]]
 			require("indent_blankline").setup {
@@ -120,99 +112,85 @@ local function plugins(use)
 				}
 			}
 		end
-	}
-	use {
+	},
+	{
 		'akinsho/bufferline.nvim',
 		event="VimEnter",
-		wants = 'nvim-web-devicons',
-		requires = {
-			"kyazdani42/nvim-web-devicons"
-		},
 		config = function()
-		   require("plugins.bufferline").setup()
+		   require("configs.bufferline")
 		end,
-	}
-	use "hrsh7th/nvim-cmp"
-	use {
-			"hrsh7th/cmp-buffer",
-			event = "BufWinEnter",
-			config = function()
-				require("plugins.cmp").setup()
-			end,
-			wants = {
-				"LuaSnip",
-				"cmp_luasnip",
-				"cmp-path",
-				"cmp-cmdline",
-				"cmp-nvim-lsp",
-				"friendly-snippets",
-			},
-			requires = {
-				"hrsh7th/cmp-path",
-				"hrsh7th/cmp-cmdline",
-				"hrsh7th/cmp-nvim-lsp",
-				"L3MON4D3/LuaSnip",
-				"rafamadriz/friendly-snippets",
-				"saadparwaiz1/cmp_luasnip"
-			}
-	}
-	use {
+	},
+	{
+		"hrsh7th/nvim-cmp",
+		event = "BufRead",
+		lazy = true
+	},
+	{
+		"hrsh7th/cmp-buffer",
+		event = "BufRead",
+		lazy = true,
+		config = function()
+			require("configs.cmp")
+		end,
+		dependencies = {
+			"hrsh7th/cmp-path",
+			"hrsh7th/cmp-cmdline",
+			"hrsh7th/cmp-nvim-lsp",
+			"L3MON4D3/LuaSnip",
+			"rafamadriz/friendly-snippets",
+			"saadparwaiz1/cmp_luasnip"
+		}
+	},
+	{
 		'neovim/nvim-lspconfig',
-		event = "BufWinEnter",
-		config = function()
-			require("plugins.lsp")
-		end,
-		wants = {
-			"nvim-cmp",
-			"cmp-nvim-lsp",
-			"vim-illuminate"
-		},
-		requires = {
+		event = "BufRead",
+		lazy = true,
+		dependencies = {
 			"hrsh7th/nvim-cmp",
 			"RRethy/vim-illuminate",
 			"hrsh7th/cmp-nvim-lsp",
 		}
-	}
-	use {
-		'rmagatti/auto-session',
-		event="VimEnter",
-		config = function()
-			require('auto-session').setup {
-				log_level = 'info',
-			}
-		end,
-	}
-	use {
+	},
+	{
 		'karb94/neoscroll.nvim', 
-		event="VimEnter",
+		event="BufRead",
 		config = function()
 			require("neoscroll").setup()
 		end,
-	}
-	use {
+	},
+	{
 		'Pocco81/auto-save.nvim',
 		event="VimEnter",
 		config = function()
 			require("auto-save").setup {}
 		end,
 	}
-end
-
-local conf = {
-	profile = {
-		enable = true,
-		treshold = 0
-	},
-
-	display = {
-		open_fn = function()
-			return require("packer.util").float { border = "rounded" }
-		end
+}, {
+	performance = {
+		cache = {
+			enabled = true
+		},
+		rpt = {
+			disabled_plugins = {
+				"netrw",
+                "netrwPlugin",
+                "netrwSettings",
+                "netrwFileHandlers",
+                "gzip",
+                "zip",
+                "zipPlugin",
+                "tar",
+                "tarPlugin",
+                "getscript",
+                "getscriptPlugin",
+                "vimball",
+                "vimballPlugin",
+                "2html_plugin",
+                "logipat",
+                "rrhelper",
+                "spellfile_plugin",
+                "matchit",
+			}
+		}
 	}
-}
-
-local packer = require "packer"
-
-packer.init(conf)
-
-return packer.startup(plugins)
+})
