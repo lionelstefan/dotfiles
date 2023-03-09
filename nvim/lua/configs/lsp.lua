@@ -7,7 +7,8 @@ local on_attach = function( client, bufnr )
 	}
 
     require("illuminate").on_attach(client)
-	buf_set_keymap('n', 'kf', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+	buf_set_keymap('n', 'kf', '<cmd>lua vim.lsp.buf.format{async = true}<CR>', opts)
+	vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 end
 
 require("cmp")
@@ -64,7 +65,6 @@ require("lspconfig").svelte.setup{
 require("lspconfig").tailwindcss.setup{
 	on_attach = on_attach,
 	capabilities = capabilities,
-	filetypes = { "aspnetcorerazor", "astro", "astro-markdown", "blade", "django-html", "htmldjango", "edge", "eelixir", "ejs", "erb", "eruby", "gohtml", "haml", "handlebars", "hbs", "html", "html-eex", "heex", "jade", "leaf", "liquid", "markdown", "mdx", "mustache", "njk", "nunjucks", "php", "razor", "slim", "twig", "css", "less", "postcss", "sass", "scss", "stylus", "sugarss", "javascript", "javascriptreact", "reason", "rescript", "typescript", "typescriptreact", "vue", "svelte" }
 }
 
 require("lspconfig").gopls.setup{

@@ -6,7 +6,6 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
 fi
 
 source ~/dotfiles/zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
-source ~/dotfiles/zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 
 source ~/dotfiles/zsh/z.sh
 source ~/dotfiles/zsh/alias.zsh
 
@@ -65,42 +64,20 @@ export PATH="$PNPM_HOME:$PATH"
 # homebrew
 export PATH="/home/lionelstefan/homebrew/bin:$PATH"
 
-# java
-export JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64"
-export PATH="$PATH:$JAVA_HOME/bin"
-
-#android
-# export ANDROID_SDK_ROOT="/home/lionelstefan/Android"
-export ANDROID_SDK_ROOT="$ANDROID_SDK_ROOT"
-export ANDROID_HOME="/home/lionelstefan/Android"
-
-export PATH="$PATH:$ANDROID_HOME/plaftorm-tools"
-export PATH="$PATH:$ANDROID_HOME/cmdline-tools/tools/bin"
-
-#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
-export SDKMAN_DIR="$HOME/.sdkman"
-[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
-
-# export WSL_HOST=$(tail -1 /etc/resolv.conf | cut -d' ' -f2)
-# export ADB_SERVER_SOCKET=tcp:$WSL_HOST:5037
-
-#wslhostpatcher
-# /mnt/c/wsl/wslhostpatcher/WSLHostPatcher.exe
-
-#set MACHINE IP ADDRESS (WIFI) FOR EXPO
-# export REACT_NATIVE_PACKAGER_HOSTNAME=$(netsh.exe interface ip show address "Wi-Fi" | grep 'IP Address' | sed -r 's/^.*IP Address:\W*//')
-
-#rhromedriver
-export PATH="$PATH:/usr/bin/chromedriver"
-
 #xclip
-export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2}'):0
+# export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2}'):0
+# export LIBGL_ALWAYS_INDIRECT=1
 
 #GOOGLE_APPLICATION_CREDENTIALS
 export GOOGLE_APPLICATION_CREDENTIALS="/mnt/c/wsl/dragon-sea-view/dragon-sea-view-firebase-adminsdk-9omas-edcaca9f42.json"
+
+#NVIM
+export GIT_EDITOR="nvim"
 
 #GOLANG
 export PATH="$PATH:/usr/local/go/bin"
 export GOPATH=$HOME/go
 export PATH="$GOPATH/bin:$PATH"
-export GIT_EDITOR="nvim"
+export PATH="~/.local/bin:$PATH"
+export PATH="~/usr/bin:$PATH"
+export GOPROXY=direct

@@ -13,13 +13,9 @@ require("lazy").setup({
 	},
 	{
 		'nvim-lualine/lualine.nvim',
-		event = "VimEnter",
 		config = function()
 			require("configs.lualine")
 		end,
-		dependencies = {
-			'kyazdani42/nvim-web-devicons'
-		},
 	},
 	{
 		'StanAngeloff/php.vim',
@@ -27,16 +23,13 @@ require("lazy").setup({
 	},
 	{
 		'machakann/vim-sandwich',
-		event = "InsertEnter"
 	},
 	{
 		'tpope/vim-fugitive',
-		event="BufReadPre"
 	},
 	{'sindrets/diffview.nvim'},
 	{
 		'f-person/git-blame.nvim',
-		event="BufRead"
 	},
 	{
 		'numToStr/Comment.nvim',
@@ -47,38 +40,24 @@ require("lazy").setup({
 		config = function()
 			require("configs.treesitter")
 		end,
-		event = "BufRead",
-		lazy = true
 	},
 	{
 		"p00f/nvim-ts-rainbow",
-		event = "BufRead",
-		lazy = true,
 	},
 	{
 		"RRethy/nvim-treesitter-endwise",
-		event = "BufRead",
-		lazy = true,
 	},
 	{
 		"JoosepAlviste/nvim-ts-context-commentstring",
-		event = "BufRead",
-		lazy = true,
 	},
 	{
 		"nvim-treesitter/nvim-treesitter-context",
-		event = "BufRead",
-		lazy = true,
 	},
 	{
 		"windwp/nvim-ts-autotag",
-		event = "BufRead",
-		lazy = true,
 	},
 	{
 		'windwp/nvim-autopairs',
-		event = "BufRead",
-		lazy = true,
 		config = function()
 			require("nvim-autopairs").setup{
 				check_ts = true
@@ -88,19 +67,16 @@ require("lazy").setup({
 	{
 		'nvim-telescope/telescope.nvim',
 		config = function()
-			require("configs.telescope")
+		   require("configs.telescope")
 		end,
 		cmd = { "Telescope" },
-		dependencies = {
-			"nvim-lua/plenary.nvim",
-			"nvim-lua/popup.nvim",
-			"nvim-telescope/telescope-project.nvim",
-			"nvim-telescope/telescope-file-browser.nvim"
-		}
 	},
+	"nvim-lua/plenary.nvim",
+	"nvim-lua/popup.nvim",
+	"nvim-telescope/telescope-project.nvim",
+	"nvim-telescope/telescope-file-browser.nvim",
 	{
 		'lukas-reineke/indent-blankline.nvim',
-		event = "BufRead",
 		config = function()
 			vim.cmd[[highlight IndentBlankLineIndent1 guifg=#666666 gui=nocombine]]
 			require("indent_blankline").setup {
@@ -115,52 +91,44 @@ require("lazy").setup({
 	},
 	{
 		'akinsho/bufferline.nvim',
-		event="VimEnter",
 		config = function()
 		   require("configs.bufferline")
 		end,
 	},
 	{
 		"hrsh7th/nvim-cmp",
-		event = "BufRead",
-		lazy = true
 	},
+	"hrsh7th/cmp-path",
+	"hrsh7th/cmp-cmdline",
 	{
-		"hrsh7th/cmp-buffer",
-		event = "BufRead",
-		lazy = true,
+		"hrsh7th/cmp-nvim-lsp",
+		config = function()
+		   require("configs.lsp")
+		end
+	},
+	"L3MON4D3/LuaSnip",
+	"rafamadriz/friendly-snippets",
+	"saadparwaiz1/cmp_luasnip",
+	{
+		"hrsh7th/nvim-cmp",
 		config = function()
 			require("configs.cmp")
 		end,
-		dependencies = {
-			"hrsh7th/cmp-path",
-			"hrsh7th/cmp-cmdline",
-			"hrsh7th/cmp-nvim-lsp",
-			"L3MON4D3/LuaSnip",
-			"rafamadriz/friendly-snippets",
-			"saadparwaiz1/cmp_luasnip"
-		}
 	},
+	"hrsh7th/cmp-buffer",
+	"RRethy/vim-illuminate",
+	"hrsh7th/cmp-nvim-lsp",
 	{
 		'neovim/nvim-lspconfig',
-		event = "BufRead",
-		lazy = true,
-		dependencies = {
-			"hrsh7th/nvim-cmp",
-			"RRethy/vim-illuminate",
-			"hrsh7th/cmp-nvim-lsp",
-		}
 	},
 	{
 		'karb94/neoscroll.nvim', 
-		event="BufRead",
 		config = function()
 			require("neoscroll").setup()
 		end,
 	},
 	{
 		'Pocco81/auto-save.nvim',
-		event="VimEnter",
 		config = function()
 			require("auto-save").setup {}
 		end,
