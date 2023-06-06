@@ -1,4 +1,4 @@
-require'nvim-treesitter.configs'.setup {
+require 'nvim-treesitter.configs'.setup {
 	auto_install = true,
 	ensure_installed = {
 		"go",
@@ -14,6 +14,9 @@ require'nvim-treesitter.configs'.setup {
 		"python",
 		"svelte",
 		"lua"
+	},
+	highlight = {
+		enable = true
 	},
 	autotag = {
 		enable = true
@@ -37,4 +40,8 @@ require'nvim-treesitter.configs'.setup {
 
 require('Comment').setup {
 	pre_hook = require('ts_context_commentstring.integrations.comment_nvim').create_pre_hook(),
+}
+
+require("treesitter-context").setup {
+	enable = true
 }

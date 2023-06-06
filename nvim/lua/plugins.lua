@@ -1,7 +1,7 @@
 require("lazy").setup({
 	{'folke/lazy.nvim'},
 	{'luisiacc/gruvbox-baby'},
-	{'ellisonleao/gruvbox.nvim'},
+	{'ellisonleao/gruvbox.nvim', priority = 1000},
 	{'nathom/filetype.nvim'},
 	{
 		'kyazdani42/nvim-web-devicons',
@@ -53,7 +53,7 @@ require("lazy").setup({
 		"JoosepAlviste/nvim-ts-context-commentstring",
 	},
 	{
-		"nvim-treesitter/nvim-treesitter-context",
+		"nvim-treesitter/nvim-treesitter-context"
 	},
 	{
 		"windwp/nvim-ts-autotag",
