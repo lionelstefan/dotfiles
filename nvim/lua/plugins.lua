@@ -18,8 +18,10 @@ require("lazy").setup({
 		end,
 	},
 	{
-		'StanAngeloff/php.vim',
-		ft = {"php"}
+		'lewis6991/gitsigns.nvim',
+		config = function()
+			require('gitsigns').setup()
+		end
 	},
 	{
 		'machakann/vim-sandwich',
@@ -96,31 +98,32 @@ require("lazy").setup({
 		end,
 	},
 	{
-		"hrsh7th/nvim-cmp",
-	},
-	"hrsh7th/cmp-path",
-	"hrsh7th/cmp-cmdline",
-	{
-		"hrsh7th/cmp-nvim-lsp",
+		'neovim/nvim-lspconfig',
 		config = function()
 		   require("configs.lsp")
 		end
 	},
-	"L3MON4D3/LuaSnip",
-	"rafamadriz/friendly-snippets",
-	"saadparwaiz1/cmp_luasnip",
 	{
 		"hrsh7th/nvim-cmp",
 		config = function()
 			require("configs.cmp")
 		end,
 	},
-	"hrsh7th/cmp-buffer",
-	"RRethy/vim-illuminate",
+-- LSP & CMP
 	"hrsh7th/cmp-nvim-lsp",
+	"hrsh7th/cmp-buffer",
+	"hrsh7th/cmp-path",
+	"hrsh7th/cmp-cmdline",
+	"L3MON4D3/LuaSnip",
+	"rafamadriz/friendly-snippets",
+	"saadparwaiz1/cmp_luasnip",
+	"onsails/lspkind.nvim",
+	"RRethy/vim-illuminate",
 	{
-		'neovim/nvim-lspconfig',
-	},
+		'Pocco81/auto-save.nvim',
+		config = function()
+			require("auto-save").setup {}
+		end,
 	{
 		'karb94/neoscroll.nvim', 
 		config = function()
@@ -128,11 +131,12 @@ require("lazy").setup({
 		end,
 	},
 	{
-		'Pocco81/auto-save.nvim',
-		config = function()
-			require("auto-save").setup {}
-		end,
+		"kdheepak/lazygit.nvim",
+		dependencies = {
+			"nvim-lua/plenary.nvim"
+		}
 	}
+}
 }, {
 	performance = {
 		cache = {

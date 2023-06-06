@@ -11,7 +11,7 @@ map('v', '<Tab>', ':><CR>gv', {noremap=true})
 map('v', '<S-Tab>', ':<<CR>gv', {noremap=true})
 
 -- clear highlight
-map('n', '<esc>', ':noh<CR><esc>', {noremap=true})
+map('n', '<esc>', ':nohlsearch<CR><esc>', {noremap=true})
 
 -- replace
 map('n', 'rr', ':%s/', {noremap=true})
@@ -49,3 +49,6 @@ map('i', '<C-K>', '<ESC>:m .-2<CR>==', {noremap=true})
 map('i', '<C-J>', '<ESC>:m .+1<CR>==', {noremap=true})
 map('n', '<leader>k', ':m .-2<CR>==', {noremap=true})
 map('n', '<leader>j', ':m .+1<CR>==', {noremap=true})
+
+-- LazyGit
+map('n', 'lg', '<CMD>LazyGit <CR>', {noremap=true})

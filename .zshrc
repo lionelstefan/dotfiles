@@ -63,6 +63,13 @@ export PATH="$PNPM_HOME:$PATH"
 
 # homebrew
 export PATH="/home/lionelstefan/homebrew/bin:$PATH"
+export PATH="/home/lionelstefan/homebrew/sbin:$PATH"
+export HOMEBREW_PREFIX="/home/lionelstefan/homebrew";
+export HOMEBREW_CELLAR="/home/lionelstefan/homebrew/Cellar";
+export HOMEBREW_REPOSITORY="/home/lionelstefan/homebrew";
+export PATH="/home/lionelstefan/homebrew/bin:/home/lionelstefan/homebrew/sbin${PATH+:$PATH}";
+export MANPATH="/home/lionelstefan/homebrew/share/man${MANPATH+:$MANPATH}:";
+export INFOPATH="/home/lionelstefan/homebrew/share/info:${INFOPATH:-}";
 
 #xclip
 # export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2}'):0

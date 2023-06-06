@@ -46,6 +46,20 @@ vim.o.scrolloff = 7
 vim.o.undofile = true
 vim.o.sessionoptions="blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal"
 vim.o.list = true
+vim.o.textwidth = 80
+
+vim.g.clipboard = {
+	name = "win32yank-wsl",
+	copy = {
+		["+"] = "win32yank.exe -i --crlf",
+		["*"] = "win32yank.exe -i --crlf"
+	},
+	paste = {
+		["+"] = "win32yank.exe -o --lf",
+		["*"] = "win32yank.exe -o --lf"
+	},
+	cache_enabled = false
+}
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
@@ -77,10 +91,18 @@ vim.g['php_sql_query'] = 1
 -- vim.g['gruvbox_baby_comment_style'] = "NONE"
 -- autocmd VimEnter * ++nested colorscheme gruvbox
 
+-- LAZYGIT
+vim.g['lazygit_floating_window_scaling_factor'] = 0.8
+
 require'gruvbox'.setup({
 	undercurl = false,
 	underline = false,
-	italic = false,
+	italic = {
+		comments = true,
+		strings = false,
+		operators = false,
+		folds = false
+	},
 	bold = false,
 	contrast = "hard",
 })
@@ -89,8 +111,10 @@ vim.cmd[[
     autocmd VimEnter * syntax enable
     autocmd VimEnter * filetype indent on
     autocmd VimEnter * filetype plugin indent on
-	colorscheme gruvbox
-	augroup end
+    autocmd VimEnter * ++nested colorscheme gruvbox
+	autocmd FileType javascript setlocal ts=2 sts=2 sw=2 expandtab
+	autocmd FileType typescript setlocal ts=2 sts=2 sw=2 expandtab
+    colorscheme gruvbox
 ]]
 
 -- require("plugins.nerdcommenter")
