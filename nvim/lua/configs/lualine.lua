@@ -1,5 +1,6 @@
 require("lualine").setup {
 	options = {
+		icons_enabled = true,
 		theme = 'gruvbox_dark',
 		component_separators = { 
 			left = '',
@@ -16,8 +17,7 @@ require("lualine").setup {
 			{
 				'diff',
 				colored = false
-			},
-			'diagnostics'
+			}
 		},
 		lualine_c = {
 			{

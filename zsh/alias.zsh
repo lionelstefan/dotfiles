@@ -1,8 +1,8 @@
 alias c="clear"
 alias x="exit"
 alias r="source ~/.zshrc"
-alias ll="exa -al --icons"
-alias ls="exa -al --icons"
+alias ll="exa -aFghl --no-icons --group-directories-first --time-style=long-iso"
+alias ls="exa -aFghl --no-icons --group-directories-first --time-style=long-iso"
 alias zz="z $OLDPWD"
 alias vsc="code ."
 alias v="nvim"
@@ -31,4 +31,8 @@ function serve()
   else
     php -S localhost:$1
   fi
+}
+function cat()
+{
+  batcat $1
 }
