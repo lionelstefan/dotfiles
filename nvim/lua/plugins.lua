@@ -1,5 +1,4 @@
 require("lazy").setup({
-	{'folke/lazy.nvim'},
 	{'luisiacc/gruvbox-baby'},
 	{'ellisonleao/gruvbox.nvim', priority = 1000},
 	{'nathom/filetype.nvim'},
@@ -10,7 +9,8 @@ require("lazy").setup({
 			require("nvim-web-devicons").setup {
 				default = true
 			}
-		end
+		end,
+		priority = 900
 	},
 	{
 		'nvim-lualine/lualine.nvim',
@@ -165,5 +165,21 @@ require("lazy").setup({
                 "matchit",
 			}
 		}
+	},
+	ui = {
+		icons = {
+			cmd = "⌘",
+			config = "🛠",
+			event = "📅",
+			ft = "📂",
+			init = "⚙",
+			keys = "🗝",
+			plugin = "🔌",
+			runtime = "💻",
+			source = "📄",
+			start = "🚀",
+			task = "📌",
+			lazy = "💤 ",
+		},
 	}
 })
