@@ -47,6 +47,7 @@ vim.o.undofile = true
 vim.o.sessionoptions="blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal"
 vim.o.list = true
 vim.o.textwidth = 80
+vim.o.noswapfile = true
 
 vim.g.clipboard = {
 	name = "win32yank-wsl",

@@ -1,8 +1,8 @@
 require("lazy").setup({
-	{'luisiacc/gruvbox-baby'},
-	{'ellisonleao/gruvbox.nvim', priority = 1000},
-	{'nathom/filetype.nvim'},
-	{'Vonr/align.nvim'},
+	{ 'luisiacc/gruvbox-baby' },
+	{ 'ellisonleao/gruvbox.nvim', priority = 1000 },
+	{ 'nathom/filetype.nvim' },
+	{ 'Vonr/align.nvim' },
 	{
 		'nvim-tree/nvim-web-devicons',
 		config = function()
@@ -30,14 +30,14 @@ require("lazy").setup({
 	{
 		'tpope/vim-fugitive',
 	},
-	{'sindrets/diffview.nvim'},
+	{ 'sindrets/diffview.nvim' },
 	{
 		'f-person/git-blame.nvim',
 	},
 	{
 		'numToStr/Comment.nvim',
 	},
--- TREESITTER
+	-- TREESITTER
 	{
 		'nvim-treesitter/nvim-treesitter',
 		config = function()
@@ -62,15 +62,16 @@ require("lazy").setup({
 	{
 		'windwp/nvim-autopairs',
 		config = function()
-			require("nvim-autopairs").setup{
-				check_ts = true
+			require("nvim-autopairs").setup {
+				check_ts = true,
+				disable_filetype = { "TelescopePrompt" }
 			}
 		end,
 	},
 	{
 		'nvim-telescope/telescope.nvim',
 		config = function()
-		   require("configs.telescope")
+			require("configs.telescope")
 		end,
 		cmd = { "Telescope" },
 	},
@@ -81,7 +82,7 @@ require("lazy").setup({
 	{
 		'lukas-reineke/indent-blankline.nvim',
 		config = function()
-			vim.cmd[[highlight IndentBlankLineIndent1 guifg=#666666 gui=nocombine]]
+			vim.cmd [[highlight IndentBlankLineIndent1 guifg=#666666 gui=nocombine]]
 			require("indent_blankline").setup {
 				space_char_blankline = " ",
 				show_current_context = true,
@@ -95,13 +96,13 @@ require("lazy").setup({
 	{
 		'akinsho/bufferline.nvim',
 		config = function()
-		   require("configs.bufferline")
+			require("configs.bufferline")
 		end,
 	},
 	{
 		'neovim/nvim-lspconfig',
 		config = function()
-		   require("configs.lsp")
+			require("configs.lsp")
 		end
 	},
 	{
@@ -110,7 +111,7 @@ require("lazy").setup({
 			require("configs.cmp")
 		end,
 	},
--- LSP & CMP
+	-- LSP & CMP
 	"hrsh7th/cmp-nvim-lsp",
 	"hrsh7th/cmp-buffer",
 	"hrsh7th/cmp-path",
@@ -125,19 +126,31 @@ require("lazy").setup({
 		config = function()
 			require("auto-save").setup {}
 		end,
-	{
-		'karb94/neoscroll.nvim', 
-		config = function()
-			require("neoscroll").setup()
-		end,
-	},
-	{
-		"kdheepak/lazygit.nvim",
-		dependencies = {
-			"nvim-lua/plenary.nvim"
+		{
+			'karb94/neoscroll.nvim',
+			config = function()
+				require("neoscroll").setup()
+			end,
+		},
+		{
+			"kdheepak/lazygit.nvim",
+			dependencies = {
+				"nvim-lua/plenary.nvim"
+			}
+		},
+		{
+			"folke/neodev.nvim",
+			opts = {}
+		},
+		{
+			"j-hui/fidget.nvim",
+			tag = "legacy",
+			event = "LspAttach",
+			opts = {
+				-- options
+			},
 		}
 	}
-}
 }, {
 	performance = {
 		cache = {
@@ -146,23 +159,23 @@ require("lazy").setup({
 		rpt = {
 			disabled_plugins = {
 				"netrw",
-                "netrwPlugin",
-                "netrwSettings",
-                "netrwFileHandlers",
-                "gzip",
-                "zip",
-                "zipPlugin",
-                "tar",
-                "tarPlugin",
-                "getscript",
-                "getscriptPlugin",
-                "vimball",
-                "vimballPlugin",
-                "2html_plugin",
-                "logipat",
-                "rrhelper",
-                "spellfile_plugin",
-                "matchit",
+				"netrwPlugin",
+				"netrwSettings",
+				"netrwFileHandlers",
+				"gzip",
+				"zip",
+				"zipPlugin",
+				"tar",
+				"tarPlugin",
+				"getscript",
+				"getscriptPlugin",
+				"vimball",
+				"vimballPlugin",
+				"2html_plugin",
+				"logipat",
+				"rrhelper",
+				"spellfile_plugin",
+				"matchit",
 			}
 		}
 	},

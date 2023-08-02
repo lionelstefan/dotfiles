@@ -37,8 +37,8 @@ end
 
 cmp.setup {
 	enabled = function()
-		local context = require 'cmp.config.context'
-		if vim.api.nvim_get_mode().mode == 'c' then
+		local context = require "cmp.config.context"
+		if vim.api.nvim_get_mode().mode == "c" then
 			return true
 		else
 			return not context.in_treesitter_capture("comment")
@@ -64,7 +64,7 @@ cmp.setup {
 			return vim_item
 		end,
 		-- format = lspkind.cmp_format({
-		-- 	mode = 'symbol',
+		-- 	mode = "symbol",
 		-- 	menu = ({
 		-- 		nvim_lsp = "[LSP]",
 		-- 		luasnip = "[Snippet]",
@@ -75,63 +75,127 @@ cmp.setup {
 		-- })
 	},
 	mapping = {
-		['<C-p>'] = cmp.mapping.select_prev_item(),
-		['<C-n>'] = cmp.mapping.select_next_item(),
-		['<C-d>'] = cmp.mapping.scroll_docs(-4),
-		['<C-f>'] = cmp.mapping.scroll_docs(4),
-		-- ['<Tab>'] = cmp.mapping.complete(),
-		['<Esc>'] = cmp.mapping.close(),
-		['<CR>'] = cmp.mapping.confirm {
+		["<C-p>"] = cmp.mapping.select_prev_item(),
+		["<C-n>"] = cmp.mapping.select_next_item(),
+		["<C-d>"] = cmp.mapping.scroll_docs(-4),
+		["<C-f>"] = cmp.mapping.scroll_docs(4),
+		-- ["<Tab>"] = cmp.mapping.complete(),
+		["<Esc>"] = cmp.mapping.close(),
+		["<CR>"] = cmp.mapping.confirm {
 			select = true,
 		},
-		['<Down>'] = function(fallback)
+		["<Down>"] = function(fallback)
 			if cmp.visible() then
 				cmp.select_next_item()
 			elseif luasnip.expand_or_jumpable() then
-				vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<Plug>luasnip-expand-or-jump', true, true, true), '')
+				vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-expand-or-jump", true, true, true), "")
 			else
 				fallback()
 			end
 		end,
-		['<Up>'] = function(fallback)
+		["<Up>"] = function(fallback)
 			if cmp.visible() then
 				cmp.select_prev_item()
 			elseif luasnip.jumpable(-1) then
-				vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<Plug>luasnip-jump-prev', true, true, true), '')
+				vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-jump-prev", true, true, true), "")
 			else
 				fallback()
 			end
 		end,
 	},
 	sources = cmp.config.sources({
-		{ name = 'nvim_lsp' },
-		{ name = 'luasnip' },
-		{ name = 'buffer' },
-		{ name = 'path' },
-		{ name = 'treesitter' },
+		{ name = "nvim_lsp" },
+		{ name = "luasnip" },
+		{ name = "buffer" },
+		{ name = "path" },
+		{ name = "treesitter" },
 	})
 }
 
-cmp.setup.cmdline('/', {
+cmp.setup.cmdline("/", {
 	sources = {
-		{ name = 'buffer' }
+		{ name = "buffer" }
 	}
 })
 
-cmp.setup.cmdline(':', {
+cmp.setup.cmdline(":", {
 	sources = cmp.config.sources({
-		{ name = 'path' }
+		{ name = "path" }
 	}, {
-		{ name = 'cmdline' }
+		{ name = "cmdline" }
 	})
 })
 
-local cmp_autopairs = require('nvim-autopairs.completion.cmp')
+local npairs = require("nvim-autopairs")
+local autopair_rule = require("nvim-autopairs.rule")
+local cmp_autopairs = require("nvim-autopairs.completion.cmp")
+local cond = require'nvim-autopairs.conds'
 cmp.event:on(
-	'confirm_done',
-	cmp_autopairs.on_confirm_done({
-		map_char = {
-			tex = " "
-		}
-	})
+	"confirm_done",
+	cmp_autopairs.on_confirm_done()
 )
+
+local brackets = { { '(', ')' }, { '[', ']' }, { '{', '}' } }
+npairs.add_rules {
+	autopair_rule(' ', ' ')
+		:with_pair(function(opts)
+			local pair = opts.line:sub(opts.col - 1, opts.col)
+			return vim.tbl_contains({
+				brackets[1][1] .. brackets[1][2],
+				brackets[2][1] .. brackets[2][2],
+				brackets[3][1] .. brackets[3][2],
+			}, pair)
+		end)
+}
+
+for _, bracket in pairs(brackets) do
+	npairs.add_rules {
+		autopair_rule(bracket[1] .. ' ', ' ' .. bracket[2])
+			:with_pair(function() return false end)
+			:with_move(function(opts)
+				return opts.prev_char:match('.%' .. bracket[2]) ~= nil
+			end)
+			:use_key(bracket[2])
+	}
+end
+
+for _, punct in pairs { ",", ";" } do
+	npairs.add_rules {
+		autopair_rule("", punct)
+			:with_move(function(opts) return opts.char == punct end)
+			:with_pair(function() return false end)
+			:with_del(function() return false end)
+			:with_cr(function() return false end)
+			:use_key(punct)
+	}
+end
+
+npairs.add_rules {
+	autopair_rule('=', '')
+		:with_pair(cond.not_inside_quote())
+		:with_pair(function(opts)
+			local last_char = opts.line:sub(opts.col - 1, opts.col - 1)
+			if last_char:match('[%w%=%s]') then
+				return true
+			end
+			return false
+		end)
+		:replace_endpair(function(opts)
+			local prev_2char = opts.line:sub(opts.col - 2, opts.col - 1)
+			local next_char = opts.line:sub(opts.col, opts.col)
+			next_char = next_char == ' ' and '' or ' '
+			if prev_2char:match('%w$') then
+				return '<bs> =' .. next_char
+			end
+			if prev_2char:match('%=$') then
+				return next_char
+			end
+			if prev_2char:match('=') then
+				return '<bs><bs>=' .. next_char
+			end
+			return ''
+		end)
+		:set_end_pair_length(0)
+		:with_move(cond.none())
+		:with_del(cond.none())
+}
