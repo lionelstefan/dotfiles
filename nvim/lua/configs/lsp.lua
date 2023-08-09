@@ -162,3 +162,9 @@ require("lspconfig").gopls.setup {
 	capabilities = capabilities,
 	filetypes = { "go", "gomod", "gowork", "gotmpl" }
 }
+
+require("lspconfig").marksman.setup {
+	on_attach = on_attach,
+	capabilities = capabilities,
+	filetypes = { "markdown" }
+}
