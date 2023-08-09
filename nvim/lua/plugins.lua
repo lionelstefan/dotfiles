@@ -124,32 +124,34 @@ require("lazy").setup({
 	{
 		'Pocco81/auto-save.nvim',
 		config = function()
-			require("auto-save").setup {}
-		end,
-		{
-			'karb94/neoscroll.nvim',
-			config = function()
-				require("neoscroll").setup()
-			end,
-		},
-		{
-			"kdheepak/lazygit.nvim",
-			dependencies = {
-				"nvim-lua/plenary.nvim"
+			require("auto-save").setup {
+				enabled = true
 			}
-		},
-		{
-			"folke/neodev.nvim",
-			opts = {}
-		},
-		{
-			"j-hui/fidget.nvim",
-			tag = "legacy",
-			event = "LspAttach",
-			opts = {
-				-- options
-			},
+		end,
+	},
+	{
+		'karb94/neoscroll.nvim',
+		config = function()
+			require("neoscroll").setup()
+		end,
+	},
+	{
+		"kdheepak/lazygit.nvim",
+		dependencies = {
+			"nvim-lua/plenary.nvim"
 		}
+	},
+	{
+		"folke/neodev.nvim",
+		opts = {}
+	},
+	{
+		"j-hui/fidget.nvim",
+		tag = "legacy",
+		event = "LspAttach",
+		opts = {
+			-- options
+		},
 	}
 }, {
 	performance = {

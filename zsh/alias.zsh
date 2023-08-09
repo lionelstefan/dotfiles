@@ -11,6 +11,7 @@ alias t="tmux -u -2"
 alias tl="tmux list-session"
 alias lg="lazygit"
 alias tm="tmux"
+alias gz="gzip"
 function ta()
 {
   tmux attach-session -t $1

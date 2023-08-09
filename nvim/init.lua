@@ -28,7 +28,7 @@ vim.o.cursorline = true
 vim.o.showtabline = 2
 vim.o.backup = false
 vim.o.writebackup = false
-vim.o.updatetime = 100
+vim.o.updatetime = 300
 vim.o.timeoutlen = 500
 vim.o.wildmenu = true
 vim.o.wildmode = 'full:longest'
@@ -47,7 +47,6 @@ vim.o.undofile = true
 vim.o.sessionoptions="blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal"
 vim.o.list = true
 vim.o.textwidth = 80
-vim.o.noswapfile = true
 
 vim.g.clipboard = {
 	name = "win32yank-wsl",
