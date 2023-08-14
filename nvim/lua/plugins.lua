@@ -1,7 +1,6 @@
 require("lazy").setup({
 	{ 'luisiacc/gruvbox-baby' },
 	{ 'ellisonleao/gruvbox.nvim', priority = 1000 },
-	{ 'nathom/filetype.nvim' },
 	{ 'Vonr/align.nvim' },
 	{
 		'nvim-tree/nvim-web-devicons',

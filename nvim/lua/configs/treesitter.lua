@@ -16,7 +16,8 @@ require 'nvim-treesitter.configs'.setup {
 		"lua"
 	},
 	highlight = {
-		enable = true
+		enable = true,
+		-- disable = { "html" }
 	},
 	autotag = {
 		enable = true
@@ -33,6 +34,7 @@ require 'nvim-treesitter.configs'.setup {
 	},
 	rainbow = {
 		enable = true,
+		disable = { "html" },
 		extended_mode = true,
 		max_file_lines = nil
 	}

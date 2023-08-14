@@ -61,6 +61,9 @@ vim.g.clipboard = {
 	cache_enabled = false
 }
 
+-- DISABLE DEFAULT FILETYPE
+-- vim.g['did_load_filetypes'] = 1
+
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system({
