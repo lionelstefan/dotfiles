@@ -49,7 +49,14 @@ require("luasnip.loaders.from_vscode").lazy_load()
 -- 	dynamicRegistration = true
 -- })
 
-local capabilities = require('cmp_nvim_lsp').default_capabilities()
+local capabilities = require('cmp_nvim_lsp').default_capabilities({
+	textDocument = {
+		foldingRange = {
+			dynamicRegistration = false,
+			lineFoldingOnly = true
+		}
+	}
+})
 
 require("lspconfig").intelephense.setup {
 	on_attach = on_attach,
@@ -79,14 +86,14 @@ require("lspconfig").html.setup {
 }
 
 require("lspconfig").bashls.setup {
-	on_attach = on_attach,
+	on_attach    = on_attach,
 	capabilities = capabilities,
-	cmd = { "bash-language-server", "start" },
-	filetypes = { "sh", "zsh" }
+	cmd          = { "bash-language-server", "start" },
+	filetypes    = { "sh", "zsh" }
 }
 
 require("lspconfig").jsonls.setup {
-	on_attach = on_attach,
+	on_attach    = on_attach,
 	capabilities = capabilities,
 }
 
@@ -134,7 +141,13 @@ require("lspconfig").cssls.setup {
 }
 
 local tsserver_capabilities = require('cmp_nvim_lsp').default_capabilities({
-	dynamicRegistration = true
+	dynamicRegistration = true,
+	textDocument = {
+		foldingRange = {
+			dynamicRegistration = false,
+			lineFoldingOnly = true
+		}
+	}
 })
 
 require("lspconfig").tsserver.setup {

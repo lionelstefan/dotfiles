@@ -1,32 +1,32 @@
 local kind_icons = {
-	Text = "",
-	Method = "m",
-	Function = "",
-	Constructor = "",
-	Field = "",
-	Variable = "",
-	Class = "",
-	Interface = "",
-	Module = "",
-	Property = "",
-	Unit = "",
-	Value = "",
-	Enum = "",
-	Keyword = "",
-	Snippet = "",
-	Color = "",
-	File = "",
-	Reference = "",
-	Folder = "",
-	EnumMember = "",
-	Constant = "",
-	Struct = "",
-	Event = "",
-	Operator = "",
+	Text          = "",
+	Method        = "m",
+	Function      = "",
+	Constructor   = "",
+	Field         = "",
+	Variable      = "",
+	Class         = "",
+	Interface     = "",
+	Module        = "",
+	Property      = "",
+	Unit          = "",
+	Value         = "",
+	Enum          = "",
+	Keyword       = "",
+	Snippet       = "",
+	Color         = "",
+	File          = "",
+	Reference     = "",
+	Folder        = "",
+	EnumMember    = "",
+	Constant      = "",
+	Struct        = "",
+	Event         = "",
+	Operator      = "",
 	TypeParameter = "",
 }
 
-local cmp = require("cmp")
+local cmp     = require("cmp")
 local luasnip = require("luasnip")
 local lspkind = require("lspkind")
 
@@ -55,10 +55,10 @@ cmp.setup {
 		format = function(entry, vim_item)
 			vim_item.kind = string.format("%s", kind_icons[vim_item.kind])
 			vim_item.menu = ({
-				nvim_lsp = "[LSP]",
-				luasnip = "[Snippet]",
-				buffer = "[Buffer]",
-				path = "[Path]",
+				nvim_lsp   = "[LSP]",
+				luasnip    = "[Snippet]",
+				buffer     = "[Buffer]",
+				path       = "[Path]",
 				treesitter = "[Treesitter]"
 			})[entry.source.name]
 			return vim_item
@@ -126,10 +126,11 @@ cmp.setup.cmdline(":", {
 	})
 })
 
-local npairs = require("nvim-autopairs")
+local npairs        = require("nvim-autopairs")
 local autopair_rule = require("nvim-autopairs.rule")
 local cmp_autopairs = require("nvim-autopairs.completion.cmp")
-local cond = require 'nvim-autopairs.conds'
+local cond          = require 'nvim-autopairs.conds'
+
 cmp.event:on(
 	"confirm_done",
 	cmp_autopairs.on_confirm_done()

@@ -1,14 +1,10 @@
 require("lazy").setup({
 	{ 'luisiacc/gruvbox-baby' },
+	{ 'rose-pine/neovim' },
 	{ 'ellisonleao/gruvbox.nvim', priority = 1000 },
 	{ 'Vonr/align.nvim' },
 	{
 		'nvim-tree/nvim-web-devicons',
-		config = function()
-			require("nvim-web-devicons").setup {
-				default = true
-			}
-		end,
 		priority = 900
 	},
 	{
@@ -39,6 +35,8 @@ require("lazy").setup({
 	-- TREESITTER
 	{
 		'nvim-treesitter/nvim-treesitter',
+		build = ":TSUpdate",
+		event = "BufReadPost",
 		config = function()
 			require("configs.treesitter")
 		end,
@@ -151,6 +149,15 @@ require("lazy").setup({
 		opts = {
 			-- options
 		},
+	},
+	{
+		"kevinhwang91/nvim-ufo", 
+		dependencies = {
+			"kevinhwang91/promise-async"
+		},
+		config = function ()
+			require'ufo'.setup()
+		end
 	}
 }, {
 	performance = {

@@ -17,7 +17,8 @@ require 'nvim-treesitter.configs'.setup {
 	},
 	highlight = {
 		enable = true,
-		-- disable = { "html" }
+		disable = { "" },
+		additional_vim_regex_highlighting = true,
 	},
 	autotag = {
 		enable = true
