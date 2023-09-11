@@ -1,0 +1,6 @@
+python 2.7.18
+python 3.10.6
+php
+node
+neovim 0.10.0
+tmux
