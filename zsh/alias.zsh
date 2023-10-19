@@ -10,6 +10,7 @@ alias vim="nvim"
 alias t="tmux -u -2"
 alias tl="tmux list-session"
 alias lg="lazygit"
+alias ld="lazydocker"
 alias tm="tmux"
 alias gz="gzip"
 function ta()

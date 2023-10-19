@@ -60,8 +60,8 @@ require("lazy").setup({
 		'windwp/nvim-autopairs',
 		config = function()
 			require("nvim-autopairs").setup {
-				check_ts = true,
-				disable_filetype = { "TelescopePrompt" }
+				disable_filetype = { "TelescopePrompt" },
+				enable_check_bracket_line = false
 			}
 		end,
 	},
@@ -79,15 +79,7 @@ require("lazy").setup({
 	{
 		'lukas-reineke/indent-blankline.nvim',
 		config = function()
-			vim.cmd [[highlight IndentBlankLineIndent1 guifg=#666666 gui=nocombine]]
-			require("indent_blankline").setup {
-				space_char_blankline = " ",
-				show_current_context = true,
-				show_current_context_start = true,
-				char_highlight_list = {
-					"IndentBlankLineIndent1"
-				}
-			}
+			require("configs.ibl")
 		end
 	},
 	{
@@ -158,7 +150,11 @@ require("lazy").setup({
 		config = function ()
 			require'ufo'.setup()
 		end
-	}
+	},
+	{
+		"jamestthompson3/nvim-remote-containers"
+	},
+	{'akinsho/toggleterm.nvim', version = "*", config = true}
 }, {
 	performance = {
 		cache = {

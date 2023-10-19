@@ -54,6 +54,9 @@ map('n', '<leader>j', ':m .+1<CR>==',  {noremap=true})
 -- LazyGit
 map('n', 'lg', '<CMD>LazyGit <CR>', {noremap=true})
 
+-- ToggleTerm
+map('n', 'tt', '<CMD>ToggleTerm direction=float<CR>', {noremap = true})
+
 -- align
 local NS = { noremap = true, silent = true }
 

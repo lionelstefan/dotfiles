@@ -1,5 +1,5 @@
 -- DISABLE BUILTIN PLUGIN
-vim.o.background     = 'dark'
+	vim.o.background     = 'dark'
 vim.o.colorcolumn    = '120'
 vim.o.path           = vim.o.path .. '**'
 vim.o.confirm        = true
@@ -45,7 +45,7 @@ vim.o.lazyredraw     = true
 vim.o.scrolloff      = 7
 vim.o.undofile       = true
 vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal"
-vim.o.list           = true
+-- vim.o.list           = true
 vim.o.textwidth      = 80
 vim.o.foldcolumn     = "0"
 vim.o.foldlevel      = 99
@@ -56,12 +56,12 @@ vim.o.fillchars      = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
 vim.g.clipboard = {
 	name = "win32yank-wsl",
 	copy = {
-		["+"] = "win32yank.exe -i --crlf",
-		["*"] = "win32yank.exe -i --crlf"
+		["+"] = "win32yank -i --crlf",
+		["*"] = "win32yank -i --crlf"
 	},
 	paste = {
-		["+"] = "win32yank.exe -o --lf",
-		["*"] = "win32yank.exe -o --lf"
+		["+"] = "win32yank -o --lf",
+		["*"] = "win32yank -o --lf"
 	},
 	cache_enabled = false
 }
