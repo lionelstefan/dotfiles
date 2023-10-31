@@ -58,7 +58,7 @@ local capabilities = require('cmp_nvim_lsp').default_capabilities({
 	}
 })
 
-require("lspconfig").intelephense.setup {
+	require("lspconfig").intelephense.setup {
 	on_attach = on_attach,
 	capabilities = capabilities,
 	settings = {
@@ -140,6 +140,13 @@ require("lspconfig").cssls.setup {
 	capabilities = capabilities,
 }
 
+require("lspconfig").vls.setup {
+	on_attach = on_attach,
+	capabilities = capabilities,
+	filetypes = { "vue" },
+	cmd = {"/home/stefanlionel/.nvm/versions/node/v20.7.0/bin/vls"}
+}
+
 local tsserver_capabilities = require('cmp_nvim_lsp').default_capabilities({
 	dynamicRegistration = true,
 	textDocument = {
@@ -190,3 +197,4 @@ require("lspconfig").marksman.setup {
 	capabilities = capabilities,
 	filetypes = { "markdown" }
 }
+

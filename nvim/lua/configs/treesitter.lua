@@ -14,7 +14,8 @@ require 'nvim-treesitter.configs'.setup {
 		"yaml",
 		"python",
 		"svelte",
-		"lua"
+		"lua",
+		"vue"
 	},
 	highlight = {
 		enable = true,
