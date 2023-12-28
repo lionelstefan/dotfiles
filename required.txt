@@ -1,3 +1,4 @@
+fd-find
 bat
 genie
 go

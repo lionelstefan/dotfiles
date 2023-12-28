@@ -2,7 +2,7 @@
 
 local map = vim.api.nvim_set_keymap
 
-map('n', '<leader>w', ':w<CR>', {noremap=true})
+map('n', '<leader>w', ':w!<CR>', {noremap=true})
 map('n', ';q', ':q<CR>',        {noremap=true})
 
 -- Indent
@@ -21,15 +21,19 @@ map('n', 'rr', ':%s/', {noremap=true})
 map('n', 'cd', ':cd ', {noremap=true})
 
 -- Buffer cycle
-map('n', '<leader>1', ':bp<CR>', {noremap=false})
-map('n', '<leader>2', ':bn<CR>', {noremap=false})
-map('n', '<leader>q', ':bd<CR>', {noremap=false})
+map('n', '<leader>1', ':BufferLineCyclePrev<CR>', {noremap=false})
+map('n', '<leader>2', ':BufferLineCycleNext<CR>', {noremap=false})
+map('n', '<leader>q', ':lua MiniBufremove.delete()<CR>', {noremap=false})
+map('n', '<leader>qa', ':bd<CR>', {noremap=false})
+
+-- NvimTree
+map('n', '<leader>b', ':Neotree float<CR>', {noremap=false})
 
 -- Telescope
-map('n', 'ff', '<CMD>Telescope find_files hidden=true<CR>', {noremap=true})
+map('n', 'ff', '<CMD>Telescope find_files hidden=true previewer=false<CR>', {noremap=true})
 map('n', 'fg', '<CMD>Telescope live_grep<CR>',              {noremap=true})
 map('n', 'fb', '<CMD>Telescope buffers<CR>',                {noremap=true})
-map('n', 'fw', '<CMD>Telescope file_browser<CR>',           {noremap=true})
+map('n', 'fw', '<CMD>Telescope file_browser theme=dropdown previewer=false<CR>',           {noremap=true})
 
 -- Telescope Projects
 map('n', 'cp', '<CMD>lua require("telescope").extensions.project.project{}<CR>', {noremap=true})
@@ -37,8 +41,8 @@ map('n', 'cp', '<CMD>lua require("telescope").extensions.project.project{}<CR>',
 -- Scroll
 map('n', '<C-j>', '10jzz0',      {noremap=true})
 map('n', '<C-k>', '10kzz0',      {noremap=true})
-map('n', '<PageUp>', '20kzz0',   {noremap=true})
-map('n', '<PageDown>', '20jzz0', {noremap=true})
+map('n', '<PageUp>', '10kzz0',   {noremap=true})
+map('n', '<PageDown>', '10jzz0', {noremap=true})
 
 -- Easy SO %
 map('n', '<leader>r', ':luafile ~/dotfiles/nvim/init.lua<cr><esc>', {noremap=true})
@@ -67,3 +71,18 @@ vim.keymap.set('x', 'as', function() require'align'.align_to_string(false, true,
 
 vim.keymap.set('n', 'fo', ':foldopen<CR>')
 vim.keymap.set('n', 'fc', ':foldclose<CR>')
+
+-- HLSLENS
+
+map('n', 'n',
+    [[<Cmd>execute('normal! ' . v:count1 . 'n')<CR><Cmd>lua require('hlslens').start()<CR>]],
+    {noremap = true, silent = true})
+map('n', 'N',
+    [[<Cmd>execute('normal! ' . v:count1 . 'N')<CR><Cmd>lua require('hlslens').start()<CR>]],
+    {noremap = true, silent = true})
+map('n', '*', [[*<Cmd>lua require('hlslens').start()<CR>]], {noremap = true, silent = true})
+map('n', '#', [[#<Cmd>lua require('hlslens').start()<CR>]], {noremap = true, silent = true})
+map('n', 'g*', [[g*<Cmd>lua require('hlslens').start()<CR>]], {noremap = true, silent = true})
+map('n', 'g#', [[g#<Cmd>lua require('hlslens').start()<CR>]], {noremap = true, silent = true})
+
+map('n', '<Leader>l', '<Cmd>noh<CR>', {noremap = true, silent = true})

@@ -1,46 +1,41 @@
-vim.lsp.set_log_level("debug")
-
+local navic = require("nvim-navic")
 local on_attach = function(client, bufnr)
-	local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
-	local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
-
 	local opts = {
 		noremap = true,
 		silent = true,
 	}
 
-	require("illuminate").on_attach(client)
-	buf_set_keymap('n', 'kf', '<cmd>lua vim.lsp.buf.format{async = true}<CR>', opts)
-	buf_set_keymap('v', 'kf', '<cmd>lua vim.lsp.buf.format{async = true}<CR>', opts)
-	buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
-
-	local opts = { noremap = true, silent = true }
-	vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, opts)
-	vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
-	vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
-	vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist, opts)
-
-	-- Enable completion triggered by <c-x><c-o>
 	vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+	if client.server_capabilities.documentSymbolProvider then
+		navic.attach(client, bufnr)
+	end
 
 	-- Mappings.
 	-- See `:help vim.lsp.*` for documentation on any of the below functions
-	local bufopts = { noremap = true, silent = true, buffer = bufnr }
-	vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
-	vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
-	vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
-	vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
-	vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
-	vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, bufopts)
-	vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, bufopts)
-	vim.keymap.set('n', '<space>wl', function()
-		print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-	end, bufopts)
-	vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, bufopts)
-	vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, bufopts)
-	vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, bufopts)
-	vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
-	vim.keymap.set('n', '<space>f', vim.lsp.buf.formatting, bufopts)
+
+	-- local map = vim.keymap.set
+	-- local bufopts = { noremap = true, silent = true, buffer = bufnr }
+	-- map('n', '<space>e', vim.diagnostic.open_float, bufopts)
+	-- map('n', '[d', vim.diagnostic.goto_prev, bufopts)
+	-- map('n', ']d', vim.diagnostic.goto_next, bufopts)
+	-- map('n', '<space>q', vim.diagnostic.setloclist, bufopts)
+	--
+	-- map('n', 'gD', vim.lsp.buf.declaration, bufopts)
+	-- map('n', 'gd', vim.lsp.buf.definition, bufopts)
+	-- map('n', 'K', vim.lsp.buf.hover, bufopts)
+	-- map('n', 'gi', vim.lsp.buf.implementation, bufopts)
+	-- map('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
+	-- map('n', '<space>wa', vim.lsp.buf.add_workspace_folder, bufopts)
+	-- map('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, bufopts)
+	-- map('n', '<space>wl', function()
+	-- 	print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+	-- end, bufopts)
+	-- map('n', '<space>D', vim.lsp.buf.type_definition, bufopts)
+	-- map('n', '<space>rn', vim.lsp.buf.rename, bufopts)
+	-- map('n', '<space>ca', vim.lsp.buf.code_action, bufopts)
+	-- map('n', 'gr', vim.lsp.buf.references, bufopts)
+	-- map('n', '<space>f', vim.lsp.buf.formatting, bufopts)
 end
 
 require("cmp")
@@ -58,11 +53,19 @@ local capabilities = require('cmp_nvim_lsp').default_capabilities({
 	}
 })
 
-	require("lspconfig").intelephense.setup {
+require("lspconfig").eslint.setup({
+  on_attach = on_attach,
+  capabilities = capabilities,
+  filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx", "vue", "svelte", "astro" }
+})
+
+require("lspconfig").intelephense.setup {
 	on_attach = on_attach,
 	capabilities = capabilities,
+	filetypes = { "php", "blade" },
 	settings = {
 		intelephense = {
+			filetypes = { "php", "blade" },
 			format = {
 				enable = true,
 				braces = "allman"
@@ -76,7 +79,7 @@ require("lspconfig").html.setup {
 	capabilities = capabilities,
 	filetypes = { "html" },
 	init_options = {
-		configurationSection = { "html", "css", "javascript" },
+		configurationSection = { "html", "css", "javascript", "blade" },
 		embeddedLanguages = {
 			css = true,
 			javascript = true
@@ -144,7 +147,7 @@ require("lspconfig").vls.setup {
 	on_attach = on_attach,
 	capabilities = capabilities,
 	filetypes = { "vue" },
-	cmd = {"/home/stefanlionel/.nvm/versions/node/v20.7.0/bin/vls"}
+	cmd = { "/home/stefanlionel/.nvm/versions/node/v20.7.0/bin/vls" }
 }
 
 local tsserver_capabilities = require('cmp_nvim_lsp').default_capabilities({
@@ -156,6 +159,7 @@ local tsserver_capabilities = require('cmp_nvim_lsp').default_capabilities({
 		}
 	}
 })
+
 
 require("lspconfig").tsserver.setup {
 	init_options = { hostInfo = 'neovim' },
@@ -197,4 +201,3 @@ require("lspconfig").marksman.setup {
 	capabilities = capabilities,
 	filetypes = { "markdown" }
 }
-

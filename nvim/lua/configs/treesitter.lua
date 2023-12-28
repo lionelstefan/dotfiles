@@ -1,6 +1,17 @@
-require 'nvim-treesitter.configs'.setup {
+local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
+parser_config.blade = {
+	install_info = {
+		url = "https://github.com/EmranMR/tree-sitter-blade",
+		files = { "src/parser.c" },
+		branch = "main",
+	},
+	filetype = "blade",
+}
+
+require("nvim-treesitter.configs").setup({
 	auto_install = true,
 	ensure_installed = {
+		"blade",
 		"bash",
 		"go",
 		"php",
@@ -15,38 +26,30 @@ require 'nvim-treesitter.configs'.setup {
 		"python",
 		"svelte",
 		"lua",
-		"vue"
+		"vue",
+		"query",
+		"regex",
 	},
 	highlight = {
 		enable = true,
 		disable = { "" },
-		additional_vim_regex_highlighting = true,
+		additional_vim_regex_highlighting = false,
 	},
 	autotag = {
-		enable = true
+		enable = true,
 	},
 	endwise = {
-		enable = true
-	},
-	context_commentstring = {
 		enable = true,
-		enable_autocmd = false
 	},
 	indent = {
-		enable = true,
+		enable = false,
 	},
-	rainbow = {
-		enable = true,
-		disable = { "html" },
-		extended_mode = true,
-		max_file_lines = nil
-	}
+})
+
+require("ts_context_commentstring").setup {
+	enable_autocmd = false
 }
 
-require('Comment').setup {
-	pre_hook = require('ts_context_commentstring.integrations.comment_nvim').create_pre_hook(),
-}
-
-require("treesitter-context").setup {
-	enable = true
-}
+require("treesitter-context").setup({
+	enable = false,
+})

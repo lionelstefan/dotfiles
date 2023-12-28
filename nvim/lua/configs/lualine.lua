@@ -1,7 +1,11 @@
 require("lualine").setup {
 	options = {
 		icons_enabled = true,
-		theme = 'gruvbox_dark',
+		theme = 'auto',
+    disabled_filetypes = {
+      statusline = { "neo-tree" },
+      winbar = {},
+    },
 		component_separators = { 
 			left = '',
 			right = ''
