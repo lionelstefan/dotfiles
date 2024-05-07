@@ -17,11 +17,7 @@ require("lualine").setup {
 	},
 	sections = {
 		lualine_b = {
-			'branch',
-			{
-				'diff',
-				colored = false
-			}
+			'branch','diff',
 		},
 		lualine_c = {
 			{

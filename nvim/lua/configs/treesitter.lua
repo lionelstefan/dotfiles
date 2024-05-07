@@ -42,14 +42,14 @@ require("nvim-treesitter.configs").setup({
 		enable = true,
 	},
 	indent = {
-		enable = false,
+		enable = true,
 	},
 })
 
 require("ts_context_commentstring").setup {
-	enable_autocmd = false
+	enable_autocmd = true
 }
 
 require("treesitter-context").setup({
-	enable = false,
+	enable = true,
 })

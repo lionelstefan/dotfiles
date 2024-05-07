@@ -5,7 +5,7 @@ local on_attach = function(client, bufnr)
 		silent = true,
 	}
 
-	vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+	vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
 
 	if client.server_capabilities.documentSymbolProvider then
 		navic.attach(client, bufnr)
@@ -44,85 +44,95 @@ require("luasnip.loaders.from_vscode").lazy_load()
 -- 	dynamicRegistration = true
 -- })
 
-local capabilities = require('cmp_nvim_lsp').default_capabilities({
+local capabilities = require("cmp_nvim_lsp").default_capabilities({
 	textDocument = {
 		foldingRange = {
 			dynamicRegistration = false,
-			lineFoldingOnly = true
-		}
-	}
+			lineFoldingOnly = true,
+		},
+	},
 })
 
 require("lspconfig").eslint.setup({
-  on_attach = on_attach,
-  capabilities = capabilities,
-  filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx", "vue", "svelte", "astro" }
-})
-
-require("lspconfig").intelephense.setup {
 	on_attach = on_attach,
 	capabilities = capabilities,
-	filetypes = { "php", "blade" },
+	filetypes = {
+		"javascript",
+		"javascriptreact",
+		"javascript.jsx",
+		"typescript",
+		"typescriptreact",
+		"typescript.tsx",
+		"vue",
+		"svelte",
+		"astro",
+	},
+})
+
+require("lspconfig").intelephense.setup({
+	on_attach = on_attach,
+	capabilities = capabilities,
+	filetypes = { "php" },
 	settings = {
 		intelephense = {
-			filetypes = { "php", "blade" },
+			filetypes = { "php" },
 			format = {
 				enable = true,
-				braces = "allman"
-			}
-		}
-	}
-}
+				braces = "allman",
+			},
+		},
+	},
+})
 
-require("lspconfig").html.setup {
+require("lspconfig").html.setup({
 	-- on_attach = on_attach,
 	capabilities = capabilities,
 	filetypes = { "html" },
 	init_options = {
-		configurationSection = { "html", "css", "javascript", "blade" },
+		configurationSection = { "html", "css", "javascript" },
 		embeddedLanguages = {
 			css = true,
-			javascript = true
+			javascript = true,
 		},
-		provideFormatter = true
-	}
-}
+		provideFormatter = true,
+	},
+})
 
-require("lspconfig").bashls.setup {
-	on_attach    = on_attach,
+require("lspconfig").bashls.setup({
+	on_attach = on_attach,
 	capabilities = capabilities,
-	cmd          = { "bash-language-server", "start" },
-	filetypes    = { "sh", "zsh" }
-}
+	cmd = { "bash-language-server", "start" },
+	filetypes = { "sh", "zsh" },
+})
 
-require("lspconfig").jsonls.setup {
-	on_attach    = on_attach,
+require("lspconfig").jsonls.setup({
+	on_attach = on_attach,
 	capabilities = capabilities,
-}
+})
 
 require("neodev").setup()
 
-require("lspconfig").lua_ls.setup {
+require("lspconfig").lua_ls.setup({
 	on_attach = on_attach,
 	capabilities = capabilities,
 	cmd = { "lua-language-server" },
 	filetypes = { "lua" },
 	settings = {
 		cmd = {
-			'"/home/lionelstefan/homebrew/bin/lua-language-server" "$@"'
+			'"/home/lionelstefan/homebrew/bin/lua-language-server" "$@"',
 		},
 		runtime = {
-			version = 'LuaJIT',
+			version = "LuaJIT",
 		},
 		format = {
 			enable = true,
 			defaultConfig = {
 				indent_style = "space",
 				indent_size = "2",
-			}
+			},
 		},
 		diagnostics = {
-			globals = { 'vim' },
+			globals = { "vim" },
 		},
 		workspace = {
 			library = vim.api.nvim_get_runtime_file("", true),
@@ -132,72 +142,161 @@ require("lspconfig").lua_ls.setup {
 		},
 		Lua = {
 			completion = {
-				callSnippet = "Replace"
-			}
-		}
-	}
-}
+				callSnippet = "Replace",
+			},
+		},
+	},
+})
 
-require("lspconfig").cssls.setup {
+require("lspconfig").cssls.setup({
 	on_attach = on_attach,
 	capabilities = capabilities,
-}
+})
 
-require("lspconfig").vls.setup {
+require("lspconfig").vuels.setup({
 	on_attach = on_attach,
 	capabilities = capabilities,
 	filetypes = { "vue" },
-	cmd = { "/home/stefanlionel/.nvm/versions/node/v20.7.0/bin/vls" }
-}
+	cmd = { "/home/stefanlionel/.nvm/versions/node/v20.7.0/bin/vls" },
+})
 
-local tsserver_capabilities = require('cmp_nvim_lsp').default_capabilities({
+require("lspconfig").biome.setup({
+	on_attach = on_attach,
+	capabilities = capabilities,
+	filetypes = {
+		"javascript",
+		"javascriptreact",
+		"json",
+		"jsonc",
+		"typescript",
+		"typescript.tsx",
+		"typescriptreact",
+		"astro",
+		"svelte",
+		"vue",
+	},
+})
+
+local tsserver_capabilities = require("cmp_nvim_lsp").default_capabilities({
 	dynamicRegistration = true,
 	textDocument = {
 		foldingRange = {
 			dynamicRegistration = false,
-			lineFoldingOnly = true
-		}
-	}
+			lineFoldingOnly = true,
+		},
+	},
 })
 
-
-require("lspconfig").tsserver.setup {
-	init_options = { hostInfo = 'neovim' },
-	cmd = { 'typescript-language-server', '--stdio' },
+require("lspconfig").tsserver.setup({
+	init_options = { hostInfo = "neovim" },
+	cmd = { "typescript-language-server", "--stdio" },
 	on_attach = on_attach,
 	capabilities = tsserver_capabilities,
-	filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx" }
-}
+	filetypes = { "typescript", "typescriptreact", "typescript.tsx" },
+})
 
-require("lspconfig").pyright.setup {
+require("lspconfig").ruff_lsp.setup({
 	on_attach = on_attach,
 	capabilities = capabilities,
-	filetypes = { "python" }
-}
+	filetypes = { "python" },
+})
 
-require("lspconfig").svelte.setup {
+require("lspconfig").svelte.setup({
 	on_attach = on_attach,
 	capabilities = capabilities,
-	filetypes = { "svelte" }
-}
+	filetypes = { "svelte" },
+})
 
-require("lspconfig").tailwindcss.setup {
+require("lspconfig").tailwindcss.setup({
 	cmd = { "tailwindcss-language-server", "--stdio" },
-	filetypes = { "aspnetcorerazor", "astro", "astro-markdown", "blade", "clojure", "django-html", "htmldjango", "edge",
-		"eelixir", "elixir", "ejs", "erb", "eruby", "gohtml", "haml", "handlebars", "hbs", "html", "html-eex", "heex",
-		"jade", "leaf", "liquid", "markdown", "mdx", "mustache", "njk", "nunjucks", "razor", "slim", "twig", "css",
-		"less", "postcss", "sass", "scss", "stylus", "sugarss", "javascript", "javascriptreact", "reason", "rescript",
-		"typescript", "typescriptreact", "vue", "svelte" }
-}
+	filetypes = {
+		"aspnetcorerazor",
+		"astro",
+		"astro-markdown",
+		"clojure",
+		"django-html",
+		"htmldjango",
+		"edge",
+		"eelixir",
+		"elixir",
+		"ejs",
+		"erb",
+		"eruby",
+		"gohtml",
+		"haml",
+		"handlebars",
+		"hbs",
+		"html",
+		"html-eex",
+		"heex",
+		"jade",
+		"leaf",
+		"liquid",
+		"markdown",
+		"mdx",
+		"mustache",
+		"njk",
+		"nunjucks",
+		"razor",
+		"slim",
+		"twig",
+		"css",
+		"less",
+		"postcss",
+		"sass",
+		"scss",
+		"stylus",
+		"sugarss",
+		"javascript",
+		"javascriptreact",
+		"reason",
+		"rescript",
+		"typescript",
+		"typescriptreact",
+		"vue",
+		"svelte",
+	},
+})
 
-require("lspconfig").gopls.setup {
+require("lspconfig").gopls.setup({
 	on_attach = on_attach,
 	capabilities = capabilities,
-	filetypes = { "go", "gomod", "gowork", "gotmpl" }
-}
+	filetypes = { "go", "gomod", "gowork", "gotmpl" },
+})
 
-require("lspconfig").marksman.setup {
+require("lspconfig").marksman.setup({
 	on_attach = on_attach,
 	capabilities = capabilities,
-	filetypes = { "markdown" }
-}
+	filetypes = { "markdown" },
+})
+
+require("ufo").setup({
+	open_fold_hl_timeout = 100,
+	fold_virt_text_handler = function(virtText, lnum, endLnum, width, truncate)
+		local newVirtText = {}
+		local suffix = (" 󰁂 %d "):format(endLnum - lnum)
+		local sufWidth = vim.fn.strdisplaywidth(suffix)
+		local targetWidth = width - sufWidth
+		local curWidth = 0
+		for _, chunk in ipairs(virtText) do
+			local chunkText = chunk[1]
+			local chunkWidth = vim.fn.strdisplaywidth(chunkText)
+			if targetWidth > curWidth + chunkWidth then
+				table.insert(newVirtText, chunk)
+			else
+				chunkText = truncate(chunkText, targetWidth - curWidth)
+				local hlGroup = chunk[2]
+				table.insert(newVirtText, { chunkText, hlGroup })
+				chunkWidth = vim.fn.strdisplaywidth(chunkText)
+				-- str width returned from truncate() may less than 2nd argument, need padding
+				if curWidth + chunkWidth < targetWidth then
+					suffix = suffix .. (" "):rep(targetWidth - curWidth - chunkWidth)
+				end
+				break
+			end
+			curWidth = curWidth + chunkWidth
+		end
+		table.insert(newVirtText, { suffix, "MoreMsg" })
+		return newVirtText
+	end,
+})

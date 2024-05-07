@@ -13,6 +13,13 @@ telescope.setup({
 		file_ignore_patters = {
 			".git/",
 		},
+		preview = {
+			filesize_hook = function(filepath, bufnr, opts)
+				local max_bytes = 10000
+				local cmd = { "head", "-c", max_bytes, filepath }
+				require("telescope.previewers.utils").job_maker(cmd, bufnr, opts)
+			end,
+		},
 	},
 	pickers = {
 		find_files = {
@@ -21,9 +28,9 @@ telescope.setup({
 	},
 	extensions = {
 		file_browser = {
-			grouped = true
-		}
-	}
+			grouped = true,
+		},
+	},
 })
 
 telescope.load_extension("file_browser")

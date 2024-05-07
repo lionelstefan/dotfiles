@@ -18,7 +18,7 @@ vim.o.softtabstop = 2
 vim.o.shiftwidth = 2
 vim.o.smartindent = true
 vim.o.autoindent = true
-vim.o.copyindent = true
+-- vim.o.copyindent = true
 vim.o.laststatus = 2
 vim.o.number = true
 vim.o.title = true
@@ -42,14 +42,28 @@ vim.o.completeopt = "menu,menuone,noselect"
 vim.o.scrolloff = 10
 vim.o.undofile = true
 vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal"
-vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
 -- vim.o.list           = true
 vim.o.textwidth = 80
 vim.o.foldcolumn = "0"
 vim.o.foldlevel = 99
 vim.o.foldlevelstart = 99
 vim.o.foldenable = true
-vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
+-- vim.o.fillchars = "fold: "
+-- vim.o.fcs= "fold: "
+-- vim.opt.fcs = {
+--   eob = " ",
+--   fold = " ",
+--   foldopen = "▼",
+--   foldsep = "|",
+--   foldclose = "▶",
+-- }
+vim.opt.fillchars = {
+  eob = " ",
+  fold = " ",
+  foldopen = "▼",
+  foldsep = "|",
+  foldclose = "▶",
+}
 vim.filetype.add({
 	pattern = {
 		[".*%.blade%.php"] = "blade",
@@ -118,6 +132,10 @@ require("gruvbox").setup({
 
 vim.cmd([[
 	autocmd VimEnter * ++nested colorscheme gruvbox
+]])
+
+vim.cmd([[
+	autocmd VimEnter * ++nested set fcs=eob:\ ,fold:\ 
 ]])
 
 vim.cmd([[

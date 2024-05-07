@@ -13,6 +13,10 @@ alias lg="lazygit"
 alias ld="lazydocker"
 alias tm="tmux"
 alias gz="gzip"
+alias pip="pip3"
+alias rip="rip --graveyard /home/stefanlionel/.local/share/Tras"
+alias serve="sudo rr serve -c ./.rr.yaml"
+alias npm"/usr/bin/npm"
 function ta()
 {
   tmux attach-session -t $1

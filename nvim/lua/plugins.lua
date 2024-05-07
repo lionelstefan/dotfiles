@@ -49,9 +49,62 @@ require("lazy").setup({
 		lazy = true,
 	},
 	{
-		"vuki656/package-info.nvim",
+		"nyoom-engineering/oxocarbon.nvim",
+		lazy = true,
+	},
+  {
+    "m-demare/hlargs.nvim",
+    config = function()
+      require("hlargs").setup({})
+    end
+  },
+	{
+		"folke/trouble.nvim",
+		dependencies = { "nvim-tree/nvim-web-devicons" },
+	},
+	{
+		"ThePrimeagen/harpoon",
+		branch = "harpoon2",
 		config = function()
-			require("package-info").setup()
+			require("configs.harpoon")
+		end,
+	},
+	{
+		"anuvyklack/pretty-fold.nvim",
+		config = function()
+			require("pretty-fold").setup()
+		end,
+	},
+	{
+		"smoka7/multicursors.nvim",
+		event = "VeryLazy",
+		dependencies = {
+			"smoka7/hydra.nvim",
+		},
+		opts = {},
+		cmd = { "MCstart", "MCvisual", "MCclear", "MCpattern", "MCvisualPattern", "MCunderCursor" },
+		keys = {
+			{
+				mode = { "v", "n" },
+				"<Leader>m",
+				"<cmd>MCstart<cr>",
+				desc = "Create a selection for selected text or word under the cursor",
+			},
+		},
+	},
+	{
+		"m4xshen/hardtime.nvim",
+		lazy = true,
+		dependencies = { "MunifTanjim/nui.nvim", "nvim-lua/plenary.nvim" },
+		opts = {},
+		config = function()
+			require("hardtime").setup({
+				disabled_filetypes = {
+					"neo-tree",
+					"lazy",
+					"TelescopePrompt",
+				},
+			})
 		end,
 	},
 	{
@@ -61,26 +114,20 @@ require("lazy").setup({
 		end,
 	},
 	{
-    "kylechui/nvim-surround",
-    version = "*", -- Use for stability; omit to use `main` branch for the latest features
-    event = "VeryLazy",
-    config = function()
-        require("nvim-surround").setup({})
-    end
+		"kylechui/nvim-surround",
+		version = "*", -- Use for stability; omit to use `main` branch for the latest features
+		event = "VeryLazy",
+		config = function()
+			require("nvim-surround").setup({})
+		end,
 	},
 	{
 		"NvChad/nvim-colorizer.lua",
 		config = function()
-			require("colorizer").setup {
-				filetypes = { "css", "javascript", "javascriptreact", "typescript", "typescriptreact", "html", "blade" }
-			}
+			require("colorizer").setup({
+				filetypes = { "css", "javascript", "javascriptreact", "typescript", "typescriptreact", "html", "blade" },
+			})
 		end,
-	},
-	{
-		"nvimtools/none-ls.nvim",
-		config = function()
-			require("configs.null-ls")
-		end
 	},
 	{
 		"SmiteshP/nvim-navic",
@@ -124,46 +171,31 @@ require("lazy").setup({
 		end,
 	},
 	{
-    "nvim-neo-tree/neo-tree.nvim",
-    branch = "v3.x",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
-      "MunifTanjim/nui.nvim",
-    },
-    config = function()
-      require("neo-tree").setup({
-      	enable_diagnostics = false,
-      	filesystem = {
-      		filtered_items = {
-      			visible = true,
-      			hide_dotfiles = false,
-      			hide_gitignored = false,
-      			hide_hidden = false
-					}
-				}
+		"nvim-neo-tree/neo-tree.nvim",
+		branch = "v3.x",
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			"nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
+			"MunifTanjim/nui.nvim",
+		},
+		config = function()
+			require("neo-tree").setup({
+				enable_diagnostics = false,
+				filesystem = {
+					filtered_items = {
+						visible = true,
+						hide_dotfiles = false,
+						hide_gitignored = false,
+						hide_hidden = false,
+					},
+				},
 			})
-    end,
+		end,
 	},
 	{
 		"folke/persistence.nvim",
 		event = "BufReadPre",
 		opts = {},
-	},
-	{
-		"nmac427/guess-indent.nvim",
-		config = function()
-			require("guess-indent").setup({
-				buftype_exclude = { -- A list of buffer types for which the auto command gets disabled
-					"neo-tree",
-					"help",
-					"nofile",
-					"terminal",
-					"prompt",
-					"telescope",
-				},
-			})
-		end,
 	},
 	{
 		"stevearc/conform.nvim",
@@ -403,18 +435,55 @@ require("lazy").setup({
 		},
 	},
 	{
+		"akinsho/toggleterm.nvim",
+		version = "*",
+		config = true,
+	},
+	{
+		"max397574/better-escape.nvim",
+		config = function()
+			require("better_escape").setup()
+		end,
+	},
+	{
+		"samharju/synthweave.nvim",
+	},
+	{
+		"echasnovski/mini.ai",
+		-- keys = {
+		--   { "a", mode = { "x", "o" } },
+		--   { "i", mode = { "x", "o" } },
+		-- },
+		event = "VeryLazy",
+		opts = function()
+			local ai = require("mini.ai")
+			return {
+				n_lines = 500,
+				custom_textobjects = {
+					o = ai.gen_spec.treesitter({
+						a = { "@block.outer", "@conditional.outer", "@loop.outer" },
+						i = { "@block.inner", "@conditional.inner", "@loop.inner" },
+					}, {}),
+					f = ai.gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" }, {}),
+					c = ai.gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }, {}),
+					t = { "<([%p%w]-)%f[^<%w][^<>]->.-</%1>", "^<.->().*()</[^/]->$" },
+				},
+			}
+		end,
+		config = function(_, opts)
+			require("mini.ai").setup(opts)
+		end,
+	},
+	{
 		"kevinhwang91/nvim-ufo",
 		dependencies = {
 			"kevinhwang91/promise-async",
 		},
-		config = function()
-			require("ufo").setup()
-		end,
 	},
 	{
-		"akinsho/toggleterm.nvim",
-		version = "*",
-		config = true,
+		"zeioth/garbage-day.nvim",
+		dependencies = "neovim/nvim-lspconfig",
+		event = "VeryLazy",
 	},
 }, {
 	performance = {

@@ -10,11 +10,11 @@ require("conform").setup({
 	formatters_by_ft = {
 		blade = { "blade-formatter" },
 		lua = { "stylua" },
-		python = { "isort", "black" },
-		javascript = { { "prettierd", "prettier" } },
-		javascriptreact = { { "prettierd", "prettier" } },
-		typescript = { { "prettierd", "prettier" } },
-		typescriptreact = { { "prettierd", "prettier" } },
+		python = { "ruff_format" },
+		javascript = { { "prettierd" } },
+		javascriptreact = { { "prettierd" } },
+		typescript = { { "prettierd" } },
+		typescriptreact = { { "prettierd" } },
 		php = { "php_cs_fixer" },
 	},
 	formatters = {
@@ -23,6 +23,9 @@ require("conform").setup({
 				ignore_errors = true,
 			},
 		},
+		blade_formatter = {
+		  args = { "--stdin", "--wrap-attributes aligned-multiple" }
+    },
 		php_cs_fixer = {
 			inherit = false,
 			command = util.find_executable({
@@ -38,3 +41,5 @@ local php_cs_fixer = require("conform.formatters.php_cs_fixer")
 require("conform").formatters.php_cs_fixer = vim.tbl_deep_extend("force", php_cs_fixer, {
 	args = util.extend_args(php_cs_fixer.args, args),
 })
+
+vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
