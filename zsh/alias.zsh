@@ -18,6 +18,7 @@ alias rip="rip --graveyard /home/stefanlionel/.local/share/Tras"
 alias serve="sudo rr serve -c ./.rr.yaml"
 alias npm"/usr/bin/npm"
 alias ssh-synergy="ssh -i ~/dflow/DFLOW-Cluster.pem ubuntu@10.1.5.41"
+alias gj="git jump"
 function ta()
 {
   tmux attach-session -t $1

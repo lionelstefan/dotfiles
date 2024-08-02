@@ -39,7 +39,7 @@ map("n", "ff", "<CMD>Telescope find_files hidden=true previewer=false<CR>", NR)
 map("n", "fg", "<CMD>Telescope live_grep<CR>", NR)
 map("n", "fb", "<CMD>Telescope buffers<CR>", NR)
 map("n", "fw", "<CMD>Telescope file_browser theme=dropdown previewer=false<CR>", NR)
-map("n", "fp", "<CMD>lua require'telescope'.extensions.projects.projects{}<CR>", NR)
+map("n", "fp", "<CMD>Telescope projects<CR>", NR)
 
 -- Telescope Projects
 map("n", "cp", '<CMD>lua require("telescope").extensions.project.project{}<CR>', NR)

@@ -212,11 +212,6 @@ require("lazy").setup({
     end,
   },
   {
-    "folke/persistence.nvim",
-    event = "BufReadPre",
-    opts = {},
-  },
-  {
     "stevearc/conform.nvim",
     event = { "BufWritePre" },
     keys = {
@@ -612,15 +607,13 @@ require("lazy").setup({
     "MTDL9/vim-log-highlighting"
   },
   {
-    "someone-stole-my-name/yaml-companion.nvim",
-    dependencies = {
-      { "neovim/nvim-lspconfig" },
-      { "nvim-lua/plenary.nvim" },
-      { "nvim-telescope/telescope.nvim" },
-    },
+    "olimorris/persisted.nvim",
+    lazy = false,
     config = function()
-      require("telescope").load_extension("yaml_schema")
-    end,
+      require('persisted').setup({
+        autoload = true,
+      })
+    end
   }
 }, {
   performance = {

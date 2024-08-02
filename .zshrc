@@ -5,11 +5,9 @@ source ~/dotfiles/zsh/zsh-256color/zsh-256color.plugin.zsh
 source ~/dotfiles/zsh/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
 source ~/dotfiles/zsh/zsh-completions/zsh-completions.plugin.zsh
 source ~/dotfiles/zsh/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh
-source ~/dotfiles/zsh/alwaysontop/alwaysontop.sh
+# source ~/dotfiles/zsh/alwaysontop/alwaysontop.sh
 
-export PATH=~/.npm-global/bin:$PATH
 export TERM=xterm-256color
-
 # Lines configured by zsh-newuser-install
 HISTFILE=~/.histfile
 HISTSIZE=10000
@@ -31,6 +29,8 @@ agent_run_state=$(ssh-add -l >| /dev/null 2>&1; echo $?)
 if [[ $agent_run_state = 1 ]]; then
 	ssh-add ~/.ssh/bitbucket_dflow
 fi
+
+export PATH=~/.npm-global/bin:$PATH
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
