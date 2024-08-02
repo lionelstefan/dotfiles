@@ -17,6 +17,7 @@ alias pip="pip3"
 alias rip="rip --graveyard /home/stefanlionel/.local/share/Tras"
 alias serve="sudo rr serve -c ./.rr.yaml"
 alias npm"/usr/bin/npm"
+alias ssh-synergy="ssh -i ~/dflow/DFLOW-Cluster.pem ubuntu@10.1.5.41"
 function ta()
 {
   tmux attach-session -t $1
@@ -41,4 +42,8 @@ function serve()
 function cat()
 {
   batcat $1
+}
+function f() {
+    fff "$@"
+    cd "$(cat "${XDG_CACHE_HOME:=${HOME}/.cache}/fff/.fff_d")"
 }

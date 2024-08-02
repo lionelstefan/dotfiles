@@ -31,7 +31,7 @@ vim.o.timeoutlen = 300
 vim.o.wildmenu = true
 vim.o.wildmode = "full:longest"
 vim.o.showcmd = false
-vim.o.t_ut = ""
+-- vim.o.t_ut = ""
 vim.o.termguicolors = true
 vim.o.hlsearch = true
 vim.o.incsearch = true
@@ -48,6 +48,7 @@ vim.o.foldcolumn = "0"
 vim.o.foldlevel = 99
 vim.o.foldlevelstart = 99
 vim.o.foldenable = true
+vim.o.mouse = ""
 -- vim.o.fillchars = "fold: "
 -- vim.o.fcs= "fold: "
 -- vim.opt.fcs = {
@@ -70,18 +71,18 @@ vim.filetype.add({
 	},
 })
 if vim.fn.has("nvim-0.10") == 1 then
-  opt.smoothscroll = true
+  vim.opt.smoothscroll = true
 end
 
 vim.g.clipboard = {
 	name = "win32yank-wsl",
 	copy = {
-		["+"] = "win32yank -i --crlf",
-		["*"] = "win32yank -i --crlf",
+		["+"] = "win32yank.exe -i --crlf",
+		["*"] = "win32yank.exe -i --crlf",
 	},
 	paste = {
-		["+"] = "win32yank -o --lf",
-		["*"] = "win32yank -o --lf",
+		["+"] = "win32yank.exe -o --lf",
+		["*"] = "win32yank.exe -o --lf",
 	},
 	cache_enabled = 0,
 }
@@ -109,13 +110,15 @@ vim.notify = require("notify")
 
 -- GITBLAME
 vim.g["gitblame_enabled"] = 1
-vim.g["gitblame_message_template"] = "<author> • <sha> • <date> • <summary>"
+vim.g["gitblame_message_template"] = "<author> • <summary> • <sha> • <date> "
+vim.g["gitblame_delay"] = 1000
+vim.g["gitblame_virtual_text_column"] = 80
 
 -- CONTEXT COMMENTSTRING
 vim.g["skip_ts_context_commentstring_module"] = true
 
 -- LAZYGIT
-vim.g["lazygit_floating_window_scaling_factor"] = 0.8
+vim.g["lazygit_floating_window_scaling_factor"] = 1
 
 require("gruvbox").setup({
 	undercurl = false,
