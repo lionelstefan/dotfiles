@@ -11,8 +11,8 @@ telescope.setup({
         ["_<CR>"] = actions.file_split,
       },
     },
-    file_ignore_patters = {
-      ".git/",
+    file_ignore_patterns = {
+      ".git/*",
     },
     preview = {
       filesize_hook = function(filepath, bufnr, opts)
@@ -28,9 +28,6 @@ telescope.setup({
     },
   },
   extensions = {
-    file_browser = {
-      grouped = true,
-    },
     project = {
       hidden_files = true,
       on_project_selected = function(prompt_bufnr)

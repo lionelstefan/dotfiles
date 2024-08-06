@@ -1,5 +1,8 @@
 require("lazy").setup({
   {
+    "samharju/synthweave.nvim"
+  },
+  {
     "0xstepit/flow.nvim",
     lazy = false,
     priority = 1000,
@@ -172,6 +175,7 @@ require("lazy").setup({
         suggestion_color = { gui = "#808080", cterm = 244 },
         exclude_filetypes = { "TelescopePrompt", "neo-tree" },
         log_file_path = nil, -- absolute path to Tabnine log file
+        ignore_certificate_errors = false,
       })
     end,
   },
@@ -422,7 +426,7 @@ require("lazy").setup({
   {
     "karb94/neoscroll.nvim",
     config = function()
-      require("neoscroll").setup()
+      require("neoscroll").setup({})
     end,
   },
   {
@@ -453,16 +457,19 @@ require("lazy").setup({
   {
     "akinsho/toggleterm.nvim",
     version = "*",
-    config = true,
+    config = function()
+      require("toggleterm").setup({
+        auto_scroll = false,
+        border = 'curved',
+        direction = "float"
+      })
+    end,
   },
   {
     "max397574/better-escape.nvim",
     config = function()
       require("better_escape").setup()
     end,
-  },
-  {
-    "samharju/synthweave.nvim",
   },
   {
     "echasnovski/mini.ai",
@@ -507,7 +514,7 @@ require("lazy").setup({
       require('neogen').setup {
         enabled = true,
         languages = {
-          lua = {
+          php = {
             template = {
               annotation_convention = "phpdoc"
             }
@@ -537,7 +544,7 @@ require("lazy").setup({
           "biome",
           "tsserver",
           "marksman",
-          "intelephense",
+          "phpactor",
           "ruff",
           "ruff_lsp",
           "yamlls",
@@ -586,8 +593,7 @@ require("lazy").setup({
   {
     "ahmedkhalf/project.nvim",
     config = function()
-      require("project_nvim").setup {
-      }
+      require("project_nvim").setup {}
     end
   },
   {
@@ -614,7 +620,30 @@ require("lazy").setup({
         autoload = true,
       })
     end
-  }
+  },
+  {
+    "Exafunction/codeium.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "hrsh7th/nvim-cmp",
+    },
+    config = function()
+      require("codeium").setup({})
+    end
+  },
+  -- Highlight URLs inside vim
+  {
+    "itchyny/vim-highlighturl",
+    event = "VeryLazy"
+  },
+  {
+    "jdhao/whitespace.nvim",
+    event = "VeryLazy"
+  },
+  {
+    "justinsgithub/wezterm-types",
+    lazy = true
+  },
 }, {
   performance = {
     cache = {

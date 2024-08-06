@@ -35,10 +35,9 @@ map("n", "<leader>dh", ':lua require("harpoon"):list():clear()<CR>', { noremap =
 map("n", "<leader>b", ":Neotree float<CR>", { noremap = false })
 
 -- Telescope
-map("n", "ff", "<CMD>Telescope find_files hidden=true previewer=false<CR>", NR)
-map("n", "fg", "<CMD>Telescope live_grep<CR>", NR)
+map("n", "ff", "<CMD>Telescope find_files hidden=true previewer=false layout_config={width=0.8}<CR>", NR)
+map("n", "fg", "<CMD>Telescope live_grep layout_config={width=0.95}<CR>", NR)
 map("n", "fb", "<CMD>Telescope buffers<CR>", NR)
-map("n", "fw", "<CMD>Telescope file_browser theme=dropdown previewer=false<CR>", NR)
 map("n", "fp", "<CMD>Telescope projects<CR>", NR)
 
 -- Telescope Projects
@@ -65,7 +64,7 @@ map("n", "<leader>j", ":m .+1<CR>==", NR)
 map("n", "lg", "<CMD>LazyGit <CR>", NR)
 
 -- ToggleTerm
-map("n", "tt", "<CMD>ToggleTerm direction=float<CR>", NR)
+map("n", "tt", "<CMD>ToggleTerm<CR>", NR)
 
 -- align
 

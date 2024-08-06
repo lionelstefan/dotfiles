@@ -14,10 +14,10 @@ require("bufferline").setup({
 		max_name_length = 18,
 		max_prefix_length = 15, -- prefix used when a buffer is de-duplicated
 		tab_size = 25,
-		diagnostics = false,
-		diagnostics_update_in_insert = false,
-		show_buffer_icons = false, -- disable filetype icons for buffers
-		show_buffer_close_icons = true,
+		diagnostics = "nvim_lsp",
+		update_in_insert = true,
+		show_buffer_icons = true, -- disable filetype icons for buffers
+		show_buffer_close_icons = false,
 		show_close_icon = false,
 		show_tab_indicators = true,
 		persist_buffer_sort = false, -- whether or not custom sorted buffers should persist

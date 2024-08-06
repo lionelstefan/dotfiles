@@ -165,4 +165,8 @@ vim.cmd([[
 	autocmd ColorScheme * highlight SignColumn guibg=NONE
 ]])
 
+vim.cmd([[
+	autocmd VimEnter * highlight TreesitterContext guibg=#353A3C
+]])
+
 require("remaps")

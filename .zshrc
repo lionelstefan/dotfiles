@@ -5,7 +5,8 @@ source ~/dotfiles/zsh/zsh-256color/zsh-256color.plugin.zsh
 source ~/dotfiles/zsh/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
 source ~/dotfiles/zsh/zsh-completions/zsh-completions.plugin.zsh
 source ~/dotfiles/zsh/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh
-# source ~/dotfiles/zsh/alwaysontop/alwaysontop.sh
+source ~/dotfiles/zsh/zsh-fzf-history-search/zsh-fzf-history-search.zsh
+# source ~/dotfiles/zsh/alwaysontop/alwaysontoevertical.sh
 
 export TERM=xterm-256color
 # Lines configured by zsh-newuser-install
@@ -27,12 +28,13 @@ eval `ssh-agent > /dev/null`
 agent_run_state=$(ssh-add -l >| /dev/null 2>&1; echo $?)
 
 if [[ $agent_run_state = 1 ]]; then
-	ssh-add ~/.ssh/bitbucket_dflow
+	ssh-add ~/.ssh/bitbucket_dflow ~/.ssh/github_lionelstefan
 fi
 
 export PATH=~/.npm-global/bin:$PATH
 
 export NVM_DIR="$HOME/.nvm"
+
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 

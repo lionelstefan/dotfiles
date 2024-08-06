@@ -16,8 +16,6 @@ end
 local lsp_zero = require('lsp-zero')
 
 lsp_zero.on_attach(function(client, bufnr)
-  -- see :help lsp-zero-keybindings
-  -- to learn the available actions
   lsp_zero.default_keymaps({ buffer = bufnr })
 end)
 
@@ -56,22 +54,10 @@ require("mason-lspconfig").setup({
         },
       })
 
-      require("lspconfig").intelephense.setup({
+      require("lspconfig").phpactor.setup({
         on_attach = on_attach,
         capabilities = require('cmp_nvim_lsp').default_capabilities(),
-        filetypes = { "php" },
-        settings = {
-          intelephense = {
-            files = {
-              maxSize = 1000000,
-            },
-            filetypes = { "php" },
-            format = {
-              enable = true,
-              braces = "allman",
-            },
-          },
-        },
+        filetypes = { "php" }
       })
 
       require("lspconfig").html.setup({
