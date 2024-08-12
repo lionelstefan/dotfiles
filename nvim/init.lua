@@ -15,7 +15,9 @@ vim.o.conceallevel = 0
 vim.o.expandtab = true
 vim.o.tabstop = 2
 vim.o.softtabstop = 2
+vim.o.smarttab = true
 vim.o.shiftwidth = 2
+vim.o.breakindent = true
 vim.o.smartindent = true
 vim.o.autoindent = true
 -- vim.o.copyindent = true
@@ -66,37 +68,37 @@ vim.opt.fillchars = {
   foldclose = "▶",
 }
 vim.filetype.add({
-	pattern = {
-		[".*%.blade%.php"] = "blade",
-	},
+  pattern = {
+    [".*%.blade%.php"] = "blade",
+  },
 })
 if vim.fn.has("nvim-0.10") == 1 then
   vim.opt.smoothscroll = true
 end
 
 vim.g.clipboard = {
-	name = "win32yank-wsl",
-	copy = {
-		["+"] = "win32yank.exe -i --crlf",
-		["*"] = "win32yank.exe -i --crlf",
-	},
-	paste = {
-		["+"] = "win32yank.exe -o --lf",
-		["*"] = "win32yank.exe -o --lf",
-	},
-	cache_enabled = 0,
+  name = "win32yank-wsl",
+  copy = {
+    ["+"] = "win32yank.exe -i --crlf",
+    ["*"] = "win32yank.exe -i --crlf",
+  },
+  paste = {
+    ["+"] = "win32yank.exe -o --lf",
+    ["*"] = "win32yank.exe -o --lf",
+  },
+  cache_enabled = 0,
 }
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
-	vim.fn.system({
-		"git",
-		"clone",
-		"--filter=blob:none",
-		"https://github.com/folke/lazy.nvim.git",
-		"--branch=stable", -- latest stable release
-		lazypath,
-	})
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable", -- latest stable release
+    lazypath,
+  })
 end
 vim.opt.rtp:prepend(lazypath)
 vim.lsp.set_log_level("off")
@@ -105,6 +107,7 @@ vim.cmd("filetype plugin on")
 vim.cmd("filetype indent on")
 
 require("plugins")
+require("configs.docblock")
 
 vim.notify = require("notify")
 
@@ -121,16 +124,16 @@ vim.g["skip_ts_context_commentstring_module"] = true
 vim.g["lazygit_floating_window_scaling_factor"] = 1
 
 require("gruvbox").setup({
-	undercurl = false,
-	underline = false,
-	italic = {
-		comments = true,
-		strings = false,
-		operators = false,
-		folds = false,
-	},
-	bold = false,
-	contrast = "hard",
+  undercurl = false,
+  underline = false,
+  italic = {
+    comments = true,
+    strings = false,
+    operators = false,
+    folds = false,
+  },
+  bold = false,
+  contrast = "hard",
 })
 
 vim.cmd([[
@@ -138,7 +141,7 @@ vim.cmd([[
 ]])
 
 vim.cmd([[
-	autocmd VimEnter * ++nested set fcs=eob:\ ,fold:\ 
+	autocmd VimEnter * ++nested set fcs=eob:\ ,fold:\
 ]])
 
 vim.cmd([[

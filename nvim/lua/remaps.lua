@@ -71,7 +71,7 @@ map("n", "tt", "<CMD>ToggleTerm<CR>", NR)
 -- vim.keymap.set('x', 'aa', function() require'align'.align_to_char(1, true)             end, NS) -- Aligns to 1 character, looking left
 -- vim.keymap.set('x', 'as', function() require'align'.align_to_char(2, true, true)       end, NS) -- Aligns to 2 characters, looking left and with previews
 vim.keymap.set("x", "as", function()
-	require("align").align_to_string(false, true, true)
+  require("align").align_to_string(false, true, true)
 end, NS) -- Aligns to a string, looking left and with previews
 -- vim.keymap.set('x', 'ar', function() require'align'.align_to_string(true, true, true)  end, NS) -- Aligns to a Lua pattern, looking left and with previews
 
@@ -79,18 +79,17 @@ vim.keymap.set("n", "fo", ":foldopen<CR>")
 vim.keymap.set("n", "fc", ":foldclose<CR>")
 
 -- HLSLENS
-
 map(
-	"n",
-	"n",
-	[[<Cmd>execute('normal! ' . v:count1 . 'n')<CR><Cmd>lua require('hlslens').start()<CR>]],
-	NS
+  "n",
+  "n",
+  [[<Cmd>execute('normal! ' . v:count1 . 'n')<CR><Cmd>lua require('hlslens').start()<CR>]],
+  NS
 )
 map(
-	"n",
-	"N",
-	[[<Cmd>execute('normal! ' . v:count1 . 'N')<CR><Cmd>lua require('hlslens').start()<CR>]],
-	NS
+  "n",
+  "N",
+  [[<Cmd>execute('normal! ' . v:count1 . 'N')<CR><Cmd>lua require('hlslens').start()<CR>]],
+  NS
 )
 map("n", "*", [[*<Cmd>lua require('hlslens').start()<CR>]], NS)
 map("n", "#", [[#<Cmd>lua require('hlslens').start()<CR>]], NS)
@@ -99,5 +98,11 @@ map("n", "g#", [[g#<Cmd>lua require('hlslens').start()<CR>]], NS)
 
 map("n", "<Leader>l", "<Cmd>noh<CR>", NS)
 
--- NEOGEN PHP DOCBLOCK
-map("n", "<Leader>dc", ":lua require('neogen').generate({ type = 'class' })<CR>", NS)
+-- PHP DOCBLOCK
+map("n", "<Leader>db", ':lua add_phpdoc_comment()<CR>', NS)
+
+-- TRIM WHITESPACES
+map('n', '<Leader>t', "<Cmd>StripTrailingWhitespace<CR>", NS)
+
+-- TROUBLE
+map('n', '<Leader>td', "<Cmd>Trouble diagnostics toggle<CR>", NS)

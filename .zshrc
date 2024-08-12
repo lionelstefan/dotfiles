@@ -23,13 +23,26 @@ compinit
 # End of lines added by compinstall
 
 #SSH AGENT
-eval `ssh-agent > /dev/null`
+env=~/.ssh/agent.env
+
+agent_load_env () { test -f "$env" && . "$env" >| /dev/null ; }
+
+agent_start () {
+    (umask 077; ssh-agent >| "$env")
+    . "$env" >| /dev/null ; }
+
+agent_load_env
 
 agent_run_state=$(ssh-add -l >| /dev/null 2>&1; echo $?)
 
-if [[ $agent_run_state = 1 ]]; then
-	ssh-add ~/.ssh/bitbucket_dflow ~/.ssh/github_lionelstefan
+if [ ! "$SSH_AUTH_SOCK" ] || [ $agent_run_state = 2 ]; then
+    agent_start
+    ssh-add
+elif [ "$SSH_AUTH_SOCK" ] && [ $agent_run_state = 1 ]; then
+    ssh-add
 fi
+
+unset env
 
 export PATH=~/.npm-global/bin:$PATH
 
@@ -74,6 +87,9 @@ export PATH="$HOME/.local/uctags-2024.07.11-linux-x86_64/bin:$PATH"
 export PATH="/mnt/c/Users/StefanLionelSuwito/scoop/apps/win32yank/current:$PATH"
 export PATH=/usr/lib/cargo/bin/coreutils:$PATH
 export PATH="$PATH:$HOME/.config/composer/vendor/bin"
+
+#MASON NEOVIM
+export PATH="$PATH:$HOME/.local/share/nvim/mason/bin"
 
 #GLOBAL
 export EDITOR="nvim"

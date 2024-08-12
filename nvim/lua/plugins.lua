@@ -322,6 +322,9 @@ require("lazy").setup({
   },
   -- TREESITTER
   {
+    "nvim-treesitter/playground"
+  },
+  {
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
     config = function()
@@ -643,7 +646,7 @@ require("lazy").setup({
   {
     "justinsgithub/wezterm-types",
     lazy = true
-  },
+  }
 }, {
   performance = {
     cache = {

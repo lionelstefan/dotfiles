@@ -9,6 +9,9 @@ parser_config.blade = {
 }
 
 require("nvim-treesitter.configs").setup({
+  playground = {
+    enable = true
+  },
 	auto_install = true,
 	ensure_installed = {
 		"blade",
