@@ -6,7 +6,7 @@ source ~/dotfiles/zsh/fast-syntax-highlighting/fast-syntax-highlighting.plugin.z
 source ~/dotfiles/zsh/zsh-completions/zsh-completions.plugin.zsh
 source ~/dotfiles/zsh/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh
 source ~/dotfiles/zsh/zsh-fzf-history-search/zsh-fzf-history-search.zsh
-# source ~/dotfiles/zsh/alwaysontop/alwaysontoevertical.sh
+source ~/dotfiles/zsh/almostontop/almostontop.plugin.zsh
 
 export TERM=xterm-256color
 # Lines configured by zsh-newuser-install

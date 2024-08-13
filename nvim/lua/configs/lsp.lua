@@ -136,22 +136,11 @@ require("mason-lspconfig").setup({
         cmd = { "/home/stefanlionel/.nvm/versions/node/v20.7.0/bin/vls" },
       })
 
-      require("lspconfig").biome.setup({
-        on_attach = on_attach,
-        capabilities = capabilities,
-        filetypes = {
-          "javascript",
-          "javascriptreact",
-          "json",
-          "jsonc",
-          "typescript",
-          "typescript.tsx",
-          "typescriptreact",
-          "astro",
-          "svelte",
-          "vue",
-        },
-      })
+      -- require("lspconfig").biome.setup({
+      --   -- on_attach = on_attach,
+      --   -- capabilities = capabilities,
+      --   filetypes = { "javascript", "javascriptreact", "json", "jsonc", "typescript", "typescript.tsx", "typescriptreact", "astro", "svelte", "vue", "css" },
+      -- })
 
       local tsserver_capabilities = require("cmp_nvim_lsp").default_capabilities({
         dynamicRegistration = true,
