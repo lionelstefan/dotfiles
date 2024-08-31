@@ -73,6 +73,10 @@ export MANPATH="/home/linuxbrew/.linuxbrew/share/man${MANPATH+:$MANPATH}:";
 export INFOPATH="/home/linuxbrew/.linuxbrew/share/info:${INFOPATH:-}";
 export PRETTIERD_DEFAULT_CONFIG="/home/lionelstefan/dotfiles/formatter_config/prettierd/.prettierrc";
 
+# GIT
+export GIT_HTTP_LOW_SPEED_LIMIT=0
+export GIT_HTTP_LOW_SPEED_TIME=999999
+
 #NVIM
 export GIT_EDITOR="nvim"
 

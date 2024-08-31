@@ -43,6 +43,20 @@ require("lazy").setup({
   },
   {
     "ellisonleao/gruvbox.nvim",
+    config = function()
+      require("gruvbox").setup({
+        undercurl = false,
+        underline = false,
+        italic = {
+          comments = true,
+          strings = false,
+          operators = false,
+          folds = false,
+        },
+        bold = false,
+        contrast = "hard",
+      })
+    end,
     lazy = true,
   },
   {
@@ -238,7 +252,7 @@ require("lazy").setup({
   {
     "rcarriga/nvim-notify",
     config = function()
-      require("notify").setup({
+      vim.notify = require("notify").setup({
         timeout = 3000,
         render = "minimal",
         fps = 60,
@@ -646,7 +660,35 @@ require("lazy").setup({
   {
     "justinsgithub/wezterm-types",
     lazy = true
-  }
+  },
+  {
+    "LunarVim/bigfile.nvim",
+    config = function()
+      require("bigfile").setup {
+        filesize = 2,      -- size of the file in MiB, the plugin round file sizes to the closest MiB
+        pattern = { "*" }, -- autocmd pattern or function see <### Overriding the detection of big files>
+        features = {       -- features to disable
+          "indent_blankline",
+          "illuminate",
+          "lsp",
+          "treesitter",
+          "syntax",
+          "matchparen",
+          "vimopts",
+          "filetype",
+        },
+      }
+    end
+  },
+  {
+    "iamcco/markdown-preview.nvim",
+    cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+    build = "cd app && npm install",
+    init = function()
+      vim.g.mkdp_filetypes = { "markdown" }
+    end,
+    ft = { "markdown" },
+  },
 }, {
   performance = {
     cache = {

@@ -18,9 +18,11 @@ alias rip="rip --graveyard /home/stefanlionel/.local/share/Tras"
 alias serve="sudo rr serve -c ./.rr.yaml"
 alias npm"/usr/bin/npm"
 alias ssh-synergy="ssh -i ~/dflow/DFLOW-Cluster.pem ubuntu@10.1.5.41 -o TCPKeepAlive=yes -o ServerAliveInterval=60 -o ServerAliveCountMax=3 -o Compression=yes -o GSSAPIAuthentication=no"
+alias ssh-lotsa="ssh -i ~/dflow/lotsa-key.pem ubuntu@172.31.23.162 -o TCPKeepAlive=yes -o ServerAliveInterval=60 -o ServerAliveCountMax=3 -o Compression=yes -o GSSAPIAuthentication=no"
 alias gj="git jump"
 alias phpdoc="docker run --rm -v $(pwd):/data phpdoc/phpdoc:3"
 alias t="vendor/bin/simple-phpunit --testdox --stop-on-error --stop-on-failure"
+alias git-pull='~/dotfiles/zsh/safe-git-pull.sh'
 function ta()
 {
   tmux attach-session -t $1
