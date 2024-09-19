@@ -19,7 +19,6 @@ vim.o.smarttab = true
 vim.o.shiftwidth = 2
 vim.o.breakindent = true
 vim.o.smartindent = true
-vim.o.autoindent = true
 -- vim.o.copyindent = true
 vim.o.laststatus = 2
 vim.o.number = true

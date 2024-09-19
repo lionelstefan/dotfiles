@@ -1,4 +1,6 @@
-vim.lsp.set_log_level('debug')
+vim.lsp.set_log_level('off')
+-- vim.lsp.set_log_level('debug')
+
 local navic = require("nvim-navic")
 local on_attach = function(client, bufnr)
   local opts = {
@@ -152,7 +154,7 @@ require("mason-lspconfig").setup({
         },
       })
 
-      require("lspconfig").tsserver.setup({
+      require("lspconfig").ts_ls.setup({
         init_options = { hostInfo = "neovim" },
         cmd = { "typescript-language-server", "--stdio" },
         on_attach = on_attach,

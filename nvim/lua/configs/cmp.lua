@@ -70,7 +70,6 @@ cmp.setup({
 				buffer = "[Buffer]",
 				path = "[Path]",
 				treesitter = "[Treesitter]",
-				codeium = "[Codeium]",
 			},
 		}),
 	},
@@ -109,7 +108,6 @@ cmp.setup({
 		{ name = "buffer" },
 		{ name = "path" },
 		{ name = "treesitter" },
-		{ name = "codeium" },
 	}),
 	window = {
 		completion = cmp.config.window.bordered({

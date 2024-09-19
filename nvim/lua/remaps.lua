@@ -36,7 +36,7 @@ map("n", "<leader>b", ":Neotree float<CR>", { noremap = false })
 
 -- Telescope
 map("n", "ff", "<CMD>Telescope find_files hidden=true previewer=false layout_config={width=0.8}<CR>", NR)
-map("n", "fg", "<CMD>Telescope live_grep layout_config={width=0.95}<CR>", NR)
+map("n", "fg", "<CMD>Telescope live_grep layout_config={width=0.99}<CR>", NR)
 map("n", "fb", "<CMD>Telescope buffers<CR>", NR)
 map("n", "fp", "<CMD>Telescope projects<CR>", NR)
 

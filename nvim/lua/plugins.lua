@@ -178,22 +178,6 @@ require("lazy").setup({
     end,
   },
   {
-    "codota/tabnine-nvim",
-    build = "./dl_binaries.sh",
-    config = function()
-      require("tabnine").setup({
-        disable_auto_comment = true,
-        accept_keymap = "<Tab>",
-        dismiss_keymap = "<C-]>",
-        debounce_ms = 800,
-        suggestion_color = { gui = "#808080", cterm = 244 },
-        exclude_filetypes = { "TelescopePrompt", "neo-tree" },
-        log_file_path = nil, -- absolute path to Tabnine log file
-        ignore_certificate_errors = false,
-      })
-    end,
-  },
-  {
     "echasnovski/mini.bufremove",
     version = "*",
     config = function()
@@ -252,12 +236,15 @@ require("lazy").setup({
   {
     "rcarriga/nvim-notify",
     config = function()
-      vim.notify = require("notify").setup({
-        timeout = 3000,
-        render = "minimal",
+      require("notify").setup({
+        timeout = 600,
+        render = "wrapped-compact",
+        stages = "fade",
         fps = 60,
       })
-    end,
+
+      vim.notify = require("notify")
+    end
   },
   {
     "stevearc/dressing.nvim",
@@ -378,6 +365,13 @@ require("lazy").setup({
     },
   },
   {
+    "nvim-telescope/telescope.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "Snikimonkd/telescope-git-conflicts.nvim",
+    },
+  },
+  {
     "nvim-telescope/telescope-project.nvim",
   },
   {
@@ -387,6 +381,9 @@ require("lazy").setup({
     "nvim-telescope/telescope-fzf-native.nvim",
     build =
     "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
+  },
+  {
+    "nvim-telescope/telescope-frecency.nvim",
   },
   {
     "lukas-reineke/indent-blankline.nvim",
@@ -636,16 +633,6 @@ require("lazy").setup({
       require('persisted').setup({
         autoload = true,
       })
-    end
-  },
-  {
-    "Exafunction/codeium.nvim",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "hrsh7th/nvim-cmp",
-    },
-    config = function()
-      require("codeium").setup({})
     end
   },
   -- Highlight URLs inside vim
