@@ -1,3 +1,4 @@
 tmux/tmux-continuum
 tmux/tmux-resurrect
 nvim/lazy-lock.json
+zsh/alias.zsh
