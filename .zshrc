@@ -23,7 +23,6 @@ zstyle :compinstall filename '/home/lionelstefan/.zshrc'
 zstyle ':completion::complete:*' use-cache on
 zstyle ':completion::complete:*' cache-path ~/.zsh/cache
 autoload -Uz compinit && compinit -C
-compinit
 # End of lines added by compinstall
 
 #SSH AGENT
