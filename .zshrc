@@ -1,4 +1,3 @@
-source ~/dotfiles/zsh/z.sh
 source ~/dotfiles/zsh/alias.zsh
 
 source ~/dotfiles/zsh/zsh-256color/zsh-256color.plugin.zsh
@@ -20,8 +19,10 @@ setopt beep notify
 # The following lines were added by compinstall
 zstyle :compinstall filename '/home/lionelstefan/.zshrc'
 
-fpath=(~/.zsh/completions $fpath)
-autoload -Uz compinit
+# Use a cached compdump
+zstyle ':completion::complete:*' use-cache on
+zstyle ':completion::complete:*' cache-path ~/.zsh/cache
+autoload -Uz compinit && compinit -C
 compinit
 # End of lines added by compinstall
 
@@ -50,10 +51,21 @@ unset env
 
 export PATH=~/.npm-global/bin:$PATH
 
+#NVM
 export NVM_DIR="$HOME/.nvm"
 
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+lazy_load_nvm() {
+  unset -f node npm npx nvm
+  export NVM_DIR="$HOME/.nvm"
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+}
+
+node()   { lazy_load_nvm; node  "$@"; }
+npm()    { lazy_load_nvm; npm   "$@"; }
+pnpm()   { lazy_load_nvm; pnpm   "$@"; }
+npx()    { lazy_load_nvm; npx   "$@"; }
+nvm()    { lazy_load_nvm; nvm   "$@"; }
+#NVM
 
 # pnpm
 export PNPM_HOME="/home/lionelstefan/.local/share/pnpm"
