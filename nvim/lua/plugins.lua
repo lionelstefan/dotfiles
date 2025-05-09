@@ -1,6 +1,6 @@
 require("lazy").setup({
   {
-    "samharju/synthweave.nvim"
+    "samharju/synthweave.nvim",
   },
   {
     "0xstepit/flow.nvim",
@@ -84,11 +84,17 @@ require("lazy").setup({
     "m-demare/hlargs.nvim",
     config = function()
       require("hlargs").setup({})
-    end
+    end,
   },
   {
     "folke/trouble.nvim",
-    opts = {}, -- for default options, refer to the configuration section for custom setup.
+    opts = {
+      win = {
+        size = {
+          height = 5,
+        },
+      },
+    },
     cmd = "Trouble",
   },
   {
@@ -104,23 +110,23 @@ require("lazy").setup({
       require("pretty-fold").setup()
     end,
   },
-  {
-    "smoka7/multicursors.nvim",
-    event = "VeryLazy",
-    dependencies = {
-      "smoka7/hydra.nvim",
-    },
-    opts = {},
-    cmd = { "MCstart", "MCvisual", "MCclear", "MCpattern", "MCvisualPattern", "MCunderCursor" },
-    keys = {
-      {
-        mode = { "v", "n" },
-        "<Leader>m",
-        "<cmd>MCstart<cr>",
-        desc = "Create a selection for selected text or word under the cursor",
-      },
-    },
-  },
+  -- {
+  --   "smoka7/multicursors.nvim",
+  --   event = "VeryLazy",
+  --   dependencies = {
+  --     "smoka7/hydra.nvim",
+  --   },
+  --   opts = {},
+  --   cmd = { "MCstart", "MCvisual", "MCclear", "MCpattern", "MCvisualPattern", "MCunderCursor" },
+  --   keys = {
+  --     {
+  --       mode = { "v", "n" },
+  --       "<Leader>m",
+  --       "<cmd>MCstart<cr>",
+  --       desc = "Create a selection for selected text or word under the cursor",
+  --     },
+  --   },
+  -- },
   {
     "m4xshen/hardtime.nvim",
     lazy = true,
@@ -203,13 +209,13 @@ require("lazy").setup({
             hide_hidden = false,
           },
         },
-        popup_border_style = "rounded",
+        popup_border_style = "single",
         enable_git_status = true,
         default_component_configs = {
           window = {
             width = 60,
-          }
-        }
+          },
+        },
       })
     end,
   },
@@ -220,7 +226,7 @@ require("lazy").setup({
       {
         "kf",
         function()
-          require("conform").format({ async = true, lsp_fallback = true })
+          require("conform").format({ async = true, lsp_format = "last" })
         end,
         mode = "",
         desc = "Format buffer",
@@ -244,7 +250,7 @@ require("lazy").setup({
       })
 
       vim.notify = require("notify")
-    end
+    end,
   },
   {
     "stevearc/dressing.nvim",
@@ -323,7 +329,7 @@ require("lazy").setup({
   },
   -- TREESITTER
   {
-    "nvim-treesitter/playground"
+    "nvim-treesitter/playground",
   },
   {
     "nvim-treesitter/nvim-treesitter",
@@ -343,13 +349,23 @@ require("lazy").setup({
   },
   {
     "windwp/nvim-ts-autotag",
+    config = function()
+      require("nvim-ts-autotag").setup()
+    end,
   },
   {
     "windwp/nvim-autopairs",
+    event = { "InsertEnter" },
     config = function()
       require("nvim-autopairs").setup({
+        check_ts = true,
         disable_filetype = { "TelescopePrompt", "neo-tree" },
         enable_check_bracket_line = false,
+        ts_config = {
+          lua = { "string" },            -- don't add pairs in lua string treesitter nodes
+          javascript = { "template_string" }, -- don't add pairs in javscript template_string treesitter nodes
+          java = false,                  -- don't check treesitter on java
+        },
       })
     end,
   },
@@ -360,12 +376,6 @@ require("lazy").setup({
       require("configs.telescope")
     end,
     cmd = { "Telescope" },
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-    },
-  },
-  {
-    "nvim-telescope/telescope.nvim",
     dependencies = {
       "nvim-lua/plenary.nvim",
       "Snikimonkd/telescope-git-conflicts.nvim",
@@ -379,8 +389,7 @@ require("lazy").setup({
   },
   {
     "nvim-telescope/telescope-fzf-native.nvim",
-    build =
-    "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
+    build = "make",
   },
   {
     "nvim-telescope/telescope-frecency.nvim",
@@ -397,7 +406,7 @@ require("lazy").setup({
       require("configs.bufferline")
     end,
   },
-  { 'VonHeikemen/lsp-zero.nvim' },
+  { "VonHeikemen/lsp-zero.nvim" },
   {
     "neovim/nvim-lspconfig",
     config = function()
@@ -474,8 +483,8 @@ require("lazy").setup({
     config = function()
       require("toggleterm").setup({
         auto_scroll = false,
-        border = 'curved',
-        direction = "float"
+        border = "curved",
+        direction = "float",
       })
     end,
   },
@@ -525,28 +534,36 @@ require("lazy").setup({
   {
     "danymat/neogen",
     config = function()
-      require('neogen').setup {
+      require("neogen").setup({
         enabled = true,
         languages = {
           php = {
             template = {
-              annotation_convention = "phpdoc"
-            }
+              annotation_convention = "phpdoc",
+            },
           },
-        }
-      }
+        },
+      })
     end,
   },
   {
     "williamboman/mason.nvim",
     config = function()
-      require("mason").setup()
-    end
+      require("mason").setup({
+        ui = {
+          icons = {
+            package_installed = "✓",
+            package_pending = "➜",
+            package_uninstalled = "✗",
+          },
+        },
+      })
+    end,
   },
   {
     "williamboman/mason-lspconfig.nvim",
     config = function()
-      require("mason").setup {
+      require("mason").setup({
         ensure_installed = {
           "bashls",
           "dockerls",
@@ -555,17 +572,17 @@ require("lazy").setup({
           "dotls",
           "eslint",
           "html",
-          "biome",
           "tsserver",
           "marksman",
           "phpactor",
           "ruff",
-          "ruff_lsp",
           "yamlls",
+          "jsonls",
+          "vls",
         },
-        automatic_installation = true
-      }
-    end
+        automatic_installation = true,
+      })
+    end,
   },
   {
     "kdheepak/lazygit.nvim",
@@ -579,26 +596,32 @@ require("lazy").setup({
     -- optional for floating window border decoration
     dependencies = {
       "nvim-lua/plenary.nvim",
-    }
+    },
   },
   {
     "f-person/git-blame.nvim",
     config = function()
-      require('gitblame').setup()
-    end
-  },
-  {
-    'fei6409/log-highlight.nvim',
-    config = function()
-      require('log-highlight').setup {}
+      require("gitblame").setup()
     end,
   },
   {
-    'mfussenegger/nvim-dap',
+    "fei6409/log-highlight.nvim",
+    config = function()
+      require("log-highlight").setup({})
+    end,
+  },
+  {
+    "mfussenegger/nvim-dap",
     dependencies = {
       "rcarriga/nvim-dap-ui",
       "nvim-neotest/nvim-nio",
-      "theHamsta/nvim-dap-virtual-text"
+      "theHamsta/nvim-dap-virtual-text",
+      "mxsdev/nvim-dap-vscode-js",
+      {
+        "microsoft/vscode-js-debug",
+        opt = true,
+        run = "npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out",
+      },
     },
     config = function()
       require("configs.dap")
@@ -607,8 +630,8 @@ require("lazy").setup({
   {
     "ahmedkhalf/project.nvim",
     config = function()
-      require("project_nvim").setup {}
-    end
+      require("project_nvim").setup({})
+    end,
   },
   {
     "folke/lazydev.nvim",
@@ -621,40 +644,40 @@ require("lazy").setup({
   },
   {
     "Bilal2453/luvit-meta",
-    lazy = true
+    lazy = true,
   },
   {
-    "MTDL9/vim-log-highlighting"
+    "MTDL9/vim-log-highlighting",
   },
   {
     "olimorris/persisted.nvim",
     lazy = false,
     config = function()
-      require('persisted').setup({
+      require("persisted").setup({
         autoload = true,
       })
-    end
+    end,
   },
   -- Highlight URLs inside vim
   {
     "itchyny/vim-highlighturl",
-    event = "VeryLazy"
+    event = "VeryLazy",
   },
   {
     "jdhao/whitespace.nvim",
-    event = "VeryLazy"
+    event = "VeryLazy",
   },
   {
     "justinsgithub/wezterm-types",
-    lazy = true
+    lazy = true,
   },
   {
     "LunarVim/bigfile.nvim",
     config = function()
-      require("bigfile").setup {
-        filesize = 2,      -- size of the file in MiB, the plugin round file sizes to the closest MiB
+      require("bigfile").setup({
+        filesize = 2,  -- size of the file in MiB, the plugin round file sizes to the closest MiB
         pattern = { "*" }, -- autocmd pattern or function see <### Overriding the detection of big files>
-        features = {       -- features to disable
+        features = {   -- features to disable
           "indent_blankline",
           "illuminate",
           "lsp",
@@ -664,8 +687,8 @@ require("lazy").setup({
           "vimopts",
           "filetype",
         },
-      }
-    end
+      })
+    end,
   },
   {
     "iamcco/markdown-preview.nvim",
@@ -675,6 +698,77 @@ require("lazy").setup({
       vim.g.mkdp_filetypes = { "markdown" }
     end,
     ft = { "markdown" },
+  },
+  {
+    "yetone/avante.nvim",
+    event = "VeryLazy",
+    version = false, -- never set this value to "*"! never!
+    opts = {
+      provider = "claude",
+      claude = {
+        endpoint = "https://api.anthropic.com",
+        model = "claude-3-5-sonnet-20241022",
+        temperature = 0,
+        max_tokens = 4096,
+      },
+    },
+    build = "make",
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      "stevearc/dressing.nvim",
+      "nvim-lua/plenary.nvim",
+      "muniftanjim/nui.nvim",
+      --- the below dependencies are optional,
+      "echasnovski/mini.pick",      -- for file_selector provider mini.pick
+      "nvim-telescope/telescope.nvim", -- for file_selector provider telescope
+      "hrsh7th/nvim-cmp",           -- autocompletion for avante commands and mentions
+      "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
+      {
+        -- make sure to set this up properly if you have lazy=true
+        "meanderingprogrammer/render-markdown.nvim",
+        opts = {
+          file_types = { "markdown", "avante" },
+        },
+        ft = { "markdown", "avante" },
+      },
+    },
+  },
+  {
+    "mfussenegger/nvim-lint",
+    lazy = true,
+    event = { "BufReadPre", "BufNewFile" }, -- to disable, comment this out
+    config = function()
+      local lint = require("lint")
+
+      lint.linters_by_ft = {
+        javascript = { "eslint" },
+        typescript = { "eslint" },
+        javascriptreact = { "eslint" },
+        typescriptreact = { "eslint" },
+        svelte = { "eslint" },
+        python = { "pylint" },
+      }
+
+      local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
+
+      vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
+        group = lint_augroup,
+        callback = function()
+          lint.try_lint()
+        end,
+      })
+
+      vim.keymap.set("n", "<leader>l", function()
+        lint.try_lint()
+      end, { desc = "Trigger linting for current file" })
+    end,
+  },
+}, {
+  checker = {
+    enabled = true,  -- enables the update checker
+    concurrency = nil, -- limit the number of concurrent update checks
+    notify = true,   -- show a notification when updates are found
+    frequency = 86400, -- check for updates every 24 hour (in seconds)
   },
 }, {
   performance = {

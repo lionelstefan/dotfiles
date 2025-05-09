@@ -22,7 +22,6 @@ lsp_zero.on_attach(function(client, bufnr)
 end)
 
 require("cmp")
-require("luasnip.loaders.from_vscode").lazy_load()
 -- local capabilities = require('cmp_nvim_lsp').default_capabilities({
 -- 	dynamicRegistration = true
 -- })
@@ -40,21 +39,21 @@ require("mason-lspconfig").setup({
         },
       })
 
-      require("lspconfig").eslint.setup({
-        on_attach = on_attach,
-        capabilities = capabilities,
-        filetypes = {
-          "javascript",
-          "javascriptreact",
-          "javascript.jsx",
-          "typescript",
-          "typescriptreact",
-          "typescript.tsx",
-          "vue",
-          "svelte",
-          "astro",
-        },
-      })
+      -- require("lspconfig").eslint.setup({
+      --   on_attach = on_attach,
+      --   capabilities = capabilities,
+      --   filetypes = {
+      --     "javascript",
+      --     "javascriptreact",
+      --     "javascript.jsx",
+      --     "typescript",
+      --     "typescriptreact",
+      --     "typescript.tsx",
+      --     "vue",
+      --     "svelte",
+      --     "astro",
+      --   },
+      -- })
 
       require("lspconfig").phpactor.setup({
         on_attach = on_attach,
@@ -131,38 +130,36 @@ require("mason-lspconfig").setup({
         capabilities = capabilities,
       })
 
-      require("lspconfig").vuels.setup({
+      require("lspconfig").vls.setup({
         on_attach = on_attach,
         capabilities = capabilities,
-        filetypes = { "vue" },
-        cmd = { "/home/stefanlionel/.nvm/versions/node/v20.7.0/bin/vls" },
       })
 
-      -- require("lspconfig").biome.setup({
-      --   -- on_attach = on_attach,
-      --   -- capabilities = capabilities,
-      --   filetypes = { "javascript", "javascriptreact", "json", "jsonc", "typescript", "typescript.tsx", "typescriptreact", "astro", "svelte", "vue", "css" },
+      require("lspconfig").biome.setup({
+        on_attach = on_attach,
+        capabilities = capabilities,
+        filetypes = { "javascript", "javascriptreact", "json", "jsonc", "typescript", "typescriptreact", "html", "css" },
+      })
+
+      -- local tsserver_capabilities = require("cmp_nvim_lsp").default_capabilities({
+      --   dynamicRegistration = true,
+      --   textDocument = {
+      --     foldingRange = {
+      --       dynamicRegistration = false,
+      --       lineFoldingOnly = true,
+      --     },
+      --   },
       -- })
 
-      local tsserver_capabilities = require("cmp_nvim_lsp").default_capabilities({
-        dynamicRegistration = true,
-        textDocument = {
-          foldingRange = {
-            dynamicRegistration = false,
-            lineFoldingOnly = true,
-          },
-        },
-      })
+      -- require("lspconfig").ts_ls.setup({
+      --   init_options = { hostInfo = "neovim" },
+      --   cmd = { "typescript-language-server", "--stdio" },
+      --   on_attach = on_attach,
+      --   capabilities = tsserver_capabilities,
+      --   filetypes = { "typescript", "typescriptreact", "typescript.tsx" },
+      -- })
 
-      require("lspconfig").ts_ls.setup({
-        init_options = { hostInfo = "neovim" },
-        cmd = { "typescript-language-server", "--stdio" },
-        on_attach = on_attach,
-        capabilities = tsserver_capabilities,
-        filetypes = { "typescript", "typescriptreact", "typescript.tsx" },
-      })
-
-      require("lspconfig").ruff_lsp.setup({
+      require("lspconfig").ruff.setup({
         on_attach = on_attach,
         capabilities = capabilities,
         filetypes = { "python" },

@@ -8,6 +8,8 @@ source ~/dotfiles/zsh/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh
 source ~/dotfiles/zsh/zsh-fzf-history-search/zsh-fzf-history-search.zsh
 source ~/dotfiles/zsh/almostontop/almostontop.plugin.zsh
 
+source ~/dotfiles/.env_secrets
+
 export TERM=xterm-256color
 # Lines configured by zsh-newuser-install
 HISTFILE=~/.histfile
@@ -18,6 +20,7 @@ setopt beep notify
 # The following lines were added by compinstall
 zstyle :compinstall filename '/home/lionelstefan/.zshrc'
 
+fpath=(~/.zsh/completions $fpath)
 autoload -Uz compinit
 compinit
 # End of lines added by compinstall
@@ -37,12 +40,13 @@ agent_run_state=$(ssh-add -l >| /dev/null 2>&1; echo $?)
 
 if [ ! "$SSH_AUTH_SOCK" ] || [ $agent_run_state = 2 ]; then
     agent_start
-    ssh-add
+    ssh-add ~/.ssh/pertama_gitlab ~/.ssh/github_lionelstefan
 elif [ "$SSH_AUTH_SOCK" ] && [ $agent_run_state = 1 ]; then
-    ssh-add
+    ssh-add ~/.ssh/pertama_gitlab ~/.ssh/github_lionelstefan
 fi
 
 unset env
+#SSH AGENT END
 
 export PATH=~/.npm-global/bin:$PATH
 
@@ -71,7 +75,10 @@ export HOMEBREW_REPOSITORY="/home/linuxbrew/.linuxbrew";
 export PATH="/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin${PATH+:$PATH}";
 export MANPATH="/home/linuxbrew/.linuxbrew/share/man${MANPATH+:$MANPATH}:";
 export INFOPATH="/home/linuxbrew/.linuxbrew/share/info:${INFOPATH:-}";
+
+# prettier
 export PRETTIERD_DEFAULT_CONFIG="/home/lionelstefan/dotfiles/formatter_config/prettierd/.prettierrc";
+#prettier-end
 
 # GIT
 export GIT_HTTP_LOW_SPEED_LIMIT=0
@@ -88,7 +95,6 @@ export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/.local/nvim-linux64/bin:$PATH"
 export PATH="$HOME/.local/uctags-2024.07.11-linux-x86_64/bin:$PATH"
-export PATH="/mnt/c/Users/StefanLionelSuwito/scoop/apps/win32yank/current:$PATH"
 export PATH=/usr/lib/cargo/bin/coreutils:$PATH
 export PATH="$PATH:$HOME/.config/composer/vendor/bin"
 

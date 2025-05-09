@@ -3,7 +3,7 @@ local args = {
   -- "fix",
   -- file_path,
   "--allow-risky=yes",
-[[--rules={"@PhpCsFixer":true,"braces_position":{"control_structures_opening_brace":"next_line_unless_newline_at_signature_end"},"multiline_whitespace_before_semicolons":{"strategy":"no_multi_line"},"no_superfluous_phpdoc_tags":{"allow_hidden_params":true,"remove_inheritdoc":true,"allow_mixed":true},"phpdoc_to_return_type":{"scalar_types":false,"union_types":false},"phpdoc_scalar":false}]],
+  [[--rules={"@PhpCsFixer":true,"braces_position":{"control_structures_opening_brace":"next_line_unless_newline_at_signature_end"},"multiline_whitespace_before_semicolons":{"strategy":"no_multi_line"},"no_superfluous_phpdoc_tags":{"allow_hidden_params":true,"remove_inheritdoc":true,"allow_mixed":true},"phpdoc_to_return_type":{"scalar_types":false,"union_types":false},"phpdoc_scalar":false}]],
 }
 local util = require("conform.util")
 
@@ -12,10 +12,14 @@ require("conform").setup({
     blade = { "blade-formatter" },
     lua = { "stylua" },
     python = { "ruff_format" },
-    javascript = { { "biome" } },
-    javascriptreact = { { "biome" } },
-    typescript = { { "biome" } },
-    typescriptreact = { { "biome" } },
+    javascript = { "prettierd", "trim_whitespace", "trim_newlines" },
+    javascriptreact = { "prettierd", "trim_whitespace", "trim_newlines" },
+    typescript = { "prettierd", "trim_whitespace", "trim_newlines" },
+    typescriptreact = { "prettierd", "trim_whitespace", "trim_newlines" },
+    json = { "prettierd", "trim_whitespace", "trim_newlines" },
+    html = { "prettierd", "trim_whitespace", "trim_newlines" },
+    css = { "prettierd", "trim_whitespace", "trim_newlines" },
+    vue = { "prettierd", "trim_whitespace", "trim_newlines" },
     php = { "php_cs_fixer" },
   },
   formatters = {
@@ -25,7 +29,7 @@ require("conform").setup({
       },
     },
     blade_formatter = {
-      args = { "--stdin", "--wrap-attributes aligned-multiple" }
+      args = { "--stdin", "--wrap-attributes aligned-multiple" },
     },
     php_cs_fixer = {
       inherit = false,
