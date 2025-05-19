@@ -50,3 +50,12 @@ function f() {
     fff "$@"
     cd "$(cat "${XDG_CACHE_HOME:=${HOME}/.cache}/fff/.fff_d")"
 }
+function pr()
+{
+  current_branch=$(git symbolic-ref --short HEAD)
+  glab mr create \
+    --source-branch "$current_branch" \
+    --target-branch "staging" \
+    --title "Merge $current_branch into staging" \
+    --fill
+}

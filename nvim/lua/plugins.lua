@@ -345,9 +345,6 @@ require("lazy").setup({
     "JoosepAlviste/nvim-ts-context-commentstring",
   },
   {
-    "nvim-treesitter/nvim-treesitter-context",
-  },
-  {
     "windwp/nvim-ts-autotag",
     config = function()
       require("nvim-ts-autotag").setup()
@@ -763,6 +760,17 @@ require("lazy").setup({
       end, { desc = "Trigger linting for current file" })
     end,
   },
+  {
+    "mvllow/modes.nvim",
+    config = function()
+      require('modes').setup({
+        colors = {
+          visual = "#bababa",
+        },
+        line_opacity = 0.3,
+      })
+    end
+  }
 }, {
   checker = {
     enabled = true,  -- enables the update checker

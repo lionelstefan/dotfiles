@@ -1,3 +1,15 @@
+# CTRL + Arrow Keys
+bindkey '\e[1;5C' forward-word       # Ctrl + Right
+bindkey '\e[1;5D' backward-word      # Ctrl + Left
+bindkey '\e[1;5A' up-line-or-history # Ctrl + Up
+bindkey '\e[1;5B' down-line-or-history # Ctrl + Down
+
+# ALT + Arrow Keys (Some terminals may send different codes; adjust if needed)
+bindkey '\e[1;3C' forward-word       # Alt + Right
+bindkey '\e[1;3D' backward-word      # Alt + Left
+bindkey '\e[1;3A' up-line-or-history # Alt + Up
+bindkey '\e[1;3B' down-line-or-history # Alt + Down
+
 source ~/dotfiles/zsh/alias.zsh
 
 source ~/dotfiles/zsh/zsh-256color/zsh-256color.plugin.zsh
@@ -54,7 +66,7 @@ export PATH=~/.npm-global/bin:$PATH
 export NVM_DIR="$HOME/.nvm"
 
 lazy_load_nvm() {
-  unset -f node npm npx nvm
+  unset -f node npm npx nvm pnpm
   export NVM_DIR="$HOME/.nvm"
   [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 }
