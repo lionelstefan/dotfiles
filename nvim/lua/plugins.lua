@@ -403,37 +403,161 @@ require("lazy").setup({
       require("configs.bufferline")
     end,
   },
-  { "VonHeikemen/lsp-zero.nvim" },
   {
     "neovim/nvim-lspconfig",
     config = function()
       require("configs.lsp")
     end,
   },
+  -- {
+  --   "hrsh7th/nvim-cmp",
+  --   opts = function(_, opts)
+  --     opts.sources = opts.sources or {}
+  --     table.insert(opts.sources, {
+  --       name = "lazydev",
+  --       group_index = 0, -- set group index to 0 to skip loading LuaLS completions
+  --     })
+  --   end,
+  --   event = "VeryLazy",
+  --   config = function()
+  --     require("configs.cmp")
+  --   end,
+  --   dependencies = {
+  --     "hrsh7th/cmp-nvim-lsp",
+  --     "hrsh7th/cmp-buffer",
+  --     "hrsh7th/cmp-path",
+  --     "hrsh7th/cmp-cmdline",
+  --     "L3MON4D3/LuaSnip",
+  --     "rafamadriz/friendly-snippets",
+  --     "saadparwaiz1/cmp_luasnip",
+  --     "onsails/lspkind.nvim",
+  --   },
+  -- },
   {
-    "hrsh7th/nvim-cmp",
-    opts = function(_, opts)
-      opts.sources = opts.sources or {}
-      table.insert(opts.sources, {
-        name = "lazydev",
-        group_index = 0, -- set group index to 0 to skip loading LuaLS completions
-      })
-    end,
-    event = "VeryLazy",
-    config = function()
-      require("configs.cmp")
-    end,
+    'saghen/blink.cmp',
+    lazy = false, -- lazy loading handled internally
+    version = "*",
     dependencies = {
-      "hrsh7th/cmp-nvim-lsp",
-      "hrsh7th/cmp-buffer",
-      "hrsh7th/cmp-path",
-      "hrsh7th/cmp-cmdline",
-      "L3MON4D3/LuaSnip",
+      {
+        "saghen/blink.compat",
+        opts = { impersonate_nvim_cmp = true },
+      },
       "rafamadriz/friendly-snippets",
-      "saadparwaiz1/cmp_luasnip",
-      "onsails/lspkind.nvim",
+      {
+        "L3MON4D3/LuaSnip",
+        version = "v2.*",
+        build = "make install_jsregexp",
+        config = function()
+          require("luasnip.loaders.from_vscode").lazy_load()
+        end,
+      },
+    },
+
+    build = 'cargo build --release',
+
+    opts = {
+      keymap = {
+        preset = 'super-tab',
+        ["<S-k>"] = { "scroll_documentation_up", "fallback" },
+        ["<S-j>"] = { "scroll_documentation_down", "fallback" }
+      },
+
+      snippets = {
+        preset = 'luasnip',
+        expand = function(snippet) require('luasnip').lsp_expand(snippet) end,
+        active = function(filter)
+          if filter and filter.direction then
+            return require('luasnip').jumpable(filter.direction)
+          end
+          return require('luasnip').in_snippet()
+        end,
+        jump = function(direction) require('luasnip').jump(direction) end,
+      },
+
+      sources = {
+        default = {
+          'lsp',
+          'path',
+          'snippets',
+          'buffer',
+        },
+      },
+
+      completion = {
+        trigger = {
+          show_on_trigger_character = true,
+          show_on_insert_on_trigger_character = true,
+          show_on_x_blocked_trigger_characters = { "'", '"', '(', '{' },
+        },
+        menu = {
+          draw = {
+            columns = { { "label", "label_description", gap = 1 }, { "kind_icon", "kind", gap = 1 } },
+            treesitter = {},
+          },
+        },
+
+        accept = {
+          auto_brackets = { enabled = false },
+        },
+
+        documentation = {
+          auto_show = true,
+          auto_show_delay_ms = 500,
+          treesitter_highlighting = true,
+        },
+
+        ghost_text = {
+          enabled = true,
+        },
+
+      },
+
+      signature = {
+        enabled = true,
+      },
+    },
+
+    opts_extend = { "sources.default" },
+
+    appearance = {
+      kind_icons = {
+        Copilot = "",
+        Text = '󰉿',
+        Method = '󰊕',
+        Function = '󰊕',
+        Constructor = '󰒓',
+
+        Field = '󰜢',
+        Variable = '󰆦',
+        Property = '󰖷',
+
+        Class = '󱡠',
+        Interface = '󱡠',
+        Struct = '󱡠',
+        Module = '󰅩',
+
+        Unit = '󰪚',
+        Value = '󰦨',
+        Enum = '󰦨',
+        EnumMember = '󰦨',
+
+        Keyword = '󰻾',
+        Constant = '󰏿',
+
+        Snippet = '󱄽',
+        Color = '󰏘',
+        File = '󰈔',
+        Reference = '󰬲',
+        Folder = '󰉋',
+        Event = '󱐋',
+        Operator = '󰪚',
+        TypeParameter = '󰬛',
+      },
+
     },
   },
+
+
   -- LSP & CMP
   {
     "Pocco81/auto-save.nvim",
@@ -558,28 +682,30 @@ require("lazy").setup({
     end,
   },
   {
-    "williamboman/mason-lspconfig.nvim",
-    config = function()
-      require("mason").setup({
-        ensure_installed = {
-          "bashls",
-          "dockerls",
-          "docker_compose_language_service",
-          "lua_ls",
-          "dotls",
-          "eslint",
-          "html",
-          "tsserver",
-          "marksman",
-          "phpactor",
-          "ruff",
-          "yamlls",
-          "jsonls",
-          "vls",
-        },
-        automatic_installation = true,
-      })
-    end,
+    "mason-org/mason-lspconfig.nvim",
+    dependencies = {
+        { "mason-org/mason.nvim", opts = {} },
+        "neovim/nvim-lspconfig",
+    },
+    opts = {
+      ensure_installed = {
+        "bashls",
+        "dockerls",
+        "docker_compose_language_service",
+        "lua_ls",
+        "dotls",
+        -- "eslint",
+        "html",
+        "ts_ls",
+        -- "biome",
+        "marksman",
+        "phpactor",
+        "ruff",
+        "yamlls",
+        "jsonls",
+        "vls",
+      },
+    },
   },
   {
     "kdheepak/lazygit.nvim",
@@ -730,36 +856,36 @@ require("lazy").setup({
       },
     },
   },
-  {
-    "mfussenegger/nvim-lint",
-    lazy = true,
-    event = { "BufReadPre", "BufNewFile" }, -- to disable, comment this out
-    config = function()
-      local lint = require("lint")
-
-      lint.linters_by_ft = {
-        javascript = { "eslint" },
-        typescript = { "eslint" },
-        javascriptreact = { "eslint" },
-        typescriptreact = { "eslint" },
-        svelte = { "eslint" },
-        python = { "pylint" },
-      }
-
-      local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
-
-      vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
-        group = lint_augroup,
-        callback = function()
-          lint.try_lint()
-        end,
-      })
-
-      vim.keymap.set("n", "<leader>l", function()
-        lint.try_lint()
-      end, { desc = "Trigger linting for current file" })
-    end,
-  },
+  -- {
+  --   "mfussenegger/nvim-lint",
+  --   lazy = true,
+  --   event = { "BufReadPre", "BufNewFile" }, -- to disable, comment this out
+  --   config = function()
+  --     local lint = require("lint")
+  --
+  --     lint.linters_by_ft = {
+  --       javascript = { "eslint" },
+  --       typescript = { "eslint" },
+  --       javascriptreact = { "eslint" },
+  --       typescriptreact = { "eslint" },
+  --       svelte = { "eslint" },
+  --       python = { "pylint" },
+  --     }
+  --
+  --     local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
+  --
+  --     vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
+  --       group = lint_augroup,
+  --       callback = function()
+  --         lint.try_lint()
+  --       end,
+  --     })
+  --
+  --     vim.keymap.set("n", "<leader>l", function()
+  --       lint.try_lint()
+  --     end, { desc = "Trigger linting for current file" })
+  --   end,
+  -- },
   {
     "mvllow/modes.nvim",
     config = function()
@@ -774,8 +900,7 @@ require("lazy").setup({
 }, {
   checker = {
     enabled = true,  -- enables the update checker
-    concurrency = nil, -- limit the number of concurrent update checks
-    notify = true,   -- show a notification when updates are found
+    concurrency = 8, -- limit the number of concurrent update checks
     frequency = 86400, -- check for updates every 24 hour (in seconds)
   },
 }, {

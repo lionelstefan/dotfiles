@@ -21,6 +21,8 @@ source ~/dotfiles/zsh/almostontop/almostontop.plugin.zsh
 
 source ~/dotfiles/.env_secrets
 
+export EDITOR=nvim
+export VISUAL=nvim
 export TERM=xterm-256color
 # Lines configured by zsh-newuser-install
 HISTFILE=~/.histfile
@@ -62,21 +64,12 @@ unset env
 
 export PATH=~/.npm-global/bin:$PATH
 
-#NVM
-export NVM_DIR="$HOME/.nvm"
-
-lazy_load_nvm() {
-  unset -f node npm npx nvm pnpm
-  export NVM_DIR="$HOME/.nvm"
-  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-}
-
-node()   { lazy_load_nvm; node  "$@"; }
-npm()    { lazy_load_nvm; npm   "$@"; }
-pnpm()   { lazy_load_nvm; pnpm   "$@"; }
-npx()    { lazy_load_nvm; npx   "$@"; }
-nvm()    { lazy_load_nvm; nvm   "$@"; }
-#NVM
+# fnm
+FNM_PATH="/home/lionelstefan/.local/share/fnm"
+if [ -d "$FNM_PATH" ]; then
+  export PATH="/home/lionelstefan/.local/share/fnm:$PATH"
+  eval "`fnm env`"
+fi
 
 # pnpm
 export PNPM_HOME="/home/lionelstefan/.local/share/pnpm"
@@ -118,6 +111,7 @@ export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/.local/nvim-linux64/bin:$PATH"
 export PATH="$HOME/.local/uctags-2024.07.11-linux-x86_64/bin:$PATH"
+export PATH="$HOME/.cargo/bin:$PATH"
 export PATH=/usr/lib/cargo/bin/coreutils:$PATH
 export PATH="$PATH:$HOME/.config/composer/vendor/bin"
 
@@ -130,3 +124,4 @@ export FFF_HIDDEN=1
 
 eval "$(zoxide init zsh)"
 eval "$(starship init zsh)"
+eval "$(fnm env --use-on-cd --shell zsh)"
