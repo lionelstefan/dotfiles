@@ -79,6 +79,9 @@ case ":$PATH:" in
 esac
 # pnpm end
 
+#biome
+biome start --config-path /home/lionelstefan/dotfiles/nvim/linter_formatter_config/biome
+
 #graveyard
 export GRAVEYARD="/home/lionelstefan/.local/share/Trash"
 

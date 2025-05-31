@@ -2,7 +2,6 @@ vim.lsp.set_log_level("off")
 -- vim.lsp.set_log_level('debug')
 
 local lspconfig = require("lspconfig")
-local navic = require("nvim-navic")
 local on_attach = function(client, bufnr)
 	local opts = {
 		noremap = true,
@@ -10,10 +9,6 @@ local on_attach = function(client, bufnr)
 	}
 
 	vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
-
-	if client.server_capabilities.documentSymbolProvider then
-		navic.attach(client, bufnr)
-	end
 
 	vim.lsp.inlay_hint.enable(true, { bufnr })
 
@@ -28,42 +23,11 @@ require("mason-lspconfig").setup({
 
 			capabilities.textDocument.completion.completionItem.snippetSupport = true
 			capabilities.textDocument.colorProvider = { dynamicRegistration = false }
+      capabilities.dynamicRegistration = true
 			capabilities.textDocument.foldingRange = {
 				dynamicRegistration = false,
 				lineFoldingOnly = true,
 			}
-
-			lspconfig.eslint.setup({
-			  on_attach = on_attach,
-			  capabilities = capabilities,
-			  filetypes = {
-			    "javascript",
-			    "javascriptreact",
-			    "javascript.jsx",
-			    "typescript",
-			    "typescriptreact",
-			    "typescript.tsx",
-			    "vue",
-			    "svelte",
-			    "astro",
-			  },
-			})
-
-			-- vim.lsp.enable("biome")
-			-- lspconfig.biome.setup({
-			--   cmd = { "biome", "lsp-proxy" },
-			--   on_attach = on_attach,
-			--   capabilities = capabilities,
-			--   filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact", "json" },
-			-- })
-
-   --    vim.lsp.enable('oxlint')
-			-- lspconfig.biome.setup({
-			--   cmd = { "oxc_language_server" },
-			--   on_attach = on_attach,
-			--   capabilities = capabilities,
-			--   filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx" },
-			-- })
 
 			lspconfig.phpactor.setup({
 				on_attach = on_attach,
@@ -141,68 +105,21 @@ require("mason-lspconfig").setup({
 			})
 
 			lspconfig.vls.setup({
-				on_attach = on_attach,
+        on_attach = function (client, bufnr)
+          client.server_capabilities.documentFormattingProvider = false
+          client.server_capabilities.documentRangeFormattingProvider = false
+          on_attach(client, bufnr)
+        end,
 				capabilities = capabilities,
 			})
 
-			-- local tsserver_capabilities = require("cmp_nvim_lsp").default_capabilities({
-			--   dynamicRegistration = true,
-			--   textDocument = {
-			--     foldingRange = {
-			--       dynamicRegistration = false,
-			--       lineFoldingOnly = true,
-			--     },
-			--   },
-			-- })
-
-			-- lspconfig.ts_ls.setup({
-			-- 	init_options = { hostInfo = "neovim" },
-			-- 	cmd = { "typescript-language-server", "--stdio" },
-			-- 	on_attach = on_attach,
-			-- 	capabilities = tsserver_capabilities,
-			-- 	filetypes = { "typescript", "typescriptreact", "typescript.tsx" },
-			-- })
-
-
-      ["ts_ls"] = function()
-        require("typescript-tools").setup({
-          capabilities = capabilities,
-          handlers = handlers,
-          on_attach = on_attach,
-        })
-      end,
-
-      lspconfig.harperls.setup({
-        on_attach = on_attach,
+      lspconfig.ts_ls.setup({
         capabilities = capabilities,
-        settings = {
-          ["harper-ls"] = {
-            userDictPath = "",
-            fileDictPath = "",
-            linters = {
-              SpellCheck = true,
-              SpelledNumbers = false,
-              AnA = true,
-              SentenceCapitalization = true,
-              UnclosedQuotes = true,
-              WrongQuotes = false,
-              LongSentences = true,
-              RepeatedWords = true,
-              Spaces = true,
-              Matcher = true,
-              CorrectNumberSuffix = true
-            },
-            codeActions = {
-              ForceStable = false
-            },
-            markdown = {
-              IgnoreLinkTitle = false
-            },
-            diagnosticSeverity = "hint",
-            isolateEnglish = false,
-            dialect = "American"
-          }
-        }
+        on_attach = function (client, bufnr)
+          client.server_capabilities.documentFormattingProvider = false
+          client.server_capabilities.documentRangeFormattingProvider = false
+          on_attach(client, bufnr)
+        end,
       })
 
 			lspconfig.ruff.setup({
