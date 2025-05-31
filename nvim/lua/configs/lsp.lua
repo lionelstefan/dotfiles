@@ -33,21 +33,21 @@ require("mason-lspconfig").setup({
 				lineFoldingOnly = true,
 			}
 
-			-- lspconfig.eslint.setup({
-			--   on_attach = on_attach,
-			--   capabilities = capabilities,
-			--   filetypes = {
-			--     "javascript",
-			--     "javascriptreact",
-			--     "javascript.jsx",
-			--     "typescript",
-			--     "typescriptreact",
-			--     "typescript.tsx",
-			--     "vue",
-			--     "svelte",
-			--     "astro",
-			--   },
-			-- })
+			lspconfig.eslint.setup({
+			  on_attach = on_attach,
+			  capabilities = capabilities,
+			  filetypes = {
+			    "javascript",
+			    "javascriptreact",
+			    "javascript.jsx",
+			    "typescript",
+			    "typescriptreact",
+			    "typescript.tsx",
+			    "vue",
+			    "svelte",
+			    "astro",
+			  },
+			})
 
 			-- vim.lsp.enable("biome")
 			-- lspconfig.biome.setup({
@@ -55,6 +55,14 @@ require("mason-lspconfig").setup({
 			--   on_attach = on_attach,
 			--   capabilities = capabilities,
 			--   filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact", "json" },
+			-- })
+
+   --    vim.lsp.enable('oxlint')
+			-- lspconfig.biome.setup({
+			--   cmd = { "oxc_language_server" },
+			--   on_attach = on_attach,
+			--   capabilities = capabilities,
+			--   filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx" },
 			-- })
 
 			lspconfig.phpactor.setup({
@@ -147,13 +155,55 @@ require("mason-lspconfig").setup({
 			--   },
 			-- })
 
-			lspconfig.ts_ls.setup({
-				init_options = { hostInfo = "neovim" },
-				cmd = { "typescript-language-server", "--stdio" },
-				on_attach = on_attach,
-				capabilities = tsserver_capabilities,
-				filetypes = { "typescript", "typescriptreact", "typescript.tsx" },
-			})
+			-- lspconfig.ts_ls.setup({
+			-- 	init_options = { hostInfo = "neovim" },
+			-- 	cmd = { "typescript-language-server", "--stdio" },
+			-- 	on_attach = on_attach,
+			-- 	capabilities = tsserver_capabilities,
+			-- 	filetypes = { "typescript", "typescriptreact", "typescript.tsx" },
+			-- })
+
+
+      ["ts_ls"] = function()
+        require("typescript-tools").setup({
+          capabilities = capabilities,
+          handlers = handlers,
+          on_attach = on_attach,
+        })
+      end,
+
+      lspconfig.harperls.setup({
+        on_attach = on_attach,
+        capabilities = capabilities,
+        settings = {
+          ["harper-ls"] = {
+            userDictPath = "",
+            fileDictPath = "",
+            linters = {
+              SpellCheck = true,
+              SpelledNumbers = false,
+              AnA = true,
+              SentenceCapitalization = true,
+              UnclosedQuotes = true,
+              WrongQuotes = false,
+              LongSentences = true,
+              RepeatedWords = true,
+              Spaces = true,
+              Matcher = true,
+              CorrectNumberSuffix = true
+            },
+            codeActions = {
+              ForceStable = false
+            },
+            markdown = {
+              IgnoreLinkTitle = false
+            },
+            diagnosticSeverity = "hint",
+            isolateEnglish = false,
+            dialect = "American"
+          }
+        }
+      })
 
 			lspconfig.ruff.setup({
 				on_attach = on_attach,

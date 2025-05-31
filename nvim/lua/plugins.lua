@@ -105,29 +105,6 @@ require("lazy").setup({
     end,
   },
   {
-    "anuvyklack/pretty-fold.nvim",
-    config = function()
-      require("pretty-fold").setup()
-    end,
-  },
-  -- {
-  --   "smoka7/multicursors.nvim",
-  --   event = "VeryLazy",
-  --   dependencies = {
-  --     "smoka7/hydra.nvim",
-  --   },
-  --   opts = {},
-  --   cmd = { "MCstart", "MCvisual", "MCclear", "MCpattern", "MCvisualPattern", "MCunderCursor" },
-  --   keys = {
-  --     {
-  --       mode = { "v", "n" },
-  --       "<Leader>m",
-  --       "<cmd>MCstart<cr>",
-  --       desc = "Create a selection for selected text or word under the cursor",
-  --     },
-  --   },
-  -- },
-  {
     "m4xshen/hardtime.nvim",
     lazy = true,
     dependencies = { "MunifTanjim/nui.nvim", "nvim-lua/plenary.nvim" },
@@ -218,6 +195,21 @@ require("lazy").setup({
         },
       })
     end,
+  },
+
+  {
+    "pmizio/typescript-tools.nvim",
+    event = "LspAttach",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "neovim/nvim-lspconfig",
+      {
+        "saghen/blink.cmp",
+        -- Ensure blink.cmp is loaded before typescript-tools
+        lazy = false,
+        priority = 1000,
+      }
+    },
   },
   {
     "stevearc/conform.nvim",
@@ -409,30 +401,6 @@ require("lazy").setup({
       require("configs.lsp")
     end,
   },
-  -- {
-  --   "hrsh7th/nvim-cmp",
-  --   opts = function(_, opts)
-  --     opts.sources = opts.sources or {}
-  --     table.insert(opts.sources, {
-  --       name = "lazydev",
-  --       group_index = 0, -- set group index to 0 to skip loading LuaLS completions
-  --     })
-  --   end,
-  --   event = "VeryLazy",
-  --   config = function()
-  --     require("configs.cmp")
-  --   end,
-  --   dependencies = {
-  --     "hrsh7th/cmp-nvim-lsp",
-  --     "hrsh7th/cmp-buffer",
-  --     "hrsh7th/cmp-path",
-  --     "hrsh7th/cmp-cmdline",
-  --     "L3MON4D3/LuaSnip",
-  --     "rafamadriz/friendly-snippets",
-  --     "saadparwaiz1/cmp_luasnip",
-  --     "onsails/lspkind.nvim",
-  --   },
-  -- },
   {
     'saghen/blink.cmp',
     lazy = false, -- lazy loading handled internally
@@ -684,28 +652,44 @@ require("lazy").setup({
   {
     "mason-org/mason-lspconfig.nvim",
     dependencies = {
-        { "mason-org/mason.nvim", opts = {} },
-        "neovim/nvim-lspconfig",
+      { "mason-org/mason.nvim", opts = {} },
+      "neovim/nvim-lspconfig",
+      "WhoIsSethDaniel/mason-tool-installer.nvim",
     },
-    opts = {
-      ensure_installed = {
-        "bashls",
-        "dockerls",
-        "docker_compose_language_service",
-        "lua_ls",
-        "dotls",
-        -- "eslint",
-        "html",
-        "ts_ls",
-        -- "biome",
-        "marksman",
-        "phpactor",
-        "ruff",
-        "yamlls",
-        "jsonls",
-        "vls",
-      },
-    },
+    config = function()
+      local mason = require("mason")
+
+      local mason_tool_installer = require("mason-tool-installer")
+
+      mason.setup({
+        ui = {
+          icons = {
+            package_installed = "✓",
+            package_pending = "➜",
+            package_uninstalled = "✗",
+          },
+        },
+      })
+
+      mason_tool_installer.setup({
+        ensure_installed = {
+          "bashls",
+          "dockerls",
+          "docker_compose_language_service",
+          "lua_ls",
+          "dotls",
+          "html",
+          "eslint",
+          "ts_ls",
+          "marksman",
+          "phpactor",
+          "ruff",
+          "yamlls",
+          "jsonls",
+          "vls",
+        },
+      })
+    end,
   },
   {
     "kdheepak/lazygit.nvim",
@@ -856,36 +840,41 @@ require("lazy").setup({
       },
     },
   },
-  -- {
-  --   "mfussenegger/nvim-lint",
-  --   lazy = true,
-  --   event = { "BufReadPre", "BufNewFile" }, -- to disable, comment this out
-  --   config = function()
-  --     local lint = require("lint")
-  --
-  --     lint.linters_by_ft = {
-  --       javascript = { "eslint" },
-  --       typescript = { "eslint" },
-  --       javascriptreact = { "eslint" },
-  --       typescriptreact = { "eslint" },
-  --       svelte = { "eslint" },
-  --       python = { "pylint" },
-  --     }
-  --
-  --     local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
-  --
-  --     vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
-  --       group = lint_augroup,
-  --       callback = function()
-  --         lint.try_lint()
-  --       end,
-  --     })
-  --
-  --     vim.keymap.set("n", "<leader>l", function()
-  --       lint.try_lint()
-  --     end, { desc = "Trigger linting for current file" })
-  --   end,
-  -- },
+  {
+    "mfussenegger/nvim-lint",
+    lazy = true,
+    event = { "BufReadPre", "BufNewFile" },
+    config = function()
+      local lint = require("lint")
+
+      lint.linters_by_ft = {
+        javascript = { "eslint_" },
+        typescript = { "eslint" },
+        javascriptreact = { "eslint" },
+        typescriptreact = { "eslint" },
+        svelte = { "eslint" },
+        python = { "pylint" },
+      }
+
+      local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
+
+      vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
+        group = lint_augroup,
+        callback = function()
+          lint.try_lint()
+        end,
+      })
+
+      vim.keymap.set("n", "<leader>l", function()
+        lint.try_lint()
+      end, { desc = "Trigger linting for current file" })
+    end,
+  },
+
+  {
+    "dmmulroy/ts-error-translator.nvim",
+    config = true
+  },
   {
     "mvllow/modes.nvim",
     config = function()
@@ -896,7 +885,21 @@ require("lazy").setup({
         line_opacity = 0.3,
       })
     end
-  }
+  },
+
+  {
+    "pmizio/typescript-tools.nvim",
+    event = "LspAttach",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "neovim/nvim-lspconfig",
+      {
+        "saghen/blink.cmp",
+        lazy = false,
+        priority = 1000,
+      }
+    },
+  },
 }, {
   checker = {
     enabled = true,  -- enables the update checker

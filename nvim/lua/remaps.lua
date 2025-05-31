@@ -106,3 +106,14 @@ map('n', '<Leader>t', "<Cmd>StripTrailingWhitespace<CR>", NS)
 
 -- TROUBLE
 map('n', '<Leader>td', "<Cmd>Trouble diagnostics toggle<CR>", NS)
+
+-- FORMAT
+vim.keymap.set('n', 'kf',
+  function()
+    require("conform").format({ async = true, timeout_ms = 500, lsp_format = "last" })
+  end, NS)
+
+vim.keymap.set('v', 'kf',
+  function()
+    require("conform").format({ async = true, timeout_ms = 500, lsp_format = "last" })
+  end, NS)
