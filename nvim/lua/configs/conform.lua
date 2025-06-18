@@ -21,8 +21,11 @@ require("conform").setup({
 		css = { "biome", "trim_whitespace", "trim_newlines" },
 		vue = { "biome", "trim_whitespace", "trim_newlines" },
 		php = { "php_cs_fixer" },
+    rust = { "ast-grep" },
+    yaml = { "yamlft" },
 	},
 	formatters = {
+  formatWithErrors = true,
 		injected = {
 			options = {
 				ignore_errors = true,

@@ -4,6 +4,7 @@ vim.lsp.set_log_level("off")
 local lspconfig = require("lspconfig")
 local on_attach = function(client, bufnr)
 	local opts = {
+    buffer = bufnr,
 		noremap = true,
 		silent = true,
 	}
@@ -11,6 +12,23 @@ local on_attach = function(client, bufnr)
 	vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
 
 	vim.lsp.inlay_hint.enable(true, { bufnr })
+
+  -- CODE ACTION
+  -- vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, { buffer = bufnr, desc = 'Code Action' })
+  -- vim.keymap.set('n', '<leader>ca', require('telescope.builtin').lsp_code_actions, { desc = 'Telescope Code Actions' })
+  -- vim.keymap.set('v', '<leader>ca', vim.lsp.buf.code_action, { buffer = bufnr, desc = 'Code Action (Range)' })
+
+  -- -- Go to definition
+  -- vim.keymap.set("n", "<leader>gd", vim.lsp.buf.definition, opts)
+  -- Hover
+  vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
+  -- -- Rename symbol
+  -- vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
+  -- -- Show diagnostics in quickfix list
+  -- vim.keymap.set("n", "<leader>qf", function() vim.diagnostic.setqflist() end, opts)
+  -- -- Go to next/prev diagnostic
+  -- vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
+  -- vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
 
 	print("LSP attached!")
 end
@@ -28,6 +46,7 @@ require("mason-lspconfig").setup({
 				dynamicRegistration = false,
 				lineFoldingOnly = true,
 			}
+      capabilities.codeActionProvider = true
 
 			lspconfig.phpactor.setup({
 				on_attach = on_attach,

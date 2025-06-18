@@ -199,7 +199,7 @@ require("lazy").setup({
       {
         "saghen/blink.cmp",
         event = { "InsertEnter", "CmdlineEnter" },
-      }
+      },
     },
   },
   {
@@ -394,7 +394,7 @@ require("lazy").setup({
     end,
   },
   {
-    'saghen/blink.cmp',
+    "saghen/blink.cmp",
     event = { "InsertEnter", "CmdlineEnter" },
     version = "*",
     dependencies = {
@@ -413,33 +413,37 @@ require("lazy").setup({
       },
     },
 
-    build = 'cargo build --release',
+    build = "cargo build --release",
 
     opts = {
       keymap = {
-        preset = 'super-tab',
+        preset = "super-tab",
         ["<S-k>"] = { "scroll_documentation_up", "fallback" },
-        ["<S-j>"] = { "scroll_documentation_down", "fallback" }
+        ["<S-j>"] = { "scroll_documentation_down", "fallback" },
       },
 
       snippets = {
-        preset = 'luasnip',
-        expand = function(snippet) require('luasnip').lsp_expand(snippet) end,
+        preset = "luasnip",
+        expand = function(snippet)
+          require("luasnip").lsp_expand(snippet)
+        end,
         active = function(filter)
           if filter and filter.direction then
-            return require('luasnip').jumpable(filter.direction)
+            return require("luasnip").jumpable(filter.direction)
           end
-          return require('luasnip').in_snippet()
+          return require("luasnip").in_snippet()
         end,
-        jump = function(direction) require('luasnip').jump(direction) end,
+        jump = function(direction)
+          require("luasnip").jump(direction)
+        end,
       },
 
       sources = {
         default = {
-          'lsp',
-          'path',
-          'snippets',
-          'buffer',
+          "lsp",
+          "path",
+          "snippets",
+          "buffer",
         },
       },
 
@@ -447,7 +451,7 @@ require("lazy").setup({
         trigger = {
           show_on_trigger_character = true,
           show_on_insert_on_trigger_character = true,
-          show_on_x_blocked_trigger_characters = { "'", '"', '(', '{' },
+          show_on_x_blocked_trigger_characters = { "'", '"', "(", "{" },
         },
         menu = {
           draw = {
@@ -469,7 +473,6 @@ require("lazy").setup({
         ghost_text = {
           enabled = disabled,
         },
-
       },
 
       signature = {
@@ -482,41 +485,39 @@ require("lazy").setup({
     appearance = {
       kind_icons = {
         Copilot = "",
-        Text = '󰉿',
-        Method = '󰊕',
-        Function = '󰊕',
-        Constructor = '󰒓',
+        Text = "󰉿",
+        Method = "󰊕",
+        Function = "󰊕",
+        Constructor = "󰒓",
 
-        Field = '󰜢',
-        Variable = '󰆦',
-        Property = '󰖷',
+        Field = "󰜢",
+        Variable = "󰆦",
+        Property = "󰖷",
 
-        Class = '󱡠',
-        Interface = '󱡠',
-        Struct = '󱡠',
-        Module = '󰅩',
+        Class = "󱡠",
+        Interface = "󱡠",
+        Struct = "󱡠",
+        Module = "󰅩",
 
-        Unit = '󰪚',
-        Value = '󰦨',
-        Enum = '󰦨',
-        EnumMember = '󰦨',
+        Unit = "󰪚",
+        Value = "󰦨",
+        Enum = "󰦨",
+        EnumMember = "󰦨",
 
-        Keyword = '󰻾',
-        Constant = '󰏿',
+        Keyword = "󰻾",
+        Constant = "󰏿",
 
-        Snippet = '󱄽',
-        Color = '󰏘',
-        File = '󰈔',
-        Reference = '󰬲',
-        Folder = '󰉋',
-        Event = '󱐋',
-        Operator = '󰪚',
-        TypeParameter = '󰬛',
+        Snippet = "󱄽",
+        Color = "󰏘",
+        File = "󰈔",
+        Reference = "󰬲",
+        Folder = "󰉋",
+        Event = "󱐋",
+        Operator = "󰪚",
+        TypeParameter = "󰬛",
       },
-
     },
   },
-
 
   -- LSP & CMP
   {
@@ -576,32 +577,32 @@ require("lazy").setup({
       require("better_escape").setup()
     end,
   },
-  {
-    "echasnovski/mini.ai",
-    -- keys = {
-    --   { "a", mode = { "x", "o" } },
-    --   { "i", mode = { "x", "o" } },
-    -- },
-    event = "VeryLazy",
-    opts = function()
-      local ai = require("mini.ai")
-      return {
-        n_lines = 500,
-        custom_textobjects = {
-          o = ai.gen_spec.treesitter({
-            a = { "@block.outer", "@conditional.outer", "@loop.outer" },
-            i = { "@block.inner", "@conditional.inner", "@loop.inner" },
-          }, {}),
-          f = ai.gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" }, {}),
-          c = ai.gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }, {}),
-          t = { "<([%p%w]-)%f[^<%w][^<>]->.-</%1>", "^<.->().*()</[^/]->$" },
-        },
-      }
-    end,
-    config = function(_, opts)
-      require("mini.ai").setup(opts)
-    end,
-  },
+  -- {
+  -- 	"echasnovski/mini.ai",
+  -- 	-- keys = {
+  -- 	--   { "a", mode = { "x", "o" } },
+  -- 	--   { "i", mode = { "x", "o" } },
+  -- 	-- },
+  -- 	event = "VeryLazy",
+  -- 	opts = function()
+  -- 		local ai = require("mini.ai")
+  -- 		return {
+  -- 			n_lines = 500,
+  -- 			custom_textobjects = {
+  -- 				o = ai.gen_spec.treesitter({
+  -- 					a = { "@block.outer", "@conditional.outer", "@loop.outer" },
+  -- 					i = { "@block.inner", "@conditional.inner", "@loop.inner" },
+  -- 				}, {}),
+  -- 				f = ai.gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" }, {}),
+  -- 				c = ai.gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }, {}),
+  -- 				t = { "<([%p%w]-)%f[^<%w][^<>]->.-</%1>", "^<.->().*()</[^/]->$" },
+  -- 			},
+  -- 		}
+  -- 	end,
+  -- 	config = function(_, opts)
+  -- 		require("mini.ai").setup(opts)
+  -- 	end,
+  -- },
   {
     "kevinhwang91/nvim-ufo",
     dependencies = {
@@ -724,8 +725,26 @@ require("lazy").setup({
       "mxsdev/nvim-dap-vscode-js",
       {
         "microsoft/vscode-js-debug",
-        opt = true,
-        run = "npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out",
+        build = function()
+          local install_path = vim.fn.stdpath("data") .. "/lazy/vscode-js-debug"
+
+          if not vim.fn.isdirectory(install_path .. "/out") then
+            vim.cmd("echo 'Installing vscode-js-debug...'")
+            vim.fn.system({
+              "npm",
+              "install",
+              "--legacy-peer-deps",
+            })
+
+            vim.cmd("echo 'Building vsDebugServerBundle...'")
+            vim.fn.system({ "npx", "gulp", "vsDebugServerBundle" })
+
+            vim.cmd("echo 'Moving dist to out...'")
+            vim.fn.system({ "mv", "dist", "out" })
+          else
+            vim.cmd("echo 'vscode-js-debug already built.'")
+          end
+        end,
       },
     },
     config = function()
@@ -759,16 +778,16 @@ require("lazy").setup({
     "MTDL9/vim-log-highlighting",
     lazy = true,
     event = "VeryLazy",
-    ft = { "log" }
+    ft = { "log" },
   },
   {
     "olimorris/persisted.nvim",
-    event = "VimEnter",
-    config = function()
-      require("persisted").setup({
-        autoload = true,
-      })
-    end,
+    event = "BufReadPre",
+    opts = {
+      autostart = true,
+      autoload = true,
+      use_git_branch = true,
+    },
   },
   -- Highlight URLs inside vim
   {
@@ -808,63 +827,66 @@ require("lazy").setup({
       })
     end,
   },
-  {
-    "yetone/avante.nvim",
-    event = "VeryLazy",
-    lazy = true,
-    version = false, -- never set this value to "*"! never!
-    opts = {
-      provider = "claude",
-      claude = {
-        endpoint = "https://api.anthropic.com",
-        model = "claude-3-5-sonnet-20241022",
-        temperature = 0,
-        max_tokens = 4096,
-      },
-    },
-    build = "make",
-    dependencies = {
-      "nvim-treesitter/nvim-treesitter",
-      "stevearc/dressing.nvim",
-      "nvim-lua/plenary.nvim",
-      "muniftanjim/nui.nvim",
-      --- the below dependencies are optional,
-      "echasnovski/mini.pick",      -- for file_selector provider mini.pick
-      "nvim-telescope/telescope.nvim", -- for file_selector provider telescope
-      "hrsh7th/nvim-cmp",           -- autocompletion for avante commands and mentions
-      "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
-      {
-        -- make sure to set this up properly if you have lazy=true
-        "meanderingprogrammer/render-markdown.nvim",
-        opts = {
-          file_types = { "markdown", "avante" },
-        },
-        ft = { "markdown", "avante" },
-      },
-    },
-  },
+  -- {
+  --   {
+  --     "CopilotC-Nvim/CopilotChat.nvim",
+  --     dependencies = {
+  --       { "github/copilot.vim" },                   -- or zbirenbaum/copilot.lua
+  --       { "nvim-lua/plenary.nvim", branch = "master" }, -- for curl, log and async functions
+  --     },
+  --     build = "make tiktoken",                      -- Only on MacOS or Linux
+  --   },
+  -- },
+  -- {
+  --   "yetone/avante.nvim",
+  --   event = "VeryLazy",
+  --   lazy = true,
+  --   version = false, -- never set this value to "*"! never!
+  --   opts = {
+  --     provider = "claude",
+  --     claude = {
+  --       endpoint = "https://api.anthropic.com",
+  --       model = "claude-3-5-sonnet-20241022",
+  --       temperature = 0,
+  --       max_tokens = 4096,
+  --     },
+  --   },
+  --   build = "make",
+  --   dependencies = {
+  --     "nvim-treesitter/nvim-treesitter",
+  --     "stevearc/dressing.nvim",
+  --     "nvim-lua/plenary.nvim",
+  --     "muniftanjim/nui.nvim",
+  --     --- the below dependencies are optional,
+  --     "echasnovski/mini.pick",      -- for file_selector provider mini.pick
+  --     "nvim-telescope/telescope.nvim", -- for file_selector provider telescope
+  --     "hrsh7th/nvim-cmp",           -- autocompletion for avante commands and mentions
+  --     "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
+  --     {
+  --       -- make sure to set this up properly if you have lazy=true
+  --       "meanderingprogrammer/render-markdown.nvim",
+  --       opts = {
+  --         file_types = { "markdown", "avante" },
+  --       },
+  --       ft = { "markdown", "avante" },
+  --     },
+  --   },
+  -- },
   {
     "dmmulroy/ts-error-translator.nvim",
     ft = { "typescript", "typescriptreact", "javascript", "javascriptreact" },
-    config = true
+    config = true,
   },
   {
     "mvllow/modes.nvim",
     config = function()
-      require('modes').setup({
+      require("modes").setup({
         colors = {
           visual = "#bababa",
         },
         line_opacity = 0.3,
       })
-    end
-  },
-
-}, {
-  checker = {
-    enabled = true,  -- enables the update checker
-    concurrency = 8, -- limit the number of concurrent update checks
-    frequency = 86400, -- check for updates every 24 hour (in seconds)
+    end,
   },
 }, {
   performance = {

@@ -117,3 +117,7 @@ vim.keymap.set('v', 'kf',
   function()
     require("conform").format({ async = true, timeout_ms = 500, lsp_format = "last" })
   end, NS)
+
+-- Code action (quick fix)
+map("n", "<leader>ca", ":lua vim.lsp.buf.code_action()<CR>", NS)
+map("v", "<leader>ca", ":lua vim.lsp.buf.code_action()<CR>", NS)

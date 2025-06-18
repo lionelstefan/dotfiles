@@ -33,3 +33,7 @@ vim.cmd([[
 vim.cmd([[
 	autocmd VimEnter * highlight TreesitterContext guibg=#353A3C
 ]])
+
+vim.cmd([[
+  autocmd BufWritePre * lua require("conform").format({ async = true, timeout_ms = 500, formatters = { "trim_whitespace", "trim_newlines" } })
+]])
