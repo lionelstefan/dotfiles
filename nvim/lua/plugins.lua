@@ -198,7 +198,8 @@ require("lazy").setup({
       "neovim/nvim-lspconfig",
       {
         "saghen/blink.cmp",
-        event = { "InsertEnter", "CmdlineEnter" },
+        lazy = false,
+        priority = 1000,
       },
     },
   },
@@ -674,7 +675,6 @@ require("lazy").setup({
           "dotls",
           "html",
           "biome",
-          -- "ts_ls",
           "marksman",
           "phpactor",
           "ruff",
@@ -782,6 +782,7 @@ require("lazy").setup({
   },
   {
     "olimorris/persisted.nvim",
+    lazy = false,
     event = "BufReadPre",
     opts = {
       autostart = true,
@@ -874,7 +875,6 @@ require("lazy").setup({
   -- },
   {
     "dmmulroy/ts-error-translator.nvim",
-    ft = { "typescript", "typescriptreact", "javascript", "javascriptreact" },
     config = true,
   },
   {
@@ -888,7 +888,28 @@ require("lazy").setup({
       })
     end,
   },
+  {
+    "nvim-pack/nvim-spectre",
+    config = function()
+      require('spectre').setup()
+    end
+  },
+  {
+    "ray-x/lsp_signature.nvim",
+    event = "InsertEnter",
+    config = function()
+      require "lsp_signature".setup({});
+    end
+  }
 }, {
+  debug = false,
+  defaults = { lazy = false },
+  install = {
+    colorscheme = {
+      "gruvbox",
+    }
+  },
+  concurrency = 10,
   performance = {
     cache = {
       enabled = true,

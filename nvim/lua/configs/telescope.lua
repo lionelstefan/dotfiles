@@ -33,6 +33,11 @@ telescope.setup({
       on_project_selected = function(prompt_bufnr)
         project_actions.change_working_directory(prompt_bufnr, false)
       end
+    },
+    fzf = {
+      override_generic_sorter = false,
+      override_file_sorter = true,
+      case_mode = "smart_case",
     }
   },
 })

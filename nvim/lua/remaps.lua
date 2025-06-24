@@ -121,3 +121,24 @@ vim.keymap.set('v', 'kf',
 -- Code action (quick fix)
 map("n", "<leader>ca", ":lua vim.lsp.buf.code_action()<CR>", NS)
 map("v", "<leader>ca", ":lua vim.lsp.buf.code_action()<CR>", NS)
+
+-- Smart indent after normal mode paste
+vim.keymap.set("n", "p", "p`[v`]=`]", { noremap = true, silent = true })
+vim.keymap.set("n", "P", "P`[v`]=`]", { noremap = true, silent = true })
+
+-- Smart indent after visual mode paste
+vim.keymap.set("x", "p", "\"_dP`[v`]=`]", { noremap = true, silent = true })
+vim.keymap.set("x", "P", "\"_dP`[v`]=`]", { noremap = true, silent = true })
+
+vim.keymap.set('n', '<leader>S', '<cmd>lua require("spectre").toggle()<CR>', {
+    desc = "Toggle Spectre"
+})
+vim.keymap.set('n', '<leader>sw', '<cmd>lua require("spectre").open_visual({select_word=true})<CR>', {
+    desc = "Search current word"
+})
+vim.keymap.set('v', '<leader>sw', '<esc><cmd>lua require("spectre").open_visual()<CR>', {
+    desc = "Search current word"
+})
+vim.keymap.set('n', '<leader>sp', '<cmd>lua require("spectre").open_file_search({select_word=true})<CR>', {
+    desc = "Search on current file"
+})
