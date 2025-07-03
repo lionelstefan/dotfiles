@@ -256,15 +256,30 @@ require("lazy").setup({
   },
   {
     "lewis6991/gitsigns.nvim",
+    lazy = true,
+    event = { "BufReadPre", "BufNewFile" },
     config = function()
       require("gitsigns").setup({
         signs = {
-          add = { text = "│" },
-          change = { text = "│" },
-          delete = { text = "󰍵" },
-          topdelete = { text = "‾" },
-          changedelete = { text = "~" },
+          add = { hl = 'GitSignsAdd', text = "│" },
+          change = { hl = 'GitSignsChange', text = "│" },
+          delete = { hl = 'GitSignsDelete', text = "󰍵" },
+          topdelete = { hl = 'GitSignsDelete', text = "‾" },
+          changedelete = { hl = 'GitSignsChange', text = "~" },
           untracked = { text = "│" },
+        },
+        numhl = false,
+        linehl = false,
+        watch_gitdir = { interval = 1000 },
+        sign_priority = 6,
+        update_debounce = 200,
+        status_formatter = nil,
+        current_line_blame = true,
+        current_line_blame_opts = {
+          virt_text = true,
+          virt_text_pos = 'right_align',
+          delay = 300,
+          virt_text_priority = 100,
         },
       })
     end,
@@ -346,7 +361,6 @@ require("lazy").setup({
         ts_config = {
           lua = { "string" },            -- don't add pairs in lua string treesitter nodes
           javascript = { "template_string" }, -- don't add pairs in javscript template_string treesitter nodes
-          java = false,                  -- don't check treesitter on java
         },
       })
     end,
@@ -569,12 +583,6 @@ require("lazy").setup({
     },
   },
   {
-    "f-person/git-blame.nvim",
-    config = function()
-      require("gitblame").setup()
-    end,
-  },
-  {
     "fei6409/log-highlight.nvim",
     lazy = true,
     event = "VeryLazy",
@@ -773,10 +781,6 @@ require("lazy").setup({
         }
       }
     },
-  },
-  {
-    "OXY2DEV/ui.nvim",
-    lazy = false,
   }
 }, {
   debug = false,
