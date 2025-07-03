@@ -882,7 +882,7 @@ require("lazy").setup({
   },
   {
     "OXY2DEV/ui.nvim",
-    lazy = false
+    lazy = false,
   }
 }, {
   debug = false,
