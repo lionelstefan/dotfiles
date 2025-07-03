@@ -390,9 +390,6 @@ require("lazy").setup({
   },
   {
     "neovim/nvim-lspconfig",
-    config = function()
-      require("configs.lsp")
-    end,
   },
   {
     "saghen/blink.cmp",
@@ -652,37 +649,7 @@ require("lazy").setup({
       "WhoIsSethDaniel/mason-tool-installer.nvim",
     },
     config = function()
-      local mason = require("mason")
-
-      local mason_tool_installer = require("mason-tool-installer")
-
-      mason.setup({
-        ui = {
-          icons = {
-            package_installed = "✓",
-            package_pending = "➜",
-            package_uninstalled = "✗",
-          },
-        },
-      })
-
-      mason_tool_installer.setup({
-        ensure_installed = {
-          "bashls",
-          "dockerls",
-          "docker_compose_language_service",
-          "lua_ls",
-          "dotls",
-          "html",
-          "biome",
-          "marksman",
-          "phpactor",
-          "ruff",
-          "yamlls",
-          "jsonls",
-          "vls",
-        },
-      })
+      require("configs.lsp")
     end,
   },
   {
@@ -900,6 +867,22 @@ require("lazy").setup({
     config = function()
       require "lsp_signature".setup({});
     end
+  },
+  {
+    "rachartier/tiny-glimmer.nvim",
+    event = "VeryLazy",
+    priority = 10,
+    opts = {
+      overwrite = {
+        undo = {
+          enabled = true
+        }
+      }
+    },
+  },
+  {
+    "OXY2DEV/ui.nvim",
+    lazy = false
   }
 }, {
   debug = false,

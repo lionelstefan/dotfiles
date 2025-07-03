@@ -3,11 +3,11 @@ local M = {}
 local on_attach = function(client, bufnr)
   client.server_capabilities.documentFormattingProvider = false
   client.server_capabilities.documentRangeFormattingProvider = false
-  client.resolved_capabilities.document_formatting = false
+  client.server_capabilities.document_formatting = false
 end
 
 M.filetypes = {
-  "vue",
+  'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue'
 }
 
 M.init_options = {
@@ -23,6 +23,9 @@ M.init_options = {
     stylusSupremacy = {},
     typescript = {
       format = {},
+    },
+    vue = {
+      hybridMode = false,
     },
     vetur = {
       completion = {

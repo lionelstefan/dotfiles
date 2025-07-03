@@ -1,3 +1,4 @@
+-- NEOVIM LSPCONFIG
 vim.lsp.set_log_level("off")
 -- vim.lsp.set_log_level('debug')
 
@@ -36,8 +37,13 @@ end
 local handlers = {
   ["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
     silent = true,
+    border = "rounded",
   }),
-  ["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {}),
+  ["textDocument/signatureHelp"] = vim.lsp.with(
+    vim.lsp.handlers.signature_help, {
+      border = "rounded",
+    }
+  ),
 }
 
 local capabilities = require("blink.cmp").get_lsp_capabilities()
@@ -51,186 +57,216 @@ capabilities.textDocument.foldingRange = {
 }
 capabilities.codeActionProvider = true
 
+
+vim.lsp.config('phpactor', {
+  on_attach = on_attach,
+  capabilities = capabilities,
+  filetypes = { "php" },
+})
+
+vim.lsp.config('html', {
+  on_attach = on_attach,
+  capabilities = capabilities,
+  filetypes = { "html" },
+  init_options = {
+    configurationSection = { "html", "css", "javascript" },
+    embeddedLanguages = {
+      css = true,
+      javascript = true,
+    },
+    provideFormatter = true,
+  },
+})
+
+vim.lsp.config('bashls', {
+  on_attach = on_attach,
+  capabilities = capabilities,
+  cmd = { "bash-language-server", "start" },
+  filetypes = { "sh", "zsh" },
+})
+
+vim.lsp.config('jsonls', {
+  capabilities = capabilities,
+  handlers = handlers,
+  on_attach = on_attach,
+  settings = require("configs.lsp.servers.jsonls").settings,
+})
+
+require("lazydev").setup()
+
+vim.lsp.config('lua_ls', {
+  on_attach = on_attach,
+  capabilities = capabilities,
+  cmd = { "lua-language-server" },
+  filetypes = { "lua" },
+  settings = {
+    cmd = {
+      '"/home/lionelstefan/homebrew/bin/lua-language-server" "$@"',
+    },
+    runtime = {
+      version = "LuaJIT",
+    },
+    format = {
+      enable = true,
+      defaultConfig = {
+        indent_style = "space",
+        indent_size = "2",
+      },
+    },
+    diagnostics = {
+      globals = { "vim" },
+    },
+    workspace = {
+      library = vim.api.nvim_get_runtime_file("", true),
+    },
+    telemetry = {
+      enable = false,
+    },
+    Lua = {
+      completion = {
+        callSnippet = "Replace",
+      },
+    },
+  },
+})
+
+vim.lsp.config('cssls', {
+  on_attach = on_attach,
+  capabilities = capabilities,
+})
+
+vim.lsp.config('vue_ls', {
+  filetypes = require("configs.lsp.servers.vuels").filetypes,
+  handlers = handlers,
+  init_options = require("configs.lsp.servers.vuels").init_options,
+  on_attach = require("configs.lsp.servers.vuels").on_attach,
+  settings = require("configs.lsp.servers.vuels").settings,
+})
+
+vim.lsp.config('ts_ls', {
+  filetypes = require("configs.lsp.servers.tsserver").filetypes,
+  init_options = require("configs.lsp.servers.tsserver").init_options,
+  capabilities = capabilities or vim.lsp.protocol.make_client_capabilities(),
+  handlers = require("configs.lsp.servers.tsserver").handlers,
+  on_attach = require("configs.lsp.servers.tsserver").on_attach,
+  settings = require("configs.lsp.servers.tsserver").settings,
+})
+
+vim.lsp.config('ruff', {
+  on_attach = on_attach,
+  capabilities = capabilities,
+  filetypes = { "python" },
+})
+
+vim.lsp.config('svelte', {
+  on_attach = on_attach,
+  capabilities = capabilities,
+  filetypes = { "svelte" },
+})
+
+vim.lsp.config('tailwindcss', {
+  cmd = { "tailwindcss-language-server", "--stdio" },
+  filetypes = {
+    "aspnetcorerazor",
+    "astro",
+    "astro-markdown",
+    "clojure",
+    "django-html",
+    "htmldjango",
+    "edge",
+    "eelixir",
+    "elixir",
+    "ejs",
+    "erb",
+    "eruby",
+    "gohtml",
+    "haml",
+    "handlebars",
+    "hbs",
+    "html",
+    "html-eex",
+    "heex",
+    "jade",
+    "leaf",
+    "liquid",
+    "markdown",
+    "mdx",
+    "mustache",
+    "njk",
+    "nunjucks",
+    "razor",
+    "slim",
+    "twig",
+    "css",
+    "less",
+    "postcss",
+    "sass",
+    "scss",
+    "stylus",
+    "sugarss",
+    "javascript",
+    "javascriptreact",
+    "reason",
+    "rescript",
+    "typescript",
+    "typescriptreact",
+    "vue",
+    "svelte",
+  },
+})
+
+vim.lsp.config('gopls', {
+  on_attach = on_attach,
+  capabilities = capabilities,
+  filetypes = { "go", "gomod", "gowork", "gotmpl" },
+})
+
+vim.lsp.config('marksman', {
+  on_attach = on_attach,
+  capabilities = capabilities,
+  filetypes = { "markdown" },
+})
+
+vim.lsp.config('vue_ls', {
+  filetypes = require("configs.lsp.servers.vuels").filetypes,
+  handlers = handlers,
+  init_options = require("configs.lsp.servers.vuels").init_options,
+  on_attach = require("configs.lsp.servers.vuels").on_attach,
+  settings = require("configs.lsp.servers.vuels").settings,
+})
+
+
+-- MASON LSPCONFIG
+
+local mason = require("mason")
+
+mason.setup({
+  ui = {
+    icons = {
+      package_installed = "✓",
+      package_pending = "➜",
+      package_uninstalled = "✗",
+    },
+  },
+})
+
 require("mason").setup({})
 require("mason-lspconfig").setup({
-  handlers = {
-    function()
-
-      lspconfig.phpactor.setup({
-        on_attach = on_attach,
-        capabilities = capabilities,
-        filetypes = { "php" },
-      })
-
-      lspconfig.html.setup({
-        on_attach = on_attach,
-        capabilities = capabilities,
-        filetypes = { "html" },
-        init_options = {
-          configurationSection = { "html", "css", "javascript" },
-          embeddedLanguages = {
-            css = true,
-            javascript = true,
-          },
-          provideFormatter = true,
-        },
-      })
-
-      lspconfig.bashls.setup({
-        on_attach = on_attach,
-        capabilities = capabilities,
-        cmd = { "bash-language-server", "start" },
-        filetypes = { "sh", "zsh" },
-      })
-
-      lspconfig.jsonls.setup({
-        capabilities = capabilities,
-        handlers = handlers,
-        on_attach = on_attach,
-        settings = require("lsp.servers.jsonls").settings,
-      })
-
-      require("lazydev").setup()
-
-      lspconfig.lua_ls.setup({
-        on_attach = on_attach,
-        capabilities = capabilities,
-        cmd = { "lua-language-server" },
-        filetypes = { "lua" },
-        settings = {
-          cmd = {
-            '"/home/lionelstefan/homebrew/bin/lua-language-server" "$@"',
-          },
-          runtime = {
-            version = "LuaJIT",
-          },
-          format = {
-            enable = true,
-            defaultConfig = {
-              indent_style = "space",
-              indent_size = "2",
-            },
-          },
-          diagnostics = {
-            globals = { "vim" },
-          },
-          workspace = {
-            library = vim.api.nvim_get_runtime_file("", true),
-          },
-          telemetry = {
-            enable = false,
-          },
-          Lua = {
-            completion = {
-              callSnippet = "Replace",
-            },
-          },
-        },
-      })
-
-      lspconfig.cssls.setup({
-        on_attach = on_attach,
-        capabilities = capabilities,
-      })
-
-      lspconfig.vls.setup({
-        filetypes = require("lsp.servers.vuels").filetypes,
-        handlers = handlers,
-        init_options = require("lsp.servers.vuels").init_options,
-        on_attach = require("lsp.servers.vuels").on_attach,
-        settings = require("lsp.servers.vuels").settings,
-      })
-
-      lspconfig.ts_ls.setup({
-        capabilities = capabilities or vim.lsp.protocol.make_client_capabilities(),
-        handlers = require("lsp.servers.tsserver").handlers,
-        on_attach = require("lsp.servers.tsserver").on_attach,
-        settings = require("lsp.servers.tsserver").settings,
-      })
-
-      lspconfig.ruff.setup({
-        on_attach = on_attach,
-        capabilities = capabilities,
-        filetypes = { "python" },
-      })
-
-      lspconfig.svelte.setup({
-        on_attach = on_attach,
-        capabilities = capabilities,
-        filetypes = { "svelte" },
-      })
-
-      lspconfig.tailwindcss.setup({
-        cmd = { "tailwindcss-language-server", "--stdio" },
-        filetypes = {
-          "aspnetcorerazor",
-          "astro",
-          "astro-markdown",
-          "clojure",
-          "django-html",
-          "htmldjango",
-          "edge",
-          "eelixir",
-          "elixir",
-          "ejs",
-          "erb",
-          "eruby",
-          "gohtml",
-          "haml",
-          "handlebars",
-          "hbs",
-          "html",
-          "html-eex",
-          "heex",
-          "jade",
-          "leaf",
-          "liquid",
-          "markdown",
-          "mdx",
-          "mustache",
-          "njk",
-          "nunjucks",
-          "razor",
-          "slim",
-          "twig",
-          "css",
-          "less",
-          "postcss",
-          "sass",
-          "scss",
-          "stylus",
-          "sugarss",
-          "javascript",
-          "javascriptreact",
-          "reason",
-          "rescript",
-          "typescript",
-          "typescriptreact",
-          "vue",
-          "svelte",
-        },
-      })
-
-      lspconfig.gopls.setup({
-        on_attach = on_attach,
-        capabilities = capabilities,
-        filetypes = { "go", "gomod", "gowork", "gotmpl" },
-      })
-
-      lspconfig.marksman.setup({
-        on_attach = on_attach,
-        capabilities = capabilities,
-        filetypes = { "markdown" },
-      })
-
-      lspconfig.vuels.setup({
-        filetypes = require("lsp.servers.vuels").filetypes,
-        handlers = handlers,
-        init_options = require("lsp.servers.vuels").init_options,
-        on_attach = require("lsp.servers.vuels").on_attach,
-        settings = require("lsp.servers.vuels").settings,
-      })
-    end,
+  ensure_installed = {
+    "bashls",
+    "dockerls",
+    "docker_compose_language_service",
+    "lua_ls",
+    "dotls",
+    "html",
+    "biome",
+    "ts_ls",
+    "marksman",
+    "phpactor",
+    "ruff",
+    "yamlls",
+    "jsonls",
+    "vue_ls",
   },
 })
 

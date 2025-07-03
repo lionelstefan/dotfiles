@@ -1,16 +1,16 @@
 local M = {}
 
-local filter = require("config.lsp.utils.filter").filter
-local filterReactDTS = require("config.lsp.utils.filterReactDTS").filterReactDTS
+local filter = require("configs.lsp.utils.filter").filter
+local filterReactDTS = require("configs.lsp.utils.filterReactDTS").filterReactDTS
 
 local handlers = {
   ["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
     silent = true,
-    border = EcoVim.ui.float.border or "rounded",
+    border = "rounded",
   }),
   ["textDocument/signatureHelp"] = vim.lsp.with(
     vim.lsp.handlers.signature_help, {
-      border = EcoVim.ui.float.border or "rounded",
+      border = "rounded",
     }
   ),
   ["textDocument/publishDiagnostics"] = vim.lsp.with(
@@ -101,8 +101,26 @@ local on_attach = function(client, bufnr)
   client.server_capabilities.documentRangeFormattingProvider = false
 end
 
+local init_options = {
+  plugins = {
+    {
+      name = "@vue/typescript-plugin",
+      location = "/home/lionelstefan/.local/share/pnpm/global/5/node_modules/@vue/typescript-plugin",
+      languages = {"javascript", "typescript", "vue"},
+    },
+  },
+}
+
+local filetypes = {
+  "javascript",
+  "typescript",
+  "vue",
+}
+
 M.handlers = handlers
 M.settings = settings
 M.on_attach = on_attach
+M.init_options = init_options
+M.filetypes = filetypes
 
 return M
