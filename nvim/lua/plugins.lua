@@ -126,7 +126,7 @@ require("lazy").setup({
   {
     "b0o/incline.nvim",
     config = function()
-      require("incline").setup()
+      require("configs.incline")
     end,
   },
   {
@@ -361,20 +361,14 @@ require("lazy").setup({
     dependencies = {
       "nvim-lua/plenary.nvim",
       "Snikimonkd/telescope-git-conflicts.nvim",
+      "nvim-telescope/telescope-project.nvim",
+      "nvim-telescope/telescope-file-browser.nvim",
+      {
+        "nvim-telescope/telescope-fzf-native.nvim",
+        build = "make",
+      },
+      "nvim-telescope/telescope-frecency.nvim",
     },
-  },
-  {
-    "nvim-telescope/telescope-project.nvim",
-  },
-  {
-    "nvim-telescope/telescope-file-browser.nvim",
-  },
-  {
-    "nvim-telescope/telescope-fzf-native.nvim",
-    build = "make",
-  },
-  {
-    "nvim-telescope/telescope-frecency.nvim",
   },
   {
     "lukas-reineke/indent-blankline.nvim",
@@ -392,14 +386,24 @@ require("lazy").setup({
     "neovim/nvim-lspconfig",
   },
   {
+    "saghen/blink.compat",
+    lazy = true,
+  },
+  {
     "saghen/blink.cmp",
     event = { "InsertEnter", "CmdlineEnter" },
     version = "*",
     dependencies = {
-      {
-        "saghen/blink.compat",
-        opts = { impersonate_nvim_cmp = true },
-      },
+      "hrsh7th/cmp-nvim-lsp",
+      "hrsh7th/cmp-buffer",
+      "hrsh7th/cmp-path",
+      "hrsh7th/cmp-cmdline",
+      "hrsh7th/cmp-nvim-lua",
+      "hrsh7th/cmp-calc",
+      "hrsh7th/cmp-emoji",
+      "f3fora/cmp-spell",
+      "saadparwaiz1/cmp_luasnip",
+      "hrsh7th/cmp-nvim-lsp-signature-help",
       "rafamadriz/friendly-snippets",
       {
         "L3MON4D3/LuaSnip",
@@ -410,111 +414,9 @@ require("lazy").setup({
         end,
       },
     },
-
     build = "cargo build --release",
-
-    opts = {
-      keymap = {
-        preset = "super-tab",
-        ["<S-k>"] = { "scroll_documentation_up", "fallback" },
-        ["<S-j>"] = { "scroll_documentation_down", "fallback" },
-      },
-
-      snippets = {
-        preset = "luasnip",
-        expand = function(snippet)
-          require("luasnip").lsp_expand(snippet)
-        end,
-        active = function(filter)
-          if filter and filter.direction then
-            return require("luasnip").jumpable(filter.direction)
-          end
-          return require("luasnip").in_snippet()
-        end,
-        jump = function(direction)
-          require("luasnip").jump(direction)
-        end,
-      },
-
-      sources = {
-        default = {
-          "lsp",
-          "path",
-          "snippets",
-          "buffer",
-        },
-      },
-
-      completion = {
-        trigger = {
-          show_on_trigger_character = true,
-          show_on_insert_on_trigger_character = true,
-          show_on_x_blocked_trigger_characters = { "'", '"', "(", "{" },
-        },
-        menu = {
-          draw = {
-            columns = { { "label", "label_description", gap = 1 }, { "kind_icon", "kind", gap = 1 } },
-            treesitter = {},
-          },
-        },
-
-        accept = {
-          auto_brackets = { enabled = false },
-        },
-
-        documentation = {
-          auto_show = true,
-          auto_show_delay_ms = 500,
-          treesitter_highlighting = true,
-        },
-
-        ghost_text = {
-          enabled = disabled,
-        },
-      },
-
-      signature = {
-        enabled = true,
-      },
-    },
-
-    opts_extend = { "sources.default" },
-
-    appearance = {
-      kind_icons = {
-        Copilot = "",
-        Text = "󰉿",
-        Method = "󰊕",
-        Function = "󰊕",
-        Constructor = "󰒓",
-
-        Field = "󰜢",
-        Variable = "󰆦",
-        Property = "󰖷",
-
-        Class = "󱡠",
-        Interface = "󱡠",
-        Struct = "󱡠",
-        Module = "󰅩",
-
-        Unit = "󰪚",
-        Value = "󰦨",
-        Enum = "󰦨",
-        EnumMember = "󰦨",
-
-        Keyword = "󰻾",
-        Constant = "󰏿",
-
-        Snippet = "󱄽",
-        Color = "󰏘",
-        File = "󰈔",
-        Reference = "󰬲",
-        Folder = "󰉋",
-        Event = "󱐋",
-        Operator = "󰪚",
-        TypeParameter = "󰬛",
-      },
-    },
+    lazy = true,
+    opts = require("configs.blinkcmp").opts,
   },
 
   -- LSP & CMP
@@ -767,7 +669,6 @@ require("lazy").setup({
     "jdhao/whitespace.nvim",
     event = { "InsertEnter" },
     lazy = true,
-    event = "VeryLazy",
   },
   {
     "justinsgithub/wezterm-types",
@@ -859,13 +760,6 @@ require("lazy").setup({
     "nvim-pack/nvim-spectre",
     config = function()
       require('spectre').setup()
-    end
-  },
-  {
-    "ray-x/lsp_signature.nvim",
-    event = "InsertEnter",
-    config = function()
-      require "lsp_signature".setup({});
     end
   },
   {

@@ -2,7 +2,6 @@
 vim.lsp.set_log_level("off")
 -- vim.lsp.set_log_level('debug')
 
-local lspconfig = require("lspconfig")
 local on_attach = function(client, bufnr)
   local opts = {
     buffer = bufnr,
@@ -10,7 +9,7 @@ local on_attach = function(client, bufnr)
     silent = true,
   }
 
-  vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
+  vim.api.nvim_set_option_value("omnifunc", "v:lua.vim.lsp.omnifunc", { buf = bufnr })
 
   vim.lsp.inlay_hint.enable(true, { bufnr })
 
@@ -19,33 +18,26 @@ local on_attach = function(client, bufnr)
   -- vim.keymap.set('n', '<leader>ca', require('telescope.builtin').lsp_code_actions, { desc = 'Telescope Code Actions' })
   -- vim.keymap.set('v', '<leader>ca', vim.lsp.buf.code_action, { buffer = bufnr, desc = 'Code Action (Range)' })
 
-  -- -- Go to definition
-  -- vim.keymap.set("n", "<leader>gd", vim.lsp.buf.definition, opts)
   -- Hover
   vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
-  -- -- Rename symbol
-  -- vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
-  -- -- Show diagnostics in quickfix list
-  -- vim.keymap.set("n", "<leader>qf", function() vim.diagnostic.setqflist() end, opts)
-  -- -- Go to next/prev diagnostic
-  -- vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
-  -- vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
-  require("lsp_signature").on_attach({}, bufnr)
+
   print("LSP attached!")
 end
 
 local handlers = {
-  ["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-    silent = true,
-    border = "rounded",
-  }),
-  ["textDocument/signatureHelp"] = vim.lsp.with(
-    vim.lsp.handlers.signature_help, {
+  ["textDocument/hover"] = function()
+    return vim.lsp.buf.hover({
+      silent = true,
       border = "rounded",
-    }
-  ),
-}
+    })
+  end,
 
+  ["textDocument/signatureHelp"] = function()
+    return vim.lsp.buf.signature_help({
+      border = "rounded",
+    })
+  end,
+}
 local capabilities = require("blink.cmp").get_lsp_capabilities()
 
 capabilities.textDocument.completion.completionItem.snippetSupport = true
