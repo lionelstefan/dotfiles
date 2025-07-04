@@ -64,7 +64,6 @@ require("incline").setup({
     end
 
     table.insert(result, " ")
-    result.guibg = "#0D0C0C"
 
     return result
   end,

@@ -7,7 +7,7 @@ local on_attach = function(client, bufnr)
 end
 
 M.filetypes = {
-  'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue'
+  'vue'
 }
 
 M.init_options = {

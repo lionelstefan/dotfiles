@@ -1,7 +1,7 @@
 -- NEOVIM LSPCONFIG
 vim.lsp.set_log_level("off")
 -- vim.lsp.set_log_level('debug')
-
+require("lspconfig")
 local on_attach = function(client, bufnr)
   local opts = {
     buffer = bufnr,
@@ -9,7 +9,8 @@ local on_attach = function(client, bufnr)
     silent = true,
   }
 
-  vim.api.nvim_set_option_value("omnifunc", "v:lua.vim.lsp.omnifunc", { buf = bufnr })
+  -- vim.api.nvim_set_option_value("omnifunc", "v:lua.vim.lsp.omnifunc", { buf = bufnr })
+  vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
 
   vim.lsp.inlay_hint.enable(true, { bufnr })
 
@@ -25,18 +26,29 @@ local on_attach = function(client, bufnr)
 end
 
 local handlers = {
-  ["textDocument/hover"] = function()
-    return vim.lsp.buf.hover({
-      silent = true,
+  ["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
+    silent = true,
+    border = "rounded",
+  }),
+  ["textDocument/signatureHelp"] = vim.lsp.with(
+    vim.lsp.handlers.signature_help, {
       border = "rounded",
-    })
-  end,
+    }
+  ),
 
-  ["textDocument/signatureHelp"] = function()
-    return vim.lsp.buf.signature_help({
-      border = "rounded",
-    })
-  end,
+  -- ADJUST FOR NEOVIM 12
+  -- ["textDocument/hover"] = function()
+  --   return vim.lsp.buf.hover({
+  --     silent = true,
+  --     border = "rounded",
+  --   })
+  -- end,
+  --
+  -- ["textDocument/signatureHelp"] = function()
+  --   return vim.lsp.buf.signature_help({
+  --     border = "rounded",
+  --   })
+  -- end,
 }
 local capabilities = require("blink.cmp").get_lsp_capabilities()
 
@@ -135,13 +147,19 @@ vim.lsp.config('vue_ls', {
   settings = require("configs.lsp.servers.vuels").settings,
 })
 
-vim.lsp.config('ts_ls', {
+-- vim.lsp.config('ts_ls', {
+--   filetypes = require("configs.lsp.servers.tsserver").filetypes,
+--   init_options = require("configs.lsp.servers.tsserver").init_options,
+--   capabilities = capabilities or vim.lsp.protocol.make_client_capabilities(),
+--   handlers = require("configs.lsp.servers.tsserver").handlers,
+--   on_attach = require("configs.lsp.servers.tsserver").on_attach,
+--   settings = require("configs.lsp.servers.tsserver").settings,
+-- })
+
+vim.lsp.config('vtsls', {
   filetypes = require("configs.lsp.servers.tsserver").filetypes,
-  init_options = require("configs.lsp.servers.tsserver").init_options,
   capabilities = capabilities or vim.lsp.protocol.make_client_capabilities(),
-  handlers = require("configs.lsp.servers.tsserver").handlers,
   on_attach = require("configs.lsp.servers.tsserver").on_attach,
-  settings = require("configs.lsp.servers.tsserver").settings,
 })
 
 vim.lsp.config('ruff', {
@@ -252,13 +270,14 @@ require("mason-lspconfig").setup({
     "dotls",
     "html",
     "biome",
-    "ts_ls",
     "marksman",
     "phpactor",
     "ruff",
     "yamlls",
     "jsonls",
     "vue_ls",
+    -- "ts_ls",
+    "vtsls",
   },
 })
 
