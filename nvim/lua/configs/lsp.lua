@@ -8,7 +8,6 @@ local on_attach = function(client, bufnr)
     noremap = true,
     silent = true,
   }
-
   -- vim.api.nvim_set_option_value("omnifunc", "v:lua.vim.lsp.omnifunc", { buf = bufnr })
   vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
 
@@ -157,9 +156,10 @@ vim.lsp.config('vue_ls', {
 -- })
 
 vim.lsp.config('vtsls', {
-  filetypes = require("configs.lsp.servers.tsserver").filetypes,
+  filetypes = require("configs.lsp.servers.vtsls").filetypes,
   capabilities = capabilities or vim.lsp.protocol.make_client_capabilities(),
-  on_attach = require("configs.lsp.servers.tsserver").on_attach,
+  settings = require('configs.lsp.servers.vtsls').settings,
+  on_attach = require("configs.lsp.servers.vtsls").on_attach,
 })
 
 vim.lsp.config('ruff', {

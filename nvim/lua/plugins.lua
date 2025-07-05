@@ -204,115 +204,7 @@ require("lazy").setup({
       },
     },
     build = "cargo build --release",
-    opts = {
-      appearance = {
-        kind_icons = {
-          Copilot = "",
-          Text = "󰉿",
-          Method = "󰊕",
-          Function = "󰊕",
-          Constructor = "󰒓",
-
-          Field = "󰜢",
-          Variable = "󰆦",
-          Property = "󰖷",
-
-          Class = "󱡠",
-          Interface = "󱡠",
-          Struct = "󱡠",
-          Module = "󰅩",
-
-          Unit = "󰪚",
-          Value = "󰦨",
-          Enum = "󰦨",
-          EnumMember = "󰦨",
-
-          Keyword = "󰻾",
-          Constant = "󰏿",
-
-          Snippet = "󱄽",
-          Color = "󰏘",
-          File = "󰈔",
-          Reference = "󰬲",
-          Folder = "󰉋",
-          Event = "󱐋",
-          Operator = "󰪚",
-          TypeParameter = "󰬛",
-        },
-      },
-
-      fuzzy = {
-        implementation = "prefer_rust",
-        sorts = {
-          'score'
-        },
-      },
-
-      keymap = {
-        preset = "super-tab",
-        ["<S-k>"] = { "scroll_documentation_up", "fallback" },
-        ["<S-j>"] = { "scroll_documentation_down", "fallback" },
-      },
-
-      snippets = {
-        preset = "luasnip",
-        expand = function(snippet)
-          require("luasnip").lsp_expand(snippet)
-        end,
-        active = function(filter)
-          if filter and filter.direction then
-            return require("luasnip").jumpable(filter.direction)
-          end
-          return require("luasnip").in_snippet()
-        end,
-        jump = function(direction)
-          require("luasnip").jump(direction)
-        end,
-      },
-
-      sources = {
-        default = {
-          "lsp",
-          "path",
-          "snippets",
-          "buffer",
-        },
-      },
-
-      completion = {
-        keyword = {
-          range = 'prefix'
-        },
-
-        menu = {
-          draw = {
-            columns = {
-              { "label", "label_description", gap = 1 },
-              { "kind_icon", "kind", gap = 1 }
-            },
-            treesitter = {},
-          },
-        },
-
-        accept = {
-          auto_brackets = { enabled = false },
-        },
-
-        documentation = {
-          auto_show = true,
-          auto_show_delay_ms = 500,
-          treesitter_highlighting = true,
-        },
-
-        ghost_text = {
-          enabled = false,
-        },
-      },
-
-      signature = {
-        enabled = true,
-      },
-    },
+    opts = require("configs.blinkcmp").opts,
   },
   {
     "pmizio/typescript-tools.nvim",
@@ -375,6 +267,9 @@ require("lazy").setup({
     "nvim-tree/nvim-web-devicons",
   },
   {
+    "onsails/lspkind.nvim",
+  },
+  {
     "nvim-lualine/lualine.nvim",
     event = "VeryLazy",
     config = function()
@@ -416,7 +311,7 @@ require("lazy").setup({
   },
   {
     "sindrets/diffview.nvim",
-    event = "VeryLazy",
+    lazy = true,
   },
   {
     "HiPhish/rainbow-delimiters.nvim",
@@ -841,6 +736,20 @@ require("lazy").setup({
   --   },
   -- },
   {
+    'MeanderingProgrammer/render-markdown.nvim',
+    dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
+    opts = {},
+    filetypes = { 'markdown' },
+    config = function ()
+      require('render-markdown').setup({
+        completions = {
+          lsp = { enabled = true },
+          blink = { enabled = true },
+        },
+      })
+    end
+  },
+  {
     "dmmulroy/ts-error-translator.nvim",
     config = true,
   },
@@ -856,9 +765,31 @@ require("lazy").setup({
     end,
   },
   {
-    "nvim-pack/nvim-spectre",
+    'MagicDuck/grug-far.nvim',
     config = function()
-      require('spectre').setup()
+      require('grug-far').setup({
+        -- search the whole project (starting from cwd)
+        search_path = require('lspconfig.util').root_pattern('.git')(vim.fn.expand('%:p')),
+
+        -- options passed to ripgrep (rg)
+        rg_opts = {
+          '--hidden',         -- include hidden files
+          '--glob', '!.git/', -- exclude .git directory
+          '--no-heading',
+          '--with-filename',
+          '--line-number',
+          '--column',
+          '--smart-case',
+        },
+
+        -- options passed to replace
+        sed_opts = {
+          '-i', ''
+        },
+
+        -- whether to replace using sed or not (default: true)
+        use_sed = true,
+      });
     end
   },
   {

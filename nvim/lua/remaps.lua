@@ -25,7 +25,18 @@ map("n", "cd", ":cd ", NR)
 -- Buffer cycle
 map("n", "<leader>1", ":BufferLineCyclePrev<CR>", { noremap = false })
 map("n", "<leader>2", ":BufferLineCycleNext<CR>", { noremap = false })
-map("n", "<leader>q", ":lua MiniBufremove.delete()<CR>", { noremap = false })
+vim.keymap.set("n", "<leader>q", function()
+  local buftype = vim.api.nvim_get_option_value("buftype", { buf = 0 })
+  local buflisted = vim.fn.buflisted(0) == 1
+
+  if buftype == "" and buflisted then
+    -- Normal buffer, safe to use MiniBufremove
+    require("mini.bufremove").delete(0, false)
+  else
+    -- Special buffer like grug-far, floating, terminal, etc.
+    vim.cmd("bd")
+  end
+end, { noremap = true, desc = "Close buffer or :bd for special" })
 map("n", "<leader>qa", ":bd<CR>", { noremap = false })
 
 -- Harpoon
@@ -117,6 +128,11 @@ vim.keymap.set('v', 'kf',
   function()
     require("conform").format({ async = true, timeout_ms = 500, lsp_format = "last" })
   end, NS)
+
+-- SEARCH AND REPLACE
+vim.keymap.set('n', '<leader>sr', function()
+  require("grug-far").open()
+end, { desc = "Find and Replace in Project" })
 
 -- Code action (quick fix)
 map("n", "<leader>ca", ":lua vim.lsp.buf.code_action()<CR>", NS)
