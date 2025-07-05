@@ -103,6 +103,7 @@ require("lazy").setup({
   },
   {
     "ThePrimeagen/harpoon",
+    lazy = true,
     branch = "harpoon2",
     config = function()
       require("configs.harpoon")
@@ -148,6 +149,7 @@ require("lazy").setup({
   },
   {
     "kevinhwang91/nvim-hlslens",
+    event = { "BufReadPre" },
     config = function()
       require("hlslens").setup()
     end,
@@ -214,6 +216,7 @@ require("lazy").setup({
       "nvim-lua/plenary.nvim",
       {
         "neovim/nvim-lspconfig",
+        event = { "BufReadPre" },
         lazy = false,
       },
       {
@@ -343,6 +346,7 @@ require("lazy").setup({
   },
   {
     "numToStr/Comment.nvim",
+    event = { "InsertEnter" },
     config = function()
       require("Comment").setup({
         pre_hook = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook(),
@@ -355,6 +359,7 @@ require("lazy").setup({
   },
   {
     "nvim-treesitter/nvim-treesitter",
+    event = { "BufReadPre" },
     build = ":TSUpdate",
     config = function()
       require("configs.treesitter")
@@ -381,6 +386,7 @@ require("lazy").setup({
   },
   {
     "nvim-telescope/telescope.nvim",
+    lazy = true,
     event = "VimEnter",
     config = function()
       require("configs.telescope")
@@ -400,6 +406,7 @@ require("lazy").setup({
   },
   {
     "lukas-reineke/indent-blankline.nvim",
+    event = { "BufReadPre" },
     config = function()
       require("configs.ibl")
     end,
@@ -421,6 +428,12 @@ require("lazy").setup({
     config = function()
       require("auto-save").setup({
         enabled = true,
+        condition = function(buf)
+          -- Don't autosave if buffer is unnamed or not modifiable
+          local name = vim.api.nvim_buf_get_name(buf)
+          local buftype = vim.api.nvim_buf_get_option(buf, "buftype")
+          return name ~= "" and buftype == ""
+        end,
       })
     end,
   },
@@ -533,6 +546,7 @@ require("lazy").setup({
   },
   {
     "williamboman/mason.nvim",
+    event = { "BufReadPre" },
     lazy = false,
     config = function()
       require("mason").setup({
@@ -548,6 +562,7 @@ require("lazy").setup({
   },
   {
     "mason-org/mason-lspconfig.nvim",
+    event = { "BufReadPre" },
     lazy = false,
     dependencies = {
       { "mason-org/mason.nvim", opts = {} },
@@ -737,7 +752,11 @@ require("lazy").setup({
   -- },
   {
     'MeanderingProgrammer/render-markdown.nvim',
-    dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
+    lazy = true,
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter',
+      'nvim-tree/nvim-web-devicons'
+    }, -- if you prefer nvim-web-devicons
     opts = {},
     filetypes = { 'markdown' },
     config = function ()
@@ -766,6 +785,7 @@ require("lazy").setup({
   },
   {
     'MagicDuck/grug-far.nvim',
+    event = { "BufReadPre" },
     config = function()
       require('grug-far').setup({
         -- search the whole project (starting from cwd)

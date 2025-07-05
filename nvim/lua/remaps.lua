@@ -26,10 +26,28 @@ map("n", "cd", ":cd ", NR)
 map("n", "<leader>1", ":BufferLineCyclePrev<CR>", { noremap = false })
 map("n", "<leader>2", ":BufferLineCycleNext<CR>", { noremap = false })
 vim.keymap.set("n", "<leader>q", function()
+  local excluded_filetypes = {
+    "neo-tree",
+    "TelescopePrompt",
+    "lazy",
+    "lazygit",
+    "grug-far",
+    "mason",
+  }
   local buftype = vim.api.nvim_get_option_value("buftype", { buf = 0 })
   local buflisted = vim.fn.buflisted(0) == 1
+  local filetype = vim.bo.filetype
 
-  if buftype == "" and buflisted then
+  local function is_excluded()
+    for _, ft in ipairs(excluded_filetypes) do
+      if ft == filetype then
+        return true
+      end
+    end
+    return false
+  end
+
+  if buftype == "" and buflisted and not is_excluded() then
     -- Normal buffer, safe to use MiniBufremove
     require("mini.bufremove").delete(0, false)
   else

@@ -34,61 +34,82 @@ vim.cmd([[
 	autocmd VimEnter * highlight TreesitterContext guibg=#353A3C
 ]])
 
-vim.api.nvim_create_autocmd({ "BufLeave", "BufDelete", "BufWinLeave" }, {
-  callback = function()
-    require("conform").format({
-      async = true,
-      timeout_ms = 500,
-      formatters = { "trim_whitespace", "trim_newlines" },
-    })
-  end,
+vim.api.nvim_create_autocmd({
+	"VimLeave",
+}, {
+	callback = function()
+		for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+			local name = vim.api.nvim_buf_get_name(buf)
+			local ft = vim.bo[buf].filetype
+
+			if name ~= "" and vim.fn.buflisted(buf) == 1 and vim.bo[buf].modifiable and vim.bo[buf].modified then
+				local excluded = false
+				for _, ex in ipairs(excluded_filetypes) do
+					if ft == ex then
+						excluded = true
+						break
+					end
+				end
+
+				if not excluded then
+					pcall(require("conform").format, {
+						bufnr = buf,
+						async = false,
+						timeout_ms = 500,
+						formatters = { "trim_whitespace", "trim_newlines" },
+					})
+				end
+			end
+		end
+	end,
 })
+
 vim.api.nvim_create_autocmd("ColorScheme", {
-  pattern = "*",
-  callback = function()
-    local colors = {
-      bg          = "#282828",
-      fg          = "#fbf1c7",
-      yellow      = "#f9bd2a",
-      gray        = "#7c6f64",
-      dark_gray   = "#3c3836",
-      green       = "#a9b665",
-      orange      = "#f28534",
-      blue        = "#7daea3",
-      purple      = "#d3869b",
-      scrollbar   = "#665c54",
-    }
+	pattern = "*",
+	callback = function()
+		local colors = {
+			bg = "#282828",
+			fg = "#fbf1c7",
+			yellow = "#f9bd2a",
+			gray = "#7c6f64",
+			dark_gray = "#3c3836",
+			green = "#a9b665",
+			orange = "#f28534",
+			blue = "#7daea3",
+			purple = "#d3869b",
+			scrollbar = "#665c54",
+		}
 
-    vim.api.nvim_set_hl(0, "BlinkCmpMenu",              { bg = colors.bg, fg = colors.fg })
-    vim.api.nvim_set_hl(0, "BlinkCmpMenuBorder",        { fg = colors.gray, bg = colors.bg })
-    vim.api.nvim_set_hl(0, "BlinkCmpMenuSelection",     { bg = colors.dark_gray, fg = colors.yellow, bold = true })
-    vim.api.nvim_set_hl(0, "BlinkCmpScrollBarThumb",    { bg = colors.scrollbar })
-    vim.api.nvim_set_hl(0, "BlinkCmpScrollBarGutter",   { bg = colors.bg })
+		vim.api.nvim_set_hl(0, "BlinkCmpMenu", { bg = colors.bg, fg = colors.fg })
+		vim.api.nvim_set_hl(0, "BlinkCmpMenuBorder", { fg = colors.gray, bg = colors.bg })
+		vim.api.nvim_set_hl(0, "BlinkCmpMenuSelection", { bg = colors.dark_gray, fg = colors.yellow, bold = true })
+		vim.api.nvim_set_hl(0, "BlinkCmpScrollBarThumb", { bg = colors.scrollbar })
+		vim.api.nvim_set_hl(0, "BlinkCmpScrollBarGutter", { bg = colors.bg })
 
-    vim.api.nvim_set_hl(0, "BlinkCmpLabel",             { fg = colors.fg })
-    vim.api.nvim_set_hl(0, "BlinkCmpLabelDeprecated",   { fg = colors.gray, strikethrough = true })
-    vim.api.nvim_set_hl(0, "BlinkCmpLabelMatch",        { fg = colors.yellow, bold = true })
-    vim.api.nvim_set_hl(0, "BlinkCmpLabelDetail",       { fg = colors.gray })
-    vim.api.nvim_set_hl(0, "BlinkCmpLabelDescription",  { fg = colors.gray })
+		vim.api.nvim_set_hl(0, "BlinkCmpLabel", { fg = colors.fg })
+		vim.api.nvim_set_hl(0, "BlinkCmpLabelDeprecated", { fg = colors.gray, strikethrough = true })
+		vim.api.nvim_set_hl(0, "BlinkCmpLabelMatch", { fg = colors.yellow, bold = true })
+		vim.api.nvim_set_hl(0, "BlinkCmpLabelDetail", { fg = colors.gray })
+		vim.api.nvim_set_hl(0, "BlinkCmpLabelDescription", { fg = colors.gray })
 
-    vim.api.nvim_set_hl(0, "BlinkCmpKind",              { fg = colors.green })
-    vim.api.nvim_set_hl(0, "BlinkCmpKindFunction",      { fg = colors.green })
-    vim.api.nvim_set_hl(0, "BlinkCmpKindMethod",        { fg = colors.green })
-    vim.api.nvim_set_hl(0, "BlinkCmpKindVariable",      { fg = colors.blue })
-    vim.api.nvim_set_hl(0, "BlinkCmpKindField",         { fg = colors.purple })
-    vim.api.nvim_set_hl(0, "BlinkCmpKindClass",         { fg = colors.orange })
-    vim.api.nvim_set_hl(0, "BlinkCmpKindInterface",     { fg = colors.orange })
-    vim.api.nvim_set_hl(0, "BlinkCmpKindText",          { fg = colors.fg })
+		vim.api.nvim_set_hl(0, "BlinkCmpKind", { fg = colors.green })
+		vim.api.nvim_set_hl(0, "BlinkCmpKindFunction", { fg = colors.green })
+		vim.api.nvim_set_hl(0, "BlinkCmpKindMethod", { fg = colors.green })
+		vim.api.nvim_set_hl(0, "BlinkCmpKindVariable", { fg = colors.blue })
+		vim.api.nvim_set_hl(0, "BlinkCmpKindField", { fg = colors.purple })
+		vim.api.nvim_set_hl(0, "BlinkCmpKindClass", { fg = colors.orange })
+		vim.api.nvim_set_hl(0, "BlinkCmpKindInterface", { fg = colors.orange })
+		vim.api.nvim_set_hl(0, "BlinkCmpKindText", { fg = colors.fg })
 
-    vim.api.nvim_set_hl(0, "BlinkCmpSource",            { fg = colors.gray })
-    vim.api.nvim_set_hl(0, "BlinkCmpGhostText",         { fg = colors.gray, italic = true })
+		vim.api.nvim_set_hl(0, "BlinkCmpSource", { fg = colors.gray })
+		vim.api.nvim_set_hl(0, "BlinkCmpGhostText", { fg = colors.gray, italic = true })
 
-    vim.api.nvim_set_hl(0, "BlinkCmpDoc",               { bg = colors.bg, fg = colors.fg })
-    vim.api.nvim_set_hl(0, "BlinkCmpDocBorder",         { fg = colors.gray, bg = colors.bg })
-    vim.api.nvim_set_hl(0, "BlinkCmpDocSeparator",      { fg = colors.gray })
-    vim.api.nvim_set_hl(0, "BlinkCmpDocCursorLine",     { bg = colors.dark_gray })
-    vim.api.nvim_set_hl(0, "BlinkCmpSignatureHelp",     { bg = colors.bg, fg = colors.fg })
-    vim.api.nvim_set_hl(0, "BlinkCmpSignatureHelpBorder", { fg = colors.gray, bg = colors.bg })
-    vim.api.nvim_set_hl(0, "BlinkCmpSignatureHelpActiveParameter", { fg = colors.yellow, underline = true })
-  end,
+		vim.api.nvim_set_hl(0, "BlinkCmpDoc", { bg = colors.bg, fg = colors.fg })
+		vim.api.nvim_set_hl(0, "BlinkCmpDocBorder", { fg = colors.gray, bg = colors.bg })
+		vim.api.nvim_set_hl(0, "BlinkCmpDocSeparator", { fg = colors.gray })
+		vim.api.nvim_set_hl(0, "BlinkCmpDocCursorLine", { bg = colors.dark_gray })
+		vim.api.nvim_set_hl(0, "BlinkCmpSignatureHelp", { bg = colors.bg, fg = colors.fg })
+		vim.api.nvim_set_hl(0, "BlinkCmpSignatureHelpBorder", { fg = colors.gray, bg = colors.bg })
+		vim.api.nvim_set_hl(0, "BlinkCmpSignatureHelpActiveParameter", { fg = colors.yellow, underline = true })
+	end,
 })
