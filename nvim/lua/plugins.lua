@@ -171,6 +171,20 @@ require("lazy").setup({
     },
     config = function()
       require("neo-tree").setup({
+        event_handlers = {
+          {
+            event = "neo_tree_buffer_enter",
+            handler = function()
+              vim.cmd("highlight! Cursor blend=100")
+            end,
+          },
+          {
+            event = "neo_tree_buffer_leave",
+            handler = function()
+              vim.cmd("highlight! Cursor guibg=#5f87af blend=0")
+            end,
+          },
+        },
         enable_diagnostics = false,
         filesystem = {
           filtered_items = {
@@ -179,6 +193,32 @@ require("lazy").setup({
             hide_gitignored = false,
             hide_hidden = false,
           },
+          icon = function(config, node, state)
+            local icon = config.default or " "
+            local padding = config.padding or " "
+            local highlight = config.highlight or highlights.FILE_ICON
+
+            if node.type == "directory" then
+              highlight = highlights.DIRECTORY_ICON
+              if node:is_expanded() then
+                icon = config.folder_open or "-"
+              else
+                icon = config.folder_closed or "+"
+              end
+            elseif node.type == "file" then
+              local success, web_devicons = pcall(require, "nvim-web-devicons")
+              if success then
+                local devicon, hl = web_devicons.get_icon(node.name, node.ext)
+                icon = devicon or icon
+                highlight = hl or highlight
+              end
+            end
+
+            return {
+              text = icon .. padding,
+              highlight = highlight,
+            }
+          end,
         },
         popup_border_style = "single",
         enable_git_status = true,
@@ -192,6 +232,7 @@ require("lazy").setup({
   },
   {
     "saghen/blink.cmp",
+    lazy = true,
     event = { "InsertEnter", "CmdlineEnter" },
     version = "*",
     dependencies = {
@@ -216,12 +257,13 @@ require("lazy").setup({
       "nvim-lua/plenary.nvim",
       {
         "neovim/nvim-lspconfig",
-        event = { "BufReadPre" },
-        lazy = false,
+        event = { "BufReadPre", "BufNewFile" }, -- only load on buffer read
+        lazy = true,
       },
       {
         "saghen/blink.cmp",
-        lazy = false,
+        event = { "InsertEnter", "CmdlineEnter" },
+        lazy = true,
       }
     },
   },
@@ -356,10 +398,13 @@ require("lazy").setup({
   -- TREESITTER
   {
     "nvim-treesitter/playground",
+    event = { "BufReadPre" },
+    lazy = true,
   },
   {
     "nvim-treesitter/nvim-treesitter",
     event = { "BufReadPre" },
+    lazy = true,
     build = ":TSUpdate",
     config = function()
       require("configs.treesitter")
@@ -367,18 +412,25 @@ require("lazy").setup({
   },
   {
     "RRethy/nvim-treesitter-endwise",
+    event = { "BufReadPre" },
+    lazy = true,
   },
   {
     "JoosepAlviste/nvim-ts-context-commentstring",
+    event = { "BufReadPre" },
+    lazy = true,
   },
   {
     "windwp/nvim-ts-autotag",
+    event = { "BufReadPre" },
+    lazy = true,
     config = function()
       require("nvim-ts-autotag").setup()
     end,
   },
   {
     "windwp/nvim-autopairs",
+    lazy = true,
     event = { "InsertEnter" },
     config = function()
       require("configs.autopairs")
@@ -387,7 +439,7 @@ require("lazy").setup({
   {
     "nvim-telescope/telescope.nvim",
     lazy = true,
-    event = "VimEnter",
+    event = "VeryLazy",
     config = function()
       require("configs.telescope")
     end,
@@ -419,7 +471,8 @@ require("lazy").setup({
   },
   {
     "neovim/nvim-lspconfig",
-    lazy = false,
+    event = { "BufReadPre", "BufNewFile" }, -- only load on buffer read
+    lazy = true,
   },
 
   -- LSP & CMP
@@ -449,7 +502,7 @@ require("lazy").setup({
       require("nvim-cursorline").setup({
         cursorline = {
           enable = true,
-          timeout = 1000,
+          timeout = 200,
           number = false,
         },
         cursorword = {
@@ -520,8 +573,15 @@ require("lazy").setup({
   },
   {
     "zeioth/garbage-day.nvim",
-    dependencies = "neovim/nvim-lspconfig",
+    lazy = true,
     event = "VeryLazy",
+    dependencies = {
+      {
+        "neovim/nvim-lspconfig",
+        event = { "BufReadPre", "BufNewFile" }, -- only load on buffer read
+        lazy = true,
+      }
+    },
   },
   {
     "danymat/neogen",
@@ -540,14 +600,16 @@ require("lazy").setup({
   },
   {
     "neovim/nvim-lspconfig",
+    lazy = true,
+    event = { "BufReadPre", "BufNewFile" }, -- only load on buffer read
     config = function()
       require("configs.lsp")
     end,
   },
   {
     "williamboman/mason.nvim",
-    event = { "BufReadPre" },
-    lazy = false,
+    event = { "BufReadPre", "BufNewFile" }, -- only load on buffer read
+    lazy = true,
     config = function()
       require("mason").setup({
         ui = {
@@ -562,15 +624,24 @@ require("lazy").setup({
   },
   {
     "mason-org/mason-lspconfig.nvim",
-    event = { "BufReadPre" },
-    lazy = false,
+    event = { "BufReadPre", "BufNewFile" }, -- only load on buffer read
+    lazy = true,
     dependencies = {
-      { "mason-org/mason.nvim", opts = {} },
-      "neovim/nvim-lspconfig",
+      { 
+        "mason-org/mason.nvim", 
+        opts = {},
+        event = { "BufReadPre", "BufNewFile" }, -- only load on buffer read
+      },
+      {
+        "neovim/nvim-lspconfig",
+        lazy = true,
+        event = { "BufReadPre", "BufNewFile" }, -- only load on buffer read
+      },
     },
   },
   {
     "kdheepak/lazygit.nvim",
+    lazy = true,
     cmd = {
       "LazyGit",
       "LazyGitConfig",
@@ -582,15 +653,6 @@ require("lazy").setup({
     dependencies = {
       "nvim-lua/plenary.nvim",
     },
-  },
-  {
-    "fei6409/log-highlight.nvim",
-    lazy = true,
-    event = "VeryLazy",
-    ft = { "log" },
-    config = function()
-      require("log-highlight").setup({})
-    end,
   },
   {
     "mfussenegger/nvim-dap",
@@ -651,12 +713,6 @@ require("lazy").setup({
   {
     "Bilal2453/luvit-meta",
     lazy = true,
-  },
-  {
-    "MTDL9/vim-log-highlighting",
-    lazy = true,
-    event = "VeryLazy",
-    ft = { "log" },
   },
   {
     "olimorris/persisted.nvim",
@@ -770,7 +826,8 @@ require("lazy").setup({
   },
   {
     "dmmulroy/ts-error-translator.nvim",
-    config = true,
+    lazy = true,
+    event = { "LspAttach" },
   },
   {
     "mvllow/modes.nvim",
@@ -813,6 +870,16 @@ require("lazy").setup({
     end
   },
   {
+    "rachartier/tiny-devicons-auto-colors.nvim",
+    dependencies = {
+      "nvim-tree/nvim-web-devicons"
+    },
+    event = "VeryLazy",
+    config = function()
+      require('tiny-devicons-auto-colors').setup()
+    end
+  },
+  {
     "rachartier/tiny-glimmer.nvim",
     event = "VeryLazy",
     priority = 10,
@@ -823,21 +890,47 @@ require("lazy").setup({
         }
       }
     },
+  },
+  {
+    "rachartier/tiny-code-action.nvim",
+    dependencies = {
+      {"nvim-lua/plenary.nvim"},
+      {"nvim-telescope/telescope.nvim"},
+    },
+    event = "LspAttach",
+    opts = {},
+  },
+  {
+    "rachartier/tiny-inline-diagnostic.nvim",
+    event = "VeryLazy", -- Or `LspAttach`
+    priority = 1000, -- needs to be loaded in first
+    config = function()
+      require('tiny-inline-diagnostic').setup({
+        preset = "nonerdfont"
+      })
+      vim.diagnostic.config({ virtual_text = false }) -- Only if needed in your configuration, if you already have native LSP diagnostics
+    end
+  },
+  {
+    "b0o/schemastore.nvim",
+  },
+  {
+    "xzbdmw/colorful-menu.nvim",
   }
 }, {
-  debug = false,
-  defaults = { lazy = false },
-  install = {
-    colorscheme = {
-      "gruvbox",
-    }
-  },
+    debug = false,
+    defaults = { lazy = false },
+    install = {
+      colorscheme = {
+        "gruvbox",
+      }
+    },
   concurrency = 10,
   performance = {
     cache = {
       enabled = true,
     },
-    rpt = {
+    rtp = {
       disabled_plugins = {
         "netrw",
         "netrwPlugin",

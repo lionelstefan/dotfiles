@@ -34,6 +34,10 @@ local handlers = {
       border = "rounded",
     }
   ),
+  ["textDocument/publishDiagnostics"] = function(err, result, ctx)
+    require("ts-error-translator").translate_diagnostics(err, result, ctx)
+    vim.lsp.diagnostic.on_publish_diagnostics(err, result, ctx)
+  end
 
   -- ADJUST FOR NEOVIM 12
   -- ["textDocument/hover"] = function()
@@ -156,6 +160,7 @@ vim.lsp.config('vue_ls', {
 -- })
 
 vim.lsp.config('vtsls', {
+  handlers = handlers,
   filetypes = require("configs.lsp.servers.vtsls").filetypes,
   capabilities = capabilities or vim.lsp.protocol.make_client_capabilities(),
   settings = require('configs.lsp.servers.vtsls').settings,

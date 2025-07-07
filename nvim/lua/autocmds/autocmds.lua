@@ -113,3 +113,12 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 		vim.api.nvim_set_hl(0, "BlinkCmpSignatureHelpActiveParameter", { fg = colors.yellow, underline = true })
 	end,
 })
+
+vim.cmd([[
+  highlight! link NeoTreeDirectoryIcon NvimTreeFolderIcon
+  highlight! link NeoTreeDirectoryName NvimTreeFolderName
+  highlight! link NeoTreeSymbolicLinkTarget NvimTreeSymlink
+  highlight! link NeoTreeRootName NvimTreeRootFolder
+  highlight! link NeoTreeDirectoryName NvimTreeOpenedFolderName
+  highlight! link NeoTreeFileNameOpened NvimTreeOpenedFile
+]])

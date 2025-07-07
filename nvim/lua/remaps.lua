@@ -26,34 +26,18 @@ map("n", "cd", ":cd ", NR)
 map("n", "<leader>1", ":BufferLineCyclePrev<CR>", { noremap = false })
 map("n", "<leader>2", ":BufferLineCycleNext<CR>", { noremap = false })
 vim.keymap.set("n", "<leader>q", function()
-  local excluded_filetypes = {
-    "neo-tree",
-    "TelescopePrompt",
-    "lazy",
-    "lazygit",
-    "grug-far",
-    "mason",
-  }
-  local buftype = vim.api.nvim_get_option_value("buftype", { buf = 0 })
-  local buflisted = vim.fn.buflisted(0) == 1
-  local filetype = vim.bo.filetype
-
-  local function is_excluded()
-    for _, ft in ipairs(excluded_filetypes) do
-      if ft == filetype then
-        return true
-      end
-    end
-    return false
-  end
-
-  if buftype == "" and buflisted and not is_excluded() then
-    -- Normal buffer, safe to use MiniBufremove
+  -- local buftype = vim.api.nvim_get_option_value("buftype", { buf = 0 })
+  -- local buflisted = vim.fn.buflisted(0) == 1
+  --
+  -- if buftype == "" and buflisted then
+  --   -- Normal buffer, safe to use MiniBufremove
     require("mini.bufremove").delete(0, false)
-  else
-    -- Special buffer like grug-far, floating, terminal, etc.
-    vim.cmd("bd")
-  end
+  -- end
+  --
+  -- if buftype == "nofile" then
+  --   -- Special buffer like grug-far, floating, terminal, etc.
+  --   vim.cmd("bd")
+  -- end
 end, { noremap = true, desc = "Close buffer or :bd for special" })
 map("n", "<leader>qa", ":bd<CR>", { noremap = false })
 
@@ -153,8 +137,9 @@ vim.keymap.set('n', '<leader>sr', function()
 end, { desc = "Find and Replace in Project" })
 
 -- Code action (quick fix)
-map("n", "<leader>ca", ":lua vim.lsp.buf.code_action()<CR>", NS)
-map("v", "<leader>ca", ":lua vim.lsp.buf.code_action()<CR>", NS)
+vim.keymap.set({ "n", "x" }, "<leader>ca", function()
+  require("tiny-code-action").code_action()
+end, { noremap = true, silent = true })
 
 -- Smart indent after normal mode paste
 vim.keymap.set("n", "p", "p`[v`]=`]", { noremap = true, silent = true })
