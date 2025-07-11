@@ -866,9 +866,20 @@ local plugins = {
       scope = { enabled = false },
       scroll = { enabled = false },
       statuscolumn = { enabled = false },
-      words = { enabled = true },
+      words = {
+        debounce = 10,
+      },
     },
   },
+  {
+    'mikew/nvim-drawer',
+    opts = {},
+    config = function(_, opts)
+      local drawer = require('nvim-drawer')
+      drawer.setup(opts)
+      require("configs.drawer")
+    end
+  }
 }
 
 for _, colorscheme in ipairs(colorschemes) do

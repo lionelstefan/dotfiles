@@ -136,3 +136,12 @@ vim.api.nvim_create_autocmd("User", {
     end)
   end,
 })
+
+vim.api.nvim_create_user_command("CloseFindReplace", function()
+  for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+    local name = vim.api.nvim_buf_get_name(buf)
+    if name:match("Find and Replace") then
+      vim.api.nvim_buf_delete(buf, { force = true })
+    end
+  end
+end, {})
