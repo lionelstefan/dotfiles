@@ -160,6 +160,7 @@ vim.lsp.config('vue_ls', {
 -- })
 
 vim.lsp.config('vtsls', {
+  before_init = require("configs.lsp.servers.vtsls").before_init,
   handlers = handlers,
   filetypes = require("configs.lsp.servers.vtsls").filetypes,
   capabilities = capabilities or vim.lsp.protocol.make_client_capabilities(),
@@ -244,10 +245,9 @@ vim.lsp.config('marksman', {
 
 vim.lsp.config('vue_ls', {
   filetypes = require("configs.lsp.servers.vuels").filetypes,
-  handlers = handlers,
   init_options = require("configs.lsp.servers.vuels").init_options,
   on_attach = require("configs.lsp.servers.vuels").on_attach,
-  settings = require("configs.lsp.servers.vuels").settings,
+  on_init = require("configs.lsp.servers.vuels").on_init,
 })
 
 
@@ -288,31 +288,27 @@ require("mason-lspconfig").setup({
 
 require("ufo").setup({
   open_fold_hl_timeout = 100,
-  fold_virt_text_handler = function(virtText, lnum, endLnum, width, truncate)
-    local newVirtText = {}
-    local suffix = (" 󰁂 %d "):format(endLnum - lnum)
-    local sufWidth = vim.fn.strdisplaywidth(suffix)
-    local targetWidth = width - sufWidth
-    local curWidth = 0
-    for _, chunk in ipairs(virtText) do
-      local chunkText = chunk[1]
-      local chunkWidth = vim.fn.strdisplaywidth(chunkText)
-      if targetWidth > curWidth + chunkWidth then
-        table.insert(newVirtText, chunk)
-      else
-        chunkText = truncate(chunkText, targetWidth - curWidth)
-        local hlGroup = chunk[2]
-        table.insert(newVirtText, { chunkText, hlGroup })
-        chunkWidth = vim.fn.strdisplaywidth(chunkText)
-        -- str width returned from truncate() may less than 2nd argument, need padding
-        if curWidth + chunkWidth < targetWidth then
-          suffix = suffix .. (" "):rep(targetWidth - curWidth - chunkWidth)
-        end
-        break
-      end
-      curWidth = curWidth + chunkWidth
-    end
-    table.insert(newVirtText, { suffix, "MoreMsg" })
-    return newVirtText
-  end,
+  -- fold_virt_text_handler = function(virtText, lnum, endLnum, width, truncate)
+  --   local newVirtText = {}
+  --   local suffix = (" 󰁂 %d "):format(endLnum - lnum)
+  --   local sufWidth = vim.fn.strdisplaywidth(suffix)
+  --   local targetWidth = math.max(0, width - sufWidth)
+  --   local curWidth = 0
+  --
+  --   for _, chunk in ipairs(virtText) do
+  --     local chunkText = chunk[1]
+  --     local chunkWidth = vim.fn.strdisplaywidth(chunkText)
+  --     if curWidth + chunkWidth <= targetWidth then
+  --       table.insert(newVirtText, chunk)
+  --       curWidth = curWidth + chunkWidth
+  --     else
+  --       local truncated = truncate(chunkText or "", targetWidth - curWidth)
+  --       table.insert(newVirtText, { truncated or "", chunk[2] })
+  --       break
+  --     end
+  --   end
+  --
+  --   table.insert(newVirtText, { suffix, "MoreMsg" })
+  --   return newVirtText
+  -- end,
 })

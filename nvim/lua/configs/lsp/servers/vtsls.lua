@@ -1,5 +1,19 @@
 local M = {}
 
+
+local before_init = function(_, config)
+  local vue_language_server_path =vim.fn.stdpath('data')
+    .. "/mason/packages/vue-language-server/node_modules/@vue/language-server"
+  local vue_plugin = {
+    name = '@vue/typescript-plugin',
+    location = vue_language_server_path,
+    languages = { 'vue' },
+    configNamespace = 'typescript',
+    enableForWorkspaceTypeScriptVersions = true,
+  }
+  config.settings.vtsls.tsserver.globalPlugins = { vue_plugin }
+end
+
 local settings = {
   complete_function_calls = true,
   vtsls = {
@@ -11,6 +25,10 @@ local settings = {
         enableServerSideFuzzyMatch = true,
       },
     },
+    tsserver = {
+      globalPlugins = {},
+    },
+    filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' },
   },
   typescript = {
     updateImportsOnFileMove = { enabled = "always" },
@@ -24,14 +42,19 @@ local settings = {
       parameterTypes = { enabled = true },
       propertyDeclarationTypes = { enabled = true },
       variableTypes = { enabled = false },
+      includeInlayParameterNameHints = 'all',
+      includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+      includeInlayFunctionParameterTypeHints = true,
+      includeInlayVariableTypeHints = true,
+      includeInlayVariableTypeHintsWhenTypeMatchesName = true,
+      includeInlayPropertyDeclarationTypeHints = true,
+      includeInlayFunctionLikeReturnTypeHints = true,
+      includeInlayEnumMemberValueHints = true,
     },
   },
 }
 
-local filetypes = {
-  "javascript",
-  "typescript",
-}
+local filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' }
 
 local on_attach = function(client, bufnr)
   vim.lsp.inlay_hint.enable(true, { bufnr })
@@ -42,5 +65,6 @@ end
 M.settings = settings
 M.filetypes = filetypes
 M.on_attach = on_attach
+M.before_init = before_init
 
 return M

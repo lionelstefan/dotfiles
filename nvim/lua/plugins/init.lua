@@ -1,87 +1,8 @@
-require("lazy").setup({
-  {
-    "samharju/synthweave.nvim",
-    lazy = true,
-    priority = 1000,
-  },
-  {
-    "0xstepit/flow.nvim",
-    lazy = true,
-    priority = 1000,
-    opts = {},
-  },
-  {
-    "scottmckendry/cyberdream.nvim",
-    lazy = true,
-    priority = 1000,
-  },
-  {
-    "sainnhe/edge",
-    lazy = true,
-  },
-  {
-    "tanvirtin/monokai.nvim",
-    lazy = true,
-  },
-  {
-    "akinsho/horizon.nvim",
-    version = "*",
-    lazy = true,
-  },
-  {
-    "kartikp10/noctis.nvim",
-    lazy = true,
-    dependencies = {
-      "rktjmp/lush.nvim",
-    },
-  },
-  {
-    "srcery-colors/srcery-vim",
-    lazy = true,
-  },
-  {
-    "rose-pine/neovim",
-    lazy = true,
-  },
-  {
-    "bluz71/vim-moonfly-colors",
-    lazy = true,
-  },
-  {
-    "catppuccin/nvim",
-    name = "catppuccin",
-    lazy = true,
-  },
-  {
-    "folke/tokyonight.nvim",
-    lazy = true,
-  },
-  {
-    "rebelot/kanagawa.nvim",
-    lazy = true,
-  },
-  {
-    "nyoom-engineering/oxocarbon.nvim",
-    lazy = true,
-  },
-  {
-    "ellisonleao/gruvbox.nvim",
-    config = function()
-      require("gruvbox").setup({
-        undercurl = false,
-        underline = false,
-        italic = {
-          comments = true,
-          strings = false,
-          operators = false,
-          folds = false,
-        },
-        bold = false,
-        contrast = "hard",
-      })
-    end,
-    lazy = true,
-  },
+local M = {}
+
+local colorschemes = require("plugins.colorscheme")
+
+local plugins = {
   {
     "m-demare/hlargs.nvim",
     lazy = true,
@@ -264,7 +185,7 @@ require("lazy").setup({
         "saghen/blink.cmp",
         event = { "InsertEnter", "CmdlineEnter" },
         lazy = true,
-      }
+      },
     },
   },
   {
@@ -328,11 +249,11 @@ require("lazy").setup({
     config = function()
       require("gitsigns").setup({
         signs = {
-          add = { hl = 'GitSignsAdd', text = "│" },
-          change = { hl = 'GitSignsChange', text = "│" },
-          delete = { hl = 'GitSignsDelete', text = "󰍵" },
-          topdelete = { hl = 'GitSignsDelete', text = "‾" },
-          changedelete = { hl = 'GitSignsChange', text = "~" },
+          add = { hl = "GitSignsAdd", text = "│" },
+          change = { hl = "GitSignsChange", text = "│" },
+          delete = { hl = "GitSignsDelete", text = "󰍵" },
+          topdelete = { hl = "GitSignsDelete", text = "‾" },
+          changedelete = { hl = "GitSignsChange", text = "~" },
           untracked = { text = "│" },
         },
         numhl = false,
@@ -344,7 +265,7 @@ require("lazy").setup({
         current_line_blame = true,
         current_line_blame_opts = {
           virt_text = true,
-          virt_text_pos = 'right_align',
+          virt_text_pos = "right_align",
           delay = 300,
           virt_text_priority = 100,
         },
@@ -434,6 +355,16 @@ require("lazy").setup({
     event = { "InsertEnter" },
     config = function()
       require("configs.autopairs")
+    end,
+  },
+  {
+    "nvim-treesitter/nvim-treesitter-context",
+    lazy = true,
+    event = { "InsertEnter" },
+    config = function()
+      require("treesitter-context").setup({
+        max_lines = 5,
+      })
     end,
   },
   {
@@ -580,7 +511,7 @@ require("lazy").setup({
         "neovim/nvim-lspconfig",
         event = { "BufReadPre", "BufNewFile" }, -- only load on buffer read
         lazy = true,
-      }
+      },
     },
   },
   {
@@ -627,8 +558,8 @@ require("lazy").setup({
     event = { "BufReadPre", "BufNewFile" }, -- only load on buffer read
     lazy = true,
     dependencies = {
-      { 
-        "mason-org/mason.nvim", 
+      {
+        "mason-org/mason.nvim",
         opts = {},
         event = { "BufReadPre", "BufNewFile" }, -- only load on buffer read
       },
@@ -807,22 +738,22 @@ require("lazy").setup({
   --   },
   -- },
   {
-    'MeanderingProgrammer/render-markdown.nvim',
+    "MeanderingProgrammer/render-markdown.nvim",
     lazy = true,
     dependencies = {
-      'nvim-treesitter/nvim-treesitter',
-      'nvim-tree/nvim-web-devicons'
+      "nvim-treesitter/nvim-treesitter",
+      "nvim-tree/nvim-web-devicons",
     }, -- if you prefer nvim-web-devicons
     opts = {},
-    filetypes = { 'markdown' },
-    config = function ()
-      require('render-markdown').setup({
+    filetypes = { "markdown" },
+    config = function()
+      require("render-markdown").setup({
         completions = {
           lsp = { enabled = true },
           blink = { enabled = true },
         },
       })
-    end
+    end,
   },
   {
     "dmmulroy/ts-error-translator.nvim",
@@ -841,43 +772,45 @@ require("lazy").setup({
     end,
   },
   {
-    'MagicDuck/grug-far.nvim',
+    "MagicDuck/grug-far.nvim",
     event = { "BufReadPre" },
     config = function()
-      require('grug-far').setup({
+      require("grug-far").setup({
         -- search the whole project (starting from cwd)
-        search_path = require('lspconfig.util').root_pattern('.git')(vim.fn.expand('%:p')),
+        search_path = require("lspconfig.util").root_pattern(".git")(vim.fn.expand("%:p")),
 
         -- options passed to ripgrep (rg)
         rg_opts = {
-          '--hidden',         -- include hidden files
-          '--glob', '!.git/', -- exclude .git directory
-          '--no-heading',
-          '--with-filename',
-          '--line-number',
-          '--column',
-          '--smart-case',
+          "--hidden", -- include hidden files
+          "--glob",
+          "!.git/", -- exclude .git directory
+          "--no-heading",
+          "--with-filename",
+          "--line-number",
+          "--column",
+          "--smart-case",
         },
 
         -- options passed to replace
         sed_opts = {
-          '-i', ''
+          "-i",
+          "",
         },
 
         -- whether to replace using sed or not (default: true)
         use_sed = true,
-      });
-    end
+      })
+    end,
   },
   {
     "rachartier/tiny-devicons-auto-colors.nvim",
     dependencies = {
-      "nvim-tree/nvim-web-devicons"
+      "nvim-tree/nvim-web-devicons",
     },
     event = "VeryLazy",
     config = function()
-      require('tiny-devicons-auto-colors').setup()
-    end
+      require("tiny-devicons-auto-colors").setup()
+    end,
   },
   {
     "rachartier/tiny-glimmer.nvim",
@@ -886,16 +819,16 @@ require("lazy").setup({
     opts = {
       overwrite = {
         undo = {
-          enabled = true
-        }
-      }
+          enabled = true,
+        },
+      },
     },
   },
   {
     "rachartier/tiny-code-action.nvim",
     dependencies = {
-      {"nvim-lua/plenary.nvim"},
-      {"nvim-telescope/telescope.nvim"},
+      { "nvim-lua/plenary.nvim" },
+      { "nvim-telescope/telescope.nvim" },
     },
     event = "LspAttach",
     opts = {},
@@ -903,71 +836,47 @@ require("lazy").setup({
   {
     "rachartier/tiny-inline-diagnostic.nvim",
     event = "VeryLazy", -- Or `LspAttach`
-    priority = 1000, -- needs to be loaded in first
+    priority = 1000,  -- needs to be loaded in first
     config = function()
-      require('tiny-inline-diagnostic').setup({
-        preset = "nonerdfont"
+      require("tiny-inline-diagnostic").setup({
+        preset = "nonerdfont",
       })
       vim.diagnostic.config({ virtual_text = false }) -- Only if needed in your configuration, if you already have native LSP diagnostics
-    end
+    end,
   },
   {
     "b0o/schemastore.nvim",
   },
   {
     "xzbdmw/colorful-menu.nvim",
-  }
-}, {
-    debug = false,
-    defaults = { lazy = false },
-    install = {
-      colorscheme = {
-        "gruvbox",
-      }
-    },
-  concurrency = 10,
-  performance = {
-    cache = {
-      enabled = true,
-    },
-    rtp = {
-      disabled_plugins = {
-        "netrw",
-        "netrwPlugin",
-        "netrwSettings",
-        "netrwFileHandlers",
-        "gzip",
-        "zip",
-        "zipPlugin",
-        "tar",
-        "tarPlugin",
-        "getscript",
-        "getscriptPlugin",
-        "vimball",
-        "vimballPlugin",
-        "2html_plugin",
-        "logipat",
-        "rrhelper",
-        "spellfile_plugin",
-        "matchit",
-        "syntax",
-      },
+  },
+  {
+    "folke/snacks.nvim",
+    priority = 1000,
+    lazy = false,
+    opts = {
+      bigfile = { enabled = false },
+      dashboard = { enabled = false },
+      explorer = { enabled = false },
+      indent = { enabled = false },
+      input = { enabled = false },
+      picker = { enabled = false },
+      notifier = { enabled = false },
+      quickfile = { enabled = false },
+      scope = { enabled = false },
+      scroll = { enabled = false },
+      statuscolumn = { enabled = false },
+      words = { enabled = true },
     },
   },
-  ui = {
-    icons = {
-      cmd = "⌘",
-      config = "🛠",
-      event = "📅",
-      ft = "📂",
-      init = "⚙",
-      keys = "🗝",
-      plugin = "🔌",
-      runtime = "💻",
-      source = "📄",
-      start = "🚀",
-      task = "📌",
-      lazy = "💤 ",
-    },
-  },
-})
+}
+
+for _, colorscheme in ipairs(colorschemes) do
+  table.insert(M, colorscheme)
+end
+
+for _, plugin in ipairs(plugins) do
+  table.insert(M, plugin)
+end
+
+return M

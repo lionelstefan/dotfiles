@@ -20,7 +20,7 @@ end
 vim.opt.rtp:prepend(lazypath)
 vim.lsp.set_log_level("off")
 
-require("plugins")
+require("lazy-setup")
 require("configs.docblock")
 require("configs.global-configs")
 require("autocmds.autocmds")

@@ -23,7 +23,8 @@ source ~/dotfiles/.env_secrets
 
 export EDITOR=nvim
 export VISUAL=nvim
-export TERM=xterm-256color
+export TERM="xterm-256color"
+export FORCE_COLOR=1
 # Lines configured by zsh-newuser-install
 HISTFILE=~/.histfile
 HISTSIZE=10000
