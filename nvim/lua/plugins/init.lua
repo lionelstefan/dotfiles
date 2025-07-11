@@ -89,24 +89,35 @@ local plugins = {
       "nvim-lua/plenary.nvim",
       "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
       "MunifTanjim/nui.nvim",
+      { "3rd/image.nvim", opts = {} },
     },
     config = function()
       require("neo-tree").setup({
+        hide_root_node = true,
+        popup_border_style = "solid",
+        enable_git_status = true,
+        enable_diagnostics = false,
+        enable_cursor_hijack = true,
+        window = {
+          auto_expand_width = true,
+          popup = {
+            title = ''
+          }
+        },
         event_handlers = {
           {
-            event = "neo_tree_buffer_enter",
+            event = "neo_tree_popup_buffer_enter",
             handler = function()
               vim.cmd("highlight! Cursor blend=100")
             end,
           },
           {
-            event = "neo_tree_buffer_leave",
+            event = "neo_tree_popup_buffer_leave",
             handler = function()
               vim.cmd("highlight! Cursor guibg=#5f87af blend=0")
             end,
           },
         },
-        enable_diagnostics = false,
         filesystem = {
           filtered_items = {
             visible = true,
@@ -114,7 +125,8 @@ local plugins = {
             hide_gitignored = false,
             hide_hidden = false,
           },
-          icon = function(config, node, state)
+          icon = function(config, node)
+            local highlights = require("neo-tree.ui.highlights")
             local icon = config.default or " "
             local padding = config.padding or " "
             local highlight = config.highlight or highlights.FILE_ICON
@@ -141,9 +153,12 @@ local plugins = {
             }
           end,
         },
-        popup_border_style = "single",
-        enable_git_status = true,
         default_component_configs = {
+          indent = {
+            with_expanders = true,
+            expander_collapsed = '',
+            expander_expanded = '',
+          },
           window = {
             width = 60,
           },
@@ -872,14 +887,14 @@ local plugins = {
     },
   },
   {
-    'mikew/nvim-drawer',
+    "mikew/nvim-drawer",
     opts = {},
     config = function(_, opts)
-      local drawer = require('nvim-drawer')
+      local drawer = require("nvim-drawer")
       drawer.setup(opts)
       require("configs.drawer")
-    end
-  }
+    end,
+  },
 }
 
 for _, colorscheme in ipairs(colorschemes) do
