@@ -1,3 +1,85 @@
+export EDITOR=nvim
+export VISUAL=nvim
+export TERM="xterm-256color"
+export FORCE_COLOR=1
+export FFF_HIDDEN=1
+# Lines configured by zsh-newuser-install
+HISTFILE=~/.histfile
+HISTSIZE=10000
+SAVEHIST=10000
+setopt beep notify
+# End of lines configured by zsh-newuser-install
+# ─────────────────────────────────────────────────────────────
+# Zinit Plugin Manager (bootstrapped)
+# ─────────────────────────────────────────────────────────────
+# Zinit core
+if [[ -f "$HOME/.local/share/zinit/zinit.git/zinit.zsh" ]]; then
+  source "$HOME/.local/share/zinit/zinit.git/zinit.zsh"
+  autoload -Uz _zinit
+  (( ${+_comps} )) && _comps[zinit]=_zinit
+else
+  echo "Zinit not found at ~/.local/share/zinit/zinit.git/zinit.zsh — please install it."
+fi
+# ─────────────────────────────────────────────────────────────
+# Zinit Annexes (required for some advanced features)
+# ─────────────────────────────────────────────────────────────
+zinit light-mode for \
+  zdharma-continuum/zinit-annex-as-monitor \
+  zdharma-continuum/zinit-annex-bin-gem-node \
+  zdharma-continuum/zinit-annex-patch-dl \
+  zdharma-continuum/zinit-annex-rust
+
+# ─────────────────────────────────────────────────────────────
+# Zsh Plugins (via Zinit)
+# ─────────────────────────────────────────────────────────────
+
+# Load Powerlevel10k theme
+zinit ice depth=1
+
+# Core zsh functionality (history, completion)
+zinit snippet OMZL::history.zsh
+zinit snippet OMZL::completion.zsh
+
+# Aliases (local snippet)
+source ~/dotfiles/zsh/alias.zsh
+
+# Fast syntax highlighting (should load last for best effect)
+zinit wait lucid light-mode \
+  atinit"zicompinit; zicdreplay" \
+  for zdharma-continuum/fast-syntax-highlighting
+
+# Autosuggestions (start the plugin after load)
+zinit wait lucid \
+  atload"_zsh_autosuggest_start" \
+  for zsh-users/zsh-autosuggestions
+
+# zsh-completions (needs blockf and reinstall on update)
+zinit wait lucid \
+  blockf atpull'zinit creinstall -q .' \
+  for zsh-users/zsh-completions
+
+# Other plugins (optional lazy loading)
+zinit wait lucid for \
+  joshskidmore/zsh-fzf-history-search \
+  chrissicool/zsh-256color \
+  Valiev/almostontop
+
+zinit ice wait lucid
+zinit snippet OMZP::git
+
+zinit ice as"command" from"gh-r" \
+  atclone"./starship init zsh > init.zsh; ./starship completions zsh > _starship" \
+  atpull"%atclone" src"init.zsh"
+
+zinit wait lucid for \
+  atload"eval \"\$(zoxide init zsh)\"" \
+  ajeetdsouza/zoxide
+
+zinit light-mode for \
+  Schniz/fnm
+
+zinit light starship/starship
+
 # CTRL + Arrow Keys
 bindkey '\e[1;5C' forward-word       # Ctrl + Right
 bindkey '\e[1;5D' backward-word      # Ctrl + Left
@@ -12,33 +94,8 @@ bindkey '\e[1;3B' down-line-or-history # Alt + Down
 
 source ~/dotfiles/zsh/alias.zsh
 
-source ~/dotfiles/zsh/zsh-256color/zsh-256color.plugin.zsh
-source ~/dotfiles/zsh/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
-source ~/dotfiles/zsh/zsh-completions/zsh-completions.plugin.zsh
-source ~/dotfiles/zsh/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh
-source ~/dotfiles/zsh/zsh-fzf-history-search/zsh-fzf-history-search.zsh
-source ~/dotfiles/zsh/almostontop/almostontop.plugin.zsh
-
 source ~/dotfiles/.env_secrets
 
-export EDITOR=nvim
-export VISUAL=nvim
-export TERM="xterm-256color"
-export FORCE_COLOR=1
-# Lines configured by zsh-newuser-install
-HISTFILE=~/.histfile
-HISTSIZE=10000
-SAVEHIST=10000
-setopt beep notify
-# End of lines configured by zsh-newuser-install
-# The following lines were added by compinstall
-zstyle :compinstall filename '/home/lionelstefan/.zshrc'
-
-# Use a cached compdump
-zstyle ':completion::complete:*' use-cache on
-zstyle ':completion::complete:*' cache-path ~/.zsh/cache
-autoload -Uz compinit && compinit -C
-# End of lines added by compinstall
 
 #SSH AGENT
 env=~/.ssh/agent.env
@@ -80,9 +137,6 @@ case ":$PATH:" in
 esac
 # pnpm end
 
-#biome
-biome start --config-path /home/lionelstefan/dotfiles/nvim/linter_formatter_config/biome
-
 #graveyard
 export GRAVEYARD="/home/lionelstefan/.local/share/Trash"
 
@@ -122,10 +176,12 @@ export PATH="$PATH:$HOME/.config/composer/vendor/bin"
 #MASON NEOVIM
 export PATH="$PATH:$HOME/.local/share/nvim/mason/bin"
 
-#GLOBAL
-export EDITOR="nvim"
-export FFF_HIDDEN=1
+#BIOME
+start_biome_quiet() {
+  ( nohup biome start --config-path ~/dotfiles/nvim/linter_formatter_config/biome > /dev/null 2>&1 & disown ) > /dev/null 2>&1
+}
+start_biome_quiet
 
-eval "$(zoxide init zsh)"
-eval "$(starship init zsh)"
-eval "$(fnm env --use-on-cd --shell zsh)"
+if command -v fnm &>/dev/null; then
+  eval "$(fnm env --shell zsh)"  # quiet, no "Using Node" spam
+fi
