@@ -19,9 +19,10 @@ require("conform").setup({
 		json = { "biome", "trim_whitespace", "trim_newlines" },
 		html = { "biome", "trim_whitespace", "trim_newlines" },
 		css = { "biome", "trim_whitespace", "trim_newlines" },
-		vue = { "biome", "trim_whitespace", "trim_newlines" },
+		vue = { "prettier", "trim_whitespace", "trim_newlines" },
 		php = { "php_cs_fixer" },
     rust = { "ast-grep" },
+    scss = { "biome", "trim_whitespace", "trim_newlines" },
     yaml = { "yamlft" },
 	},
 	formatters = {

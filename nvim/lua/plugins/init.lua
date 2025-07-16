@@ -377,7 +377,7 @@ local plugins = {
     event = { "InsertEnter" },
     config = function()
       require("treesitter-context").setup({
-        max_lines = 5,
+        max_lines = 2,
       })
     end,
   },
@@ -894,6 +894,21 @@ local plugins = {
       require("configs.drawer")
     end,
   },
+  {
+    "mfussenegger/nvim-lint",
+    lazy = true,
+    event = { "BufReadPre", "BufNewFile" },
+    dependencies = { "williamboman/mason.nvim" },
+    config = function ()
+      require('lint').linters_by_ft = {
+        vue = {'oxlint'},
+        javascript = {'oxlint'},
+        typescript = {'oxlint'},
+        javascriptreact = {'oxlint'},
+        typescriptreact = {'oxlint'},
+      }
+    end
+  }
 }
 
 for _, colorscheme in ipairs(colorschemes) do
