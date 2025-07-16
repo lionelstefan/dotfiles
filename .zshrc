@@ -3,12 +3,10 @@ export VISUAL=nvim
 export TERM="xterm-256color"
 export FORCE_COLOR=1
 export FFF_HIDDEN=1
-# Lines configured by zsh-newuser-install
-HISTFILE=~/.histfile
-HISTSIZE=10000
-SAVEHIST=10000
-setopt beep notify
-# End of lines configured by zsh-newuser-install
+
+ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE="20"
+ZSH_AUTOSUGGEST_USE_ASYNC=1
+
 # ─────────────────────────────────────────────────────────────
 # Zinit Plugin Manager (bootstrapped)
 # ─────────────────────────────────────────────────────────────
@@ -39,14 +37,6 @@ zinit ice depth=1
 # Core zsh functionality (history, completion)
 zinit snippet OMZL::history.zsh
 zinit snippet OMZL::completion.zsh
-
-# Aliases (local snippet)
-source ~/dotfiles/zsh/alias.zsh
-
-# Fast syntax highlighting (should load last for best effect)
-zinit wait lucid light-mode \
-  atinit"zicompinit; zicdreplay" \
-  for zdharma-continuum/fast-syntax-highlighting
 
 # Autosuggestions (start the plugin after load)
 zinit wait lucid \
@@ -79,6 +69,11 @@ zinit light-mode for \
   Schniz/fnm
 
 zinit light starship/starship
+
+# Fast syntax highlighting (should load last for best effect)
+zinit wait lucid light-mode \
+        atinit"zicompinit; zicdreplay" \
+        for zdharma-continuum/fast-syntax-highlighting
 
 # CTRL + Arrow Keys
 bindkey '\e[1;5C' forward-word       # Ctrl + Right
@@ -185,3 +180,6 @@ start_biome_quiet
 if command -v fnm &>/dev/null; then
   eval "$(fnm env --shell zsh)"  # quiet, no "Using Node" spam
 fi
+
+# Aliases (local snippet)
+source ~/dotfiles/zsh/alias.zsh
