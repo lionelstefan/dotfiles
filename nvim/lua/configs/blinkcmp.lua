@@ -82,6 +82,9 @@ local opts = {
       "snippets",
       "buffer",
     },
+    providers = {
+      lazydev = { module = 'lazydev.integrations.blink', score_offset = 100 },
+    },
   },
 
   completion = {
@@ -99,12 +102,12 @@ local opts = {
 
         components = {
           label = {
-            -- text = function(ctx)
-            --   return require("colorful-menu").blink_components_text(ctx)
-            -- end,
-            -- highlight = function(ctx)
-            --   return require("colorful-menu").blink_components_highlight(ctx)
-            -- end,
+            text = function(ctx)
+              return require("colorful-menu").blink_components_text(ctx)
+            end,
+            highlight = function(ctx)
+              return require("colorful-menu").blink_components_highlight(ctx)
+            end,
           },
 
           kind_icon = {

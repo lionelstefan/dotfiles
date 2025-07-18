@@ -195,6 +195,7 @@ local plugins = {
           require("luasnip.loaders.from_vscode").lazy_load()
         end,
       },
+      "folke/lazydev.nvim",
     },
     build = "cargo build --release",
     opts = require("configs.blinkcmp").opts,
@@ -216,6 +217,28 @@ local plugins = {
         lazy = true,
       },
     },
+    config = function()
+      local api = require 'typescript-tools.api'
+      require('typescript-tools').setup {
+        handlers = {
+          ['textDocument/publishDiagnostics'] = api.filter_diagnostics { 6133 },
+        },
+        settings = {
+          tsserver_file_preferences = {
+            importModuleSpecifierPreference = 'non-relative',
+          },
+        },
+      }
+      local autocmd = vim.api.nvim_create_autocmd
+      autocmd('BufWritePre', {
+        pattern = '*.ts,*.tsx,*.jsx,*.js',
+        callback = function(args)
+          vim.cmd 'TSToolsAddMissingImports sync'
+          vim.cmd 'TSToolsOrganizeImports sync'
+          require('conform').format { bufnr = args.buf }
+        end,
+      })
+    end,
   },
   {
     "stevearc/conform.nvim",
@@ -477,8 +500,6 @@ local plugins = {
   },
   {
     "yamatsum/nvim-cursorline",
-    lazy = false,
-    event = "BufReadPre",
     config = function()
       require("nvim-cursorline").setup({
         cursorline = {
@@ -690,10 +711,10 @@ local plugins = {
   {
     "folke/lazydev.nvim",
     lazy = true,
-    event = "VeryLazy",
     ft = { "lua" },
     opts = {
       library = {
+        "lazy.nvim",
         { path = "luvit-meta/library", words = { "vim%.uv" } },
       },
     },
