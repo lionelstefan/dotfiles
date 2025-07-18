@@ -77,8 +77,8 @@ local plugins = {
   },
   {
     "kevinhwang91/nvim-hlslens",
-    lazy = true,
-    event = { "BufReadPre" },
+    -- lazy = true,
+    -- event = { "BufReadPre" },
     config = function()
       require("hlslens").setup({
         calm_down = true,
@@ -235,6 +235,7 @@ local plugins = {
         callback = function(args)
           vim.cmd 'TSToolsAddMissingImports sync'
           vim.cmd 'TSToolsOrganizeImports sync'
+          vim.cmd 'TSToolsRemoveUnusedImports sync'
           require('conform').format { bufnr = args.buf }
         end,
       })
@@ -500,6 +501,8 @@ local plugins = {
   },
   {
     "yamatsum/nvim-cursorline",
+    lazy = true,
+    event = "BufReadPre",
     config = function()
       require("nvim-cursorline").setup({
         cursorline = {

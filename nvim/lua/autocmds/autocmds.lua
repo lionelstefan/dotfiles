@@ -35,7 +35,7 @@ vim.cmd([[
 ]])
 
 vim.api.nvim_create_autocmd({
-	"VimLeave",
+	"BufWritePost",
 }, {
 	callback = function()
 		for _, buf in ipairs(vim.api.nvim_list_bufs()) do
@@ -127,20 +127,6 @@ vim.cmd([[
   highlight! link NeoTreeDirectoryName NvimTreeOpenedFolderName
   highlight! link NeoTreeFileNameOpened NvimTreeOpenedFile
 ]])
-
-local prev = { new_name = "", old_name = "" } -- Prevents duplicate events
-vim.api.nvim_create_autocmd("User", {
-  pattern = "NvimTreeSetup",
-  callback = function()
-    local events = require("nvim-tree.api").events
-    events.subscribe(events.Event.NodeRenamed, function(data)
-      if prev.new_name ~= data.new_name or prev.old_name ~= data.old_name then
-        data = data
-        Snacks.rename.on_rename_file(data.old_name, data.new_name)
-      end
-    end)
-  end,
-})
 
 vim.api.nvim_create_user_command("CloseFindReplace", function()
   for _, buf in ipairs(vim.api.nvim_list_bufs()) do

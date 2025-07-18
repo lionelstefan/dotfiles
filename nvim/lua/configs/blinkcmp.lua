@@ -161,7 +161,7 @@ local opts = {
   },
 
   signature = {
-    enabled = true,
+    enabled = false,
   },
 }
 
