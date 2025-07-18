@@ -111,6 +111,11 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 		vim.api.nvim_set_hl(0, "BlinkCmpSignatureHelp", { bg = colors.bg, fg = colors.fg })
 		vim.api.nvim_set_hl(0, "BlinkCmpSignatureHelpBorder", { fg = colors.gray, bg = colors.bg })
 		vim.api.nvim_set_hl(0, "BlinkCmpSignatureHelpActiveParameter", { fg = colors.yellow, underline = true })
+
+    vim.api.nvim_set_hl(0, "GitSignsCurrentLineBlame", {
+      fg = "gray",     -- your preferred gray-ish color
+    })
+
 	end,
 })
 

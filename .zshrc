@@ -39,9 +39,9 @@ zinit snippet OMZL::history.zsh
 zinit snippet OMZL::completion.zsh
 
 # Autosuggestions (start the plugin after load)
-zinit wait lucid \
-  atload"_zsh_autosuggest_start" \
-  for zsh-users/zsh-autosuggestions
+# zinit wait lucid \
+#   atload"_zsh_autosuggest_start" \
+#   for zsh-users/zsh-autosuggestions
 
 # zsh-completions (needs blockf and reinstall on update)
 zinit wait lucid \
@@ -71,9 +71,9 @@ zinit light-mode for \
 zinit light starship/starship
 
 # Fast syntax highlighting (should load last for best effect)
-zinit wait lucid light-mode \
-        atinit"zicompinit; zicdreplay" \
-        for zdharma-continuum/fast-syntax-highlighting
+# zinit wait lucid light-mode \
+#         atinit"zicompinit; zicdreplay" \
+#         for zdharma-continuum/fast-syntax-highlighting
 
 # CTRL + Arrow Keys
 bindkey '\e[1;5C' forward-word       # Ctrl + Right
