@@ -1,5 +1,5 @@
 require("lazy").setup(
-require("plugins"),
+  require("plugins"),
   {
   debug = false,
   defaults = { lazy = false },

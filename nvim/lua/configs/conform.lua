@@ -21,12 +21,12 @@ require("conform").setup({
 		css = { "biome", "trim_whitespace", "trim_newlines" },
 		vue = { "prettier", "trim_whitespace", "trim_newlines" },
 		php = { "php_cs_fixer" },
-    rust = { "ast-grep" },
-    scss = { "biome", "trim_whitespace", "trim_newlines" },
-    yaml = { "yamlft" },
+		rust = { "ast-grep" },
+		scss = { "biome", "trim_whitespace", "trim_newlines" },
+		yaml = { "yamlft" },
 	},
 	formatters = {
-  formatWithErrors = true,
+		formatWithErrors = true,
 		injected = {
 			options = {
 				ignore_errors = true,
@@ -36,12 +36,16 @@ require("conform").setup({
 			command = util.find_executable({
 				"/home/lionelstefan/.local/share/pnpm/biome",
 			}, "biome"),
-      stdin = true,
-      args = {
-        "format",
-        "--stdin-file-path",
-        "$FILENAME",
-      },
+			stdin = true,
+			args = {
+				"format",
+				"--stdin-file-path",
+				"$FILENAME",
+			},
+      cwd = util.root_file({
+        "biome.json",
+        "biome.jsonc",
+      }),
 		},
 		blade_formatter = {
 			args = { "--stdin", "--wrap-attributes aligned-multiple" },

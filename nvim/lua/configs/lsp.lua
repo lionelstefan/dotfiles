@@ -99,8 +99,6 @@ vim.lsp.config('jsonls', {
   settings = require("configs.lsp.servers.jsonls").settings,
 })
 
-require("lazydev").setup()
-
 vim.lsp.config('lua_ls', {
   on_attach = on_attach,
   capabilities = capabilities,

@@ -26,18 +26,17 @@ map("n", "cd", ":cd ", NR)
 map("n", "<leader>1", ":BufferLineCyclePrev<CR>", { noremap = false })
 map("n", "<leader>2", ":BufferLineCycleNext<CR>", { noremap = false })
 vim.keymap.set("n", "<leader>q", function()
-	-- local buftype = vim.api.nvim_get_option_value("buftype", { buf = 0 })
-	-- local buflisted = vim.fn.buflisted(0) == 1
-	--
-	-- if buftype == "" and buflisted then
-	--   -- Normal buffer, safe to use MiniBufremove
-	require("mini.bufremove").delete(0, false)
-	-- end
-	--
-	-- if buftype == "nofile" then
-	--   -- Special buffer like grug-far, floating, terminal, etc.
-	--   vim.cmd("bd")
-	-- end
+  local bufnr = vim.api.nvim_get_current_buf()
+  local buftype = vim.api.nvim_get_option_value("buftype", { buf = bufnr })
+  local buflisted = vim.fn.buflisted(bufnr) == 1
+
+  if buftype == "" and buflisted then
+    -- Normal listed buffer: use MiniBufremove
+    require("mini.bufremove").delete(bufnr, false)
+  else
+    -- Special buffer (nofile, terminal, etc.): use plain :bd
+    vim.cmd("bd")
+  end
 end, { noremap = true, desc = "Close buffer or :bd for special" })
 map("n", "<leader>qa", ":bd<CR>", { noremap = false })
 

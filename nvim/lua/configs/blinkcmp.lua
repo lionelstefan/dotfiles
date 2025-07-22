@@ -82,9 +82,6 @@ local opts = {
       "snippets",
       "buffer",
     },
-    providers = {
-      lazydev = { module = 'lazydev.integrations.blink', score_offset = 100 },
-    },
   },
 
   completion = {

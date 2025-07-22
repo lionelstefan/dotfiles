@@ -6,7 +6,7 @@ local plugins = {
   {
     "m-demare/hlargs.nvim",
     lazy = true,
-    event = "VeryLazy",
+    event = "BufReadPost",
     config = function()
       require("hlargs").setup({})
     end,
@@ -14,7 +14,7 @@ local plugins = {
   {
     "folke/trouble.nvim",
     lazy = true,
-    event = "VeryLazy",
+    event = "BufReadPost",
     opts = {
       win = {
         size = {
@@ -27,7 +27,7 @@ local plugins = {
   {
     "ThePrimeagen/harpoon",
     lazy = true,
-    event = "VeryLazy",
+    event = "BufReadPost",
     branch = "harpoon2",
     config = function()
       require("configs.harpoon")
@@ -56,9 +56,8 @@ local plugins = {
   },
   {
     "kylechui/nvim-surround",
-    version = "*", -- Use for stability; omit to use `main` branch for the latest features
     lazy = true,
-    event = "VeryLazy",
+    event = "BufReadPost",
     config = function()
       require("nvim-surround").setup({})
     end,
@@ -70,15 +69,23 @@ local plugins = {
     ft = { "css", "javascript", "javascriptreact", "typescript", "typescriptreact", "html", "blade", "lua" },
     config = function()
       require("colorizer").setup({
-        filetypes = { "css", "javascript", "javascriptreact", "typescript",
-          "typescriptreact", "html", "blade", "lua" },
+        filetypes = {
+          "css",
+          "javascript",
+          "javascriptreact",
+          "typescript",
+          "typescriptreact",
+          "html",
+          "blade",
+          "lua",
+        },
       })
     end,
   },
   {
     "kevinhwang91/nvim-hlslens",
-    -- lazy = true,
-    -- event = { "BufReadPre" },
+    lazy = true,
+    event = { "BufReadPre" },
     config = function()
       require("hlslens").setup({
         calm_down = true,
@@ -87,18 +94,22 @@ local plugins = {
     end,
   },
   {
-    "echasnovski/mini.bufremove",
+    "echasnovski/mini.jump",
     lazy = true,
-    event = "VeryLazy",
-    version = "*",
+    event = "BufReadPre",
+  },
+  {
+    "echasnovski/mini.bufremove",
     config = function()
-      require("mini.bufremove").setup()
+      require("mini.bufremove").setup({
+        silent = true,
+      })
     end,
   },
   {
     "nvim-neo-tree/neo-tree.nvim",
     lazy = true,
-    event = "VeryLazy",
+    event = "BufReadPost",
     branch = "v3.x",
     dependencies = {
       "nvim-lua/plenary.nvim",
@@ -115,8 +126,10 @@ local plugins = {
         window = {
           auto_expand_width = true,
           popup = {
-            title = ''
-          }
+            title = function()
+              return ""
+            end,
+          },
         },
         event_handlers = {
           {
@@ -170,8 +183,8 @@ local plugins = {
         default_component_configs = {
           indent = {
             with_expanders = true,
-            expander_collapsed = '',
-            expander_expanded = '',
+            expander_collapsed = "",
+            expander_expanded = "",
           },
           window = {
             width = 60,
@@ -184,18 +197,15 @@ local plugins = {
     "saghen/blink.cmp",
     lazy = true,
     event = { "InsertEnter", "CmdlineEnter" },
-    version = "*",
     dependencies = {
       "rafamadriz/friendly-snippets",
       {
         "L3MON4D3/LuaSnip",
-        version = "v2.*",
         build = "make install_jsregexp",
         config = function()
           require("luasnip.loaders.from_vscode").lazy_load()
         end,
       },
-      "folke/lazydev.nvim",
     },
     build = "cargo build --release",
     opts = require("configs.blinkcmp").opts,
@@ -218,25 +228,25 @@ local plugins = {
       },
     },
     config = function()
-      local api = require 'typescript-tools.api'
-      require('typescript-tools').setup {
+      local api = require("typescript-tools.api")
+      require("typescript-tools").setup({
         handlers = {
-          ['textDocument/publishDiagnostics'] = api.filter_diagnostics { 6133 },
+          ["textDocument/publishDiagnostics"] = api.filter_diagnostics({ 6133 }),
         },
         settings = {
           tsserver_file_preferences = {
-            importModuleSpecifierPreference = 'non-relative',
+            importModuleSpecifierPreference = "non-relative",
           },
         },
-      }
+      })
       local autocmd = vim.api.nvim_create_autocmd
-      autocmd('BufWritePre', {
-        pattern = '*.ts,*.tsx,*.jsx,*.js',
+      autocmd("BufWritePre", {
+        pattern = "*.ts,*.tsx,*.jsx,*.js",
         callback = function(args)
-          vim.cmd 'TSToolsAddMissingImports sync'
-          vim.cmd 'TSToolsOrganizeImports sync'
-          vim.cmd 'TSToolsRemoveUnusedImports sync'
-          require('conform').format { bufnr = args.buf }
+          vim.cmd("TSToolsAddMissingImports sync")
+          vim.cmd("TSToolsOrganizeImports sync")
+          vim.cmd("TSToolsRemoveUnusedImports sync")
+          require("conform").format({ bufnr = args.buf })
         end,
       })
     end,
@@ -261,12 +271,12 @@ local plugins = {
   {
     "EmranMR/tree-sitter-blade",
     lazy = true,
-    event = "VeryLazy",
+    event = "BufReadPost",
   },
   {
     "rcarriga/nvim-notify",
     lazy = true,
-    event = "VeryLazy",
+    event = "BufReadPost",
     config = function()
       require("notify").setup({
         timeout = 3000,
@@ -285,18 +295,18 @@ local plugins = {
   {
     "Vonr/align.nvim",
     lazy = true,
-    event = "VeryLazy",
+    event = "BufReadPost",
   },
   {
     "nvim-tree/nvim-web-devicons",
   },
   {
     "onsails/lspkind.nvim",
-    lazy = true
+    lazy = true,
   },
   {
     "nvim-lualine/lualine.nvim",
-    event = "VeryLazy",
+    event = "BufReadPost",
     config = function()
       require("configs.lualine")
     end,
@@ -329,23 +339,22 @@ local plugins = {
           virt_text_priority = 100,
         },
       })
-
     end,
   },
   {
     "machakann/vim-sandwich",
     lazy = true,
-    event = "VeryLazy",
+    event = "BufReadPost",
   },
   {
     "sindrets/diffview.nvim",
     lazy = true,
-    event = "VeryLazy",
+    event = "BufReadPost",
   },
   {
     "HiPhish/rainbow-delimiters.nvim",
     lazy = true,
-    event = "VeryLazy",
+    event = "BufReadPost",
     config = function()
       require("rainbow-delimiters.setup").setup({
         strategy = {
@@ -385,7 +394,7 @@ local plugins = {
   -- TREESITTER
   {
     "nvim-treesitter/playground",
-    event = "VeryLazy",
+    event = "BufReadPost",
     lazy = true,
   },
   {
@@ -436,7 +445,7 @@ local plugins = {
   {
     "nvim-telescope/telescope.nvim",
     lazy = true,
-    event = "VeryLazy",
+    event = "BufReadPost",
     config = function()
       require("configs.telescope")
     end,
@@ -530,8 +539,7 @@ local plugins = {
   {
     "akinsho/toggleterm.nvim",
     lazy = true,
-    event = "VeryLazy",
-    version = "*",
+    event = "BufReadPost",
     config = function()
       require("toggleterm").setup({
         auto_scroll = false,
@@ -553,7 +561,7 @@ local plugins = {
   -- 	--   { "a", mode = { "x", "o" } },
   -- 	--   { "i", mode = { "x", "o" } },
   -- 	-- },
-  -- 	event = "VeryLazy",
+  -- 	event = "BufReadPost",
   -- 	opts = function()
   -- 		local ai = require("mini.ai")
   -- 		return {
@@ -584,7 +592,7 @@ local plugins = {
   {
     "zeioth/garbage-day.nvim",
     lazy = true,
-    event = "VeryLazy",
+    event = "BufReadPost",
     dependencies = {
       {
         "neovim/nvim-lspconfig",
@@ -596,7 +604,7 @@ local plugins = {
   {
     "danymat/neogen",
     lazy = true,
-    event = "VeryLazy",
+    event = "BufReadPost",
     config = function()
       require("neogen").setup({
         enabled = true,
@@ -669,7 +677,7 @@ local plugins = {
   {
     "mfussenegger/nvim-dap",
     lazy = true,
-    event = "VeryLazy",
+    event = "BufReadPost",
     dependencies = {
       "rcarriga/nvim-dap-ui",
       "nvim-neotest/nvim-nio",
@@ -706,21 +714,10 @@ local plugins = {
   {
     "ahmedkhalf/project.nvim",
     lazy = true,
-    event = "VeryLazy",
+    event = "BufReadPost",
     config = function()
       require("project_nvim").setup({})
     end,
-  },
-  {
-    "folke/lazydev.nvim",
-    lazy = true,
-    ft = { "lua" },
-    opts = {
-      library = {
-        "lazy.nvim",
-        { path = "luvit-meta/library", words = { "vim%.uv" } },
-      },
-    },
   },
   {
     "Bilal2453/luvit-meta",
@@ -740,7 +737,7 @@ local plugins = {
   {
     "itchyny/vim-highlighturl",
     lazy = true,
-    event = "VeryLazy",
+    event = "BufReadPost",
   },
   {
     "jdhao/whitespace.nvim",
@@ -750,12 +747,12 @@ local plugins = {
   {
     "justinsgithub/wezterm-types",
     lazy = true,
-    event = "VeryLazy",
+    event = "BufReadPost",
   },
   {
     "LunarVim/bigfile.nvim",
     lazy = true,
-    event = "VeryLazy",
+    event = "BufReadPost",
     config = function()
       require("bigfile").setup({
         filesize = 2,  -- size of the file in MiB, the plugin round file sizes to the closest MiB
@@ -785,7 +782,7 @@ local plugins = {
   -- },
   -- {
   --   "yetone/avante.nvim",
-  --   event = "VeryLazy",
+  --   event = "BufReadPost",
   --   lazy = true,
   --   version = false, -- never set this value to "*"! never!
   --   opts = {
@@ -821,7 +818,7 @@ local plugins = {
   {
     "MeanderingProgrammer/render-markdown.nvim",
     lazy = true,
-    event = "VeryLazy",
+    event = "BufReadPost",
     dependencies = {
       "nvim-treesitter/nvim-treesitter",
       "nvim-tree/nvim-web-devicons",
@@ -858,7 +855,7 @@ local plugins = {
   {
     "MagicDuck/grug-far.nvim",
     lazy = true,
-    event = "VeryLazy",
+    event = "BufReadPost",
     config = function()
       require("grug-far").setup({
         -- search the whole project (starting from cwd)
@@ -893,7 +890,7 @@ local plugins = {
       "nvim-tree/nvim-web-devicons",
     },
     lazy = true,
-    event = "VeryLazy",
+    event = "BufReadPost",
     config = function()
       require("tiny-devicons-auto-colors").setup()
     end,
@@ -901,7 +898,7 @@ local plugins = {
   {
     "rachartier/tiny-glimmer.nvim",
     lazy = true,
-    event = "VeryLazy",
+    event = "BufReadPost",
     priority = 10,
     opts = {
       overwrite = {
@@ -924,8 +921,8 @@ local plugins = {
   {
     "rachartier/tiny-inline-diagnostic.nvim",
     lazy = true,
-    event = "VeryLazy", -- Or `LspAttach`
-    priority = 1000,  -- needs to be loaded in first
+    event = "BufReadPost", -- Or `LspAttach`
+    priority = 1000,     -- needs to be loaded in first
     config = function()
       require("tiny-inline-diagnostic").setup({
         preset = "nonerdfont",
@@ -936,12 +933,12 @@ local plugins = {
   {
     "b0o/schemastore.nvim",
     lazy = true,
-    event = "VeryLazy",
+    event = "BufReadPost",
   },
   {
     "xzbdmw/colorful-menu.nvim",
     lazy = true,
-    event = "VeryLazy",
+    event = "BufReadPost",
   },
   {
     "folke/snacks.nvim",
@@ -966,31 +963,29 @@ local plugins = {
     },
   },
   {
-    "mikew/nvim-drawer",
-    lazy = true,
-    event = "VeryLazy",
-    opts = {},
-    config = function(_, opts)
-      local drawer = require("nvim-drawer")
-      drawer.setup(opts)
-      require("configs.drawer")
-    end,
-  },
-  {
     "mfussenegger/nvim-lint",
     lazy = true,
     event = { "BufReadPre", "BufNewFile" },
     dependencies = { "williamboman/mason.nvim" },
-    config = function ()
-      require('lint').linters_by_ft = {
-        vue = {'oxlint'},
-        javascript = {'oxlint'},
-        typescript = {'oxlint'},
-        javascriptreact = {'oxlint'},
-        typescriptreact = {'oxlint'},
+    config = function()
+      require("lint").linters_by_ft = {
+        vue = { "oxlint" },
+        javascript = { "oxlint" },
+        typescript = { "oxlint" },
+        javascriptreact = { "oxlint" },
+        typescriptreact = { "oxlint" },
       }
-    end
-  }
+    end,
+  },
+  {
+    "chrisgrieser/nvim-spider",
+    lazy = true,
+    keys = {
+      { "w", "<cmd>lua require('spider').motion('w')<CR>", mode = { "n", "o", "x" } },
+      { "e", "<cmd>lua require('spider').motion('e')<CR>", mode = { "n", "o", "x" } },
+      { "b", "<cmd>lua require('spider').motion('b')<CR>", mode = { "n", "o", "x" } },
+    },
+  },
 }
 
 for _, colorscheme in ipairs(colorschemes) do

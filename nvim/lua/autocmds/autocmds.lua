@@ -38,29 +38,12 @@ vim.api.nvim_create_autocmd({
 	"BufWritePost",
 }, {
 	callback = function()
-		for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-			local name = vim.api.nvim_buf_get_name(buf)
-			local ft = vim.bo[buf].filetype
-
-			if name ~= "" and vim.fn.buflisted(buf) == 1 and vim.bo[buf].modifiable and vim.bo[buf].modified then
-				local excluded = false
-				for _, ex in ipairs(excluded_filetypes) do
-					if ft == ex then
-						excluded = true
-						break
-					end
-				end
-
-				if not excluded then
-					pcall(require("conform").format, {
-						bufnr = buf,
-						async = false,
-						timeout_ms = 500,
-						formatters = { "trim_whitespace", "trim_newlines" },
-					})
-				end
-			end
-		end
+		pcall(require("conform").format, {
+			bufnr = buf,
+			async = false,
+			timeout_ms = 500,
+			formatters = { "trim_whitespace", "trim_newlines" },
+		})
 	end,
 })
 
@@ -112,10 +95,9 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 		vim.api.nvim_set_hl(0, "BlinkCmpSignatureHelpBorder", { fg = colors.gray, bg = colors.bg })
 		vim.api.nvim_set_hl(0, "BlinkCmpSignatureHelpActiveParameter", { fg = colors.yellow, underline = true })
 
-    vim.api.nvim_set_hl(0, "GitSignsCurrentLineBlame", {
-      fg = "gray",     -- your preferred gray-ish color
-    })
-
+		vim.api.nvim_set_hl(0, "GitSignsCurrentLineBlame", {
+			fg = "gray", -- your preferred gray-ish color
+		})
 	end,
 })
 
@@ -129,16 +111,16 @@ vim.cmd([[
 ]])
 
 vim.api.nvim_create_user_command("CloseFindReplace", function()
-  for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-    local name = vim.api.nvim_buf_get_name(buf)
-    if name:match("Find and Replace") then
-      vim.api.nvim_buf_delete(buf, { force = true })
-    end
-  end
+	for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+		local name = vim.api.nvim_buf_get_name(buf)
+		if name:match("Find and Replace") then
+			vim.api.nvim_buf_delete(buf, { force = true })
+		end
+	end
 end, {})
 
 vim.api.nvim_create_autocmd({ "BufWritePost" }, {
-  callback = function()
-    require("lint").try_lint()
-  end,
+	callback = function()
+		require("lint").try_lint()
+	end,
 })
