@@ -22,6 +22,7 @@ alias phpdoc="docker run --rm -v $(pwd):/data phpdoc/phpdoc:3"
 alias t="vendor/bin/simple-phpunit --testdox --stop-on-error --stop-on-failure"
 alias git-pull='~/dotfiles/zsh/safe-git-pull.sh'
 alias gfs='git flow feature start '
+alias ghs='git flow hotfix start '
 function ta()
 {
   tmux attach-session -t $1

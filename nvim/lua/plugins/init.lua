@@ -239,16 +239,6 @@ local plugins = {
           },
         },
       })
-      local autocmd = vim.api.nvim_create_autocmd
-      autocmd("BufWritePre", {
-        pattern = "*.ts,*.tsx,*.jsx,*.js",
-        callback = function(args)
-          vim.cmd("TSToolsAddMissingImports sync")
-          vim.cmd("TSToolsOrganizeImports sync")
-          vim.cmd("TSToolsRemoveUnusedImports sync")
-          require("conform").format({ bufnr = args.buf })
-        end,
-      })
     end,
   },
   {
@@ -493,6 +483,10 @@ local plugins = {
       require("auto-save").setup({
         enabled = true,
         condition = function(buf)
+          if not vim.api.nvim_buf_is_valid(buf) then
+            return false
+          end
+
           local name = vim.api.nvim_buf_get_name(buf)
           local buftype = vim.api.nvim_get_option_value("buftype", { buf = buf })
           return name ~= "" and buftype == ""
@@ -582,14 +576,6 @@ local plugins = {
   -- 	end,
   -- },
   {
-    "kevinhwang91/nvim-ufo",
-    lazy = true,
-    event = "InsertEnter",
-    dependencies = {
-      "kevinhwang91/promise-async",
-    },
-  },
-  {
     "zeioth/garbage-day.nvim",
     lazy = true,
     event = "BufReadPost",
@@ -630,6 +616,9 @@ local plugins = {
     "williamboman/mason.nvim",
     event = { "BufReadPre", "BufNewFile" }, -- only load on buffer read
     lazy = true,
+    dependencies = {
+      "mason-org/mason-registry"
+    },
     config = function()
       require("mason").setup({
         ui = {
@@ -682,7 +671,6 @@ local plugins = {
       "rcarriga/nvim-dap-ui",
       "nvim-neotest/nvim-nio",
       "theHamsta/nvim-dap-virtual-text",
-      "mxsdev/nvim-dap-vscode-js",
       {
         "microsoft/vscode-js-debug",
         build = function()
@@ -964,8 +952,7 @@ local plugins = {
   },
   {
     "mfussenegger/nvim-lint",
-    lazy = true,
-    event = { "BufReadPre", "BufNewFile" },
+    ft = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
     dependencies = { "williamboman/mason.nvim" },
     config = function()
       require("lint").linters_by_ft = {
@@ -978,13 +965,36 @@ local plugins = {
     end,
   },
   {
-    "chrisgrieser/nvim-spider",
-    lazy = true,
-    keys = {
-      { "w", "<cmd>lua require('spider').motion('w')<CR>", mode = { "n", "o", "x" } },
-      { "e", "<cmd>lua require('spider').motion('e')<CR>", mode = { "n", "o", "x" } },
-      { "b", "<cmd>lua require('spider').motion('b')<CR>", mode = { "n", "o", "x" } },
-    },
+    "chrisgrieser/nvim-origami",
+    event = "VeryLazy",
+    config = function ()
+      require("origami").setup {
+        useLspFoldsWithTreesitterFallback = true,
+        pauseFoldsOnSearch = true,
+        foldtext = {
+          enabled = true,
+          padding = 3,
+          lineCount = {
+            template = "%d lines", -- `%d` is replaced with the number of folded lines
+            hlgroup = "Comment",
+          },
+          diagnosticsCount = true, -- uses hlgroups and icons from `vim.diagnostic.config().signs`
+          gitsignsCount = true, -- requires `gitsigns.nvim`
+        },
+        autoFold = {
+          enabled = false,
+          kinds = { "comment", "imports" }, ---@type lsp.FoldingRangeKind[]
+        },
+        foldKeymaps = {
+          setup = true, -- modifies `h` and `l`
+          hOnlyOpensOnFirstColumn = false,
+        },
+      }
+    end,
+    init = function()
+      vim.opt.foldlevel = 99
+      vim.opt.foldlevelstart = 99
+    end,
   },
 }
 

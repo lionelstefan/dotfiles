@@ -47,6 +47,30 @@ vim.api.nvim_create_autocmd({
 	end,
 })
 
+vim.api.nvim_create_autocmd("BufWritePre", {
+  pattern = { "*.ts", "*.tsx", "*.js", "*.jsx" },
+  callback = function(args)
+    local bufnr = args.buf
+    local client = vim.lsp.get_active_clients({ bufnr = bufnr, name = "tsserver" })[1]
+    if client then
+      vim.lsp.buf.execute_command({
+        command = "_typescript.addMissingImports",
+        arguments = { vim.api.nvim_buf_get_name(bufnr) },
+      })
+      vim.lsp.buf.execute_command({
+        command = "_typescript.organizeImports",
+        arguments = { vim.api.nvim_buf_get_name(bufnr) },
+      })
+      vim.lsp.buf.execute_command({
+        command = "_typescript.removeUnused",
+        arguments = { vim.api.nvim_buf_get_name(bufnr) },
+      })
+    end
+
+    require("conform").format({ bufnr = bufnr })
+  end,
+})
+
 vim.api.nvim_create_autocmd("ColorScheme", {
 	pattern = "*",
 	callback = function()

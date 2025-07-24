@@ -1,3 +1,28 @@
+local signs = {
+  Error = " ",
+  Warn = " ",
+  Hint = "󰌵 ",
+  Info = " "
+}
+
+local signConf = {
+  text = {},
+  texthl = {},
+  numhl = {},
+}
+
+for type, icon in pairs(signs) do
+  local severityName = string.upper(type)
+  local severity = vim.diagnostic.severity[severityName]
+  local hl = "DiagnosticSign" .. type
+  signConf.text[severity] = icon
+  signConf.texthl[severity] = hl
+  signConf.numhl[severity] = hl
+end
+
+vim.diagnostic.config({
+  signs = signConf,
+})
 -- NEOVIM LSPCONFIG
 vim.lsp.set_log_level("off")
 -- vim.lsp.set_log_level('debug')
@@ -60,7 +85,7 @@ capabilities.textDocument.colorProvider = { dynamicRegistration = false }
 capabilities.dynamicRegistration = true
 capabilities.textDocument.foldingRange = {
   dynamicRegistration = false,
-  lineFoldingOnly = true,
+  lineFoldingOnly = false,
 }
 capabilities.codeActionProvider = true
 
@@ -282,31 +307,4 @@ require("mason-lspconfig").setup({
     -- "ts_ls",
     "vtsls",
   },
-})
-
-require("ufo").setup({
-  open_fold_hl_timeout = 100,
-  -- fold_virt_text_handler = function(virtText, lnum, endLnum, width, truncate)
-  --   local newVirtText = {}
-  --   local suffix = (" 󰁂 %d "):format(endLnum - lnum)
-  --   local sufWidth = vim.fn.strdisplaywidth(suffix)
-  --   local targetWidth = math.max(0, width - sufWidth)
-  --   local curWidth = 0
-  --
-  --   for _, chunk in ipairs(virtText) do
-  --     local chunkText = chunk[1]
-  --     local chunkWidth = vim.fn.strdisplaywidth(chunkText)
-  --     if curWidth + chunkWidth <= targetWidth then
-  --       table.insert(newVirtText, chunk)
-  --       curWidth = curWidth + chunkWidth
-  --     else
-  --       local truncated = truncate(chunkText or "", targetWidth - curWidth)
-  --       table.insert(newVirtText, { truncated or "", chunk[2] })
-  --       break
-  --     end
-  --   end
-  --
-  --   table.insert(newVirtText, { suffix, "MoreMsg" })
-  --   return newVirtText
-  -- end,
 })

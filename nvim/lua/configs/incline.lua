@@ -51,16 +51,16 @@ require("incline").setup({
 
     -- Add diagnostics
     if errors > 0 then
-      table.insert(result, { " ", "󰅚 " .. errors, guifg = "#F7768E" })
+      table.insert(result, { " ", " " .. errors, guifg = "#F7768E" })
     end
     if warnings > 0 then
-      table.insert(result, { " ", "󰀪 " .. warnings, guifg = "#E0AF68" })
+      table.insert(result, { " ", " " .. warnings, guifg = "#E0AF68" })
     end
     if info > 0 then
-      table.insert(result, { " ", "󰋽 " .. info, guifg = "#0DB9D7" })
+      table.insert(result, { " ", " " .. info, guifg = "#0DB9D7" })
     end
     if hints > 0 then
-      table.insert(result, { " ", "󰌶 " .. hints, guifg = "#1ABC9C" })
+      table.insert(result, { " ", "󰌵 " .. hints, guifg = "#1ABC9C" })
     end
 
     table.insert(result, " ")

@@ -87,8 +87,7 @@ vim.keymap.set("x", "as", function()
 end, NS) -- Aligns to a string, looking left and with previews
 -- vim.keymap.set('x', 'ar', function() require'align'.align_to_string(true, true, true)  end, NS) -- Aligns to a Lua pattern, looking left and with previews
 
-vim.keymap.set("n", "fo", ":foldopen<CR>")
-vim.keymap.set("n", "fc", ":foldclose<CR>")
+vim.keymap.set("n", "<leader>zz", "za", { noremap = true, silent = true })
 
 -- HLSLENS
 map("n", "n", [[<Cmd>execute('normal! ' . v:count1 . 'n')<CR><Cmd>lua require('hlslens').start()<CR>]], NS)
@@ -159,3 +158,9 @@ vim.keymap.set("v", "<leader>sw", '<esc><cmd>lua require("spectre").open_visual(
 vim.keymap.set("n", "<leader>sp", '<cmd>lua require("spectre").open_file_search({select_word=true})<CR>', {
 	desc = "Search on current file",
 })
+
+-- DAP MOVEMENT
+vim.keymap.set('n', '<C-Up>',    '<C-w>k', { noremap = true, silent = true })
+vim.keymap.set('n', '<C-Down>',  '<C-w>j', { noremap = true, silent = true })
+vim.keymap.set('n', '<C-Left>',  '<C-w>h', { noremap = true, silent = true })
+vim.keymap.set('n', '<C-Right>', '<C-w>l', { noremap = true, silent = true })

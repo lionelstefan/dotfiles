@@ -12,7 +12,7 @@ M.on_attach = function(client, bufnr)
   capabilities.dynamicRegistration = true
   capabilities.textDocument.foldingRange = {
     dynamicRegistration = false,
-    lineFoldingOnly = true,
+    lineFoldingOnly = false,
   }
   capabilities.codeActionProvider = true
   client.server_capabilities = vim.tbl_deep_extend("force", client.server_capabilities, capabilities or {})
