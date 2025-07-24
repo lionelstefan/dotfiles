@@ -617,7 +617,7 @@ local plugins = {
     event = { "BufReadPre", "BufNewFile" }, -- only load on buffer read
     lazy = true,
     dependencies = {
-      "mason-org/mason-registry"
+      "mason-org/mason-registry",
     },
     config = function()
       require("mason").setup({
@@ -967,8 +967,8 @@ local plugins = {
   {
     "chrisgrieser/nvim-origami",
     event = "VeryLazy",
-    config = function ()
-      require("origami").setup {
+    config = function()
+      require("origami").setup({
         useLspFoldsWithTreesitterFallback = true,
         pauseFoldsOnSearch = true,
         foldtext = {
@@ -989,11 +989,27 @@ local plugins = {
           setup = true, -- modifies `h` and `l`
           hOnlyOpensOnFirstColumn = false,
         },
-      }
+      })
     end,
     init = function()
       vim.opt.foldlevel = 99
       vim.opt.foldlevelstart = 99
+    end,
+  },
+  {
+    "akinsho/git-conflict.nvim",
+    version = "*",
+    config = function()
+      require("git-conflict").setup({
+        default_mappings = {
+          ours = "o",
+          theirs = "t",
+          none = "0",
+          both = "b",
+          next = "n",
+          prev = "N",
+        },
+      })
     end,
   },
 }
