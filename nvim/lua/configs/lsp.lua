@@ -38,11 +38,6 @@ local on_attach = function(client, bufnr)
 
   vim.lsp.inlay_hint.enable(true, { bufnr })
 
-  -- CODE ACTION
-  -- vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, { buffer = bufnr, desc = 'Code Action' })
-  -- vim.keymap.set('n', '<leader>ca', require('telescope.builtin').lsp_code_actions, { desc = 'Telescope Code Actions' })
-  -- vim.keymap.set('v', '<leader>ca', vim.lsp.buf.code_action, { buffer = bufnr, desc = 'Code Action (Range)' })
-
   -- Hover
   vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
 
