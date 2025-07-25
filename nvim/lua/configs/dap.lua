@@ -2,7 +2,7 @@ local dap = require("dap")
 local dapui = require("dapui")
 
 require("nvim-dap-virtual-text").setup()
-local js_debug_path = vim.fn.expand "$MASON/packages/js-debug-adapter"
+local js_debug_path = vim.fn.expand("$MASON/packages/js-debug-adapter")
 
 -- dap.adapters.php = {
 -- 	type = "executable",
@@ -88,11 +88,34 @@ dap.listeners.before.event_exited["dapui_config"] = function()
   dapui.close()
 end
 
-vim.api.nvim_set_hl(0, "DapBreakpointColor", { fg = "#e45555" })
-
 vim.fn.sign_define("DapBreakpoint", { text = " ", texthl = "DapBreakpointColor", linehl = "", numhl = "" })
+vim.fn.sign_define("DapBreakpointCondition", {
+  text = " ", -- Question mark (for conditional)
+  texthl = "DapBreakpointConditionColor",
+  linehl = "",
+  numhl = "",
+})
 
-vim.fn.sign_define("DapStopped", { text = "▶️", texthl = "", linehl = "", numhl = "" })
+vim.fn.sign_define("DapBreakpointRejected", {
+  text = " ", -- Warning/error icon
+  texthl = "DapBreakpointRejectedColor",
+  linehl = "",
+  numhl = "",
+})
+
+vim.fn.sign_define("DapLogPoint", {
+  text = " ", -- Code icon for log points
+  texthl = "DapLogPointColor",
+  linehl = "",
+  numhl = "",
+})
+
+vim.fn.sign_define("DapStopped", {
+  text = " ", -- Arrow pointing right for execution point
+  texthl = "DapStoppedColor",
+  linehl = "DapStoppedLine", -- optional to highlight line
+  numhl = "",
+})
 
 vim.keymap.set("n", "<F5>", require("dap").continue)
 vim.keymap.set("n", "<F10>", require("dap").step_over)

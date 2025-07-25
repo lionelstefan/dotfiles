@@ -1,6 +1,6 @@
 alias c="clear"
 alias x="exit"
-alias r="source ~/.zshrc"
+alias r="exec $SHELL"
 alias ll="exa -aFghl --no-icons --group-directories-first --time-style=long-iso"
 alias ls="exa -aFghl --no-icons --group-directories-first --time-style=long-iso"
 alias zz="z $OLDPWD"
@@ -63,4 +63,7 @@ function pr()
     --target-branch "staging" \
     --title "Merge $current_branch into staging" \
     --fill
+}
+function gff() {
+  git flow "$1" finish "$2" && git push origin main Dev --tags
 }

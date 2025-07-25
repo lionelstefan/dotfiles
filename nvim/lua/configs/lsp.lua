@@ -1,3 +1,5 @@
+vim.lsp.set_log_level('warn')
+
 local signs = {
   Error = " ",
   Warn = " ",
@@ -23,10 +25,10 @@ end
 vim.diagnostic.config({
   signs = signConf,
 })
+
 -- NEOVIM LSPCONFIG
-vim.lsp.set_log_level("off")
--- vim.lsp.set_log_level('debug')
 require("lspconfig")
+
 local on_attach = function(client, bufnr)
   local opts = {
     buffer = bufnr,
@@ -40,6 +42,37 @@ local on_attach = function(client, bufnr)
 
   -- Hover
   vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
+
+  local bufname = vim.api.nvim_buf_get_name(bufnr)
+  local buftype = vim.bo[bufnr].buftype
+  if bufname ~= "" and buftype == "" then
+    -- Only apply these capabilities for real files
+
+    -- snippetSupport
+    if client.server_capabilities.completionProvider and client.server_capabilities.completionProvider.triggerCharacters then
+      client.server_capabilities.completionProvider.resolveProvider = true
+    end
+
+    -- colorProvider
+    client.server_capabilities.colorProvider = {
+      dynamicRegistration = false,
+    }
+
+    -- dynamicRegistration (for top-level capabilities)
+    client.server_capabilities.dynamicRegistration = true
+
+    -- codeActionProvider
+    client.server_capabilities.codeActionProvider = true
+
+    -- foldingRange
+    client.server_capabilities.foldingRangeProvider = {
+      dynamicRegistration = false,
+      lineFoldingOnly = false,
+    }
+
+    -- Optional debug print
+    print("🧠 Enhanced capabilities applied for:", client.name, bufname)
+  end
 
   print("LSP attached!")
 end
@@ -74,16 +107,6 @@ local handlers = {
   -- end,
 }
 local capabilities = require("blink.cmp").get_lsp_capabilities()
-
-capabilities.textDocument.completion.completionItem.snippetSupport = true
-capabilities.textDocument.colorProvider = { dynamicRegistration = false }
-capabilities.dynamicRegistration = true
-capabilities.textDocument.foldingRange = {
-  dynamicRegistration = false,
-  lineFoldingOnly = false,
-}
-capabilities.codeActionProvider = true
-
 
 vim.lsp.config('phpactor', {
   on_attach = on_attach,
