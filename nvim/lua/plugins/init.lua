@@ -1012,6 +1012,35 @@ local plugins = {
       })
     end,
   },
+  {
+    "folke/noice.nvim",
+    event = "VeryLazy",
+    dependencies = {
+      "MunifTanjim/nui.nvim",
+      "rcarriga/nvim-notify",
+    },
+    opts = {
+      cmdline = {
+        enabled = true,
+        view = "cmdline"
+      },
+      messages = {
+        enabled = true,
+      },
+      presets = {
+        bottom_search = false,
+        command_palette = false,
+        long_message_to_split = true,
+        lsp_doc_border = false,
+      },
+      lsp = {
+        override = {
+          ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+          ["vim.lsp.util.stylize_markdown"] = true,
+        },
+      },
+    },
+  }
 }
 
 for _, colorscheme in ipairs(colorschemes) do

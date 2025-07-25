@@ -23,7 +23,7 @@ vim.cmd([[
 ]])
 
 vim.cmd([[
-    colorscheme gruvbox
+  colorscheme gruvbox
 ]])
 
 vim.cmd([[
@@ -48,27 +48,27 @@ vim.api.nvim_create_autocmd({
 })
 
 vim.api.nvim_create_autocmd("BufWritePre", {
-  pattern = { "*.ts", "*.tsx", "*.js", "*.jsx" },
-  callback = function(args)
-    local bufnr = args.buf
-    local client = vim.lsp.get_active_clients({ bufnr = bufnr, name = "tsserver" })[1]
-    if client then
-      vim.lsp.buf.execute_command({
-        command = "_typescript.addMissingImports",
-        arguments = { vim.api.nvim_buf_get_name(bufnr) },
-      })
-      vim.lsp.buf.execute_command({
-        command = "_typescript.organizeImports",
-        arguments = { vim.api.nvim_buf_get_name(bufnr) },
-      })
-      vim.lsp.buf.execute_command({
-        command = "_typescript.removeUnused",
-        arguments = { vim.api.nvim_buf_get_name(bufnr) },
-      })
-    end
+	pattern = { "*.ts", "*.tsx", "*.js", "*.jsx" },
+	callback = function(args)
+		local bufnr = args.buf
+		local client = vim.lsp.get_active_clients({ bufnr = bufnr, name = "tsserver" })[1]
+		if client then
+			vim.lsp.buf.execute_command({
+				command = "_typescript.addMissingImports",
+				arguments = { vim.api.nvim_buf_get_name(bufnr) },
+			})
+			vim.lsp.buf.execute_command({
+				command = "_typescript.organizeImports",
+				arguments = { vim.api.nvim_buf_get_name(bufnr) },
+			})
+			vim.lsp.buf.execute_command({
+				command = "_typescript.removeUnused",
+				arguments = { vim.api.nvim_buf_get_name(bufnr) },
+			})
+		end
 
-    require("conform").format({ bufnr = bufnr })
-  end,
+		require("conform").format({ bufnr = bufnr })
+	end,
 })
 
 vim.api.nvim_create_autocmd("ColorScheme", {
@@ -87,6 +87,7 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 			scrollbar = "#665c54",
 		}
 
+    vim.api.nvim_set_hl(0, "NormalFloat", { bg = colors.bg, fg = colors.fg })
 		vim.api.nvim_set_hl(0, "BlinkCmpMenu", { bg = colors.bg, fg = colors.fg })
 		vim.api.nvim_set_hl(0, "BlinkCmpMenuBorder", { fg = colors.gray, bg = colors.bg })
 		vim.api.nvim_set_hl(0, "BlinkCmpMenuSelection", { bg = colors.dark_gray, fg = colors.yellow, bold = true })

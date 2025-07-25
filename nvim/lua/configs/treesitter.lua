@@ -32,6 +32,8 @@ require("nvim-treesitter.configs").setup({
 		"vue",
 		"query",
 		"regex",
+    "markdown",
+    "markdown_inline",
 	},
 	highlight = {
 		enable = true,
