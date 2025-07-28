@@ -4,48 +4,11 @@ local filter = require("configs.lsp.utils.filter").filter
 local filterReactDTS = require("configs.lsp.utils.filterReactDTS").filterReactDTS
 
 local handlers = {
-  -- ADJUST FOR NEOVIM 12
-  -- ["textDocument/hover"] = function()
-  --   return vim.lsp.buf.hover({
-  --     silent = true,
-  --     border = "rounded",
-  --   })
-  -- end,
-  --
-  -- ["textDocument/signatureHelp"] = function()
-  --   return vim.lsp.buf.signature_help({
-  --     border = "rounded",
-  --   })
-  -- end,
-  --
-  -- ["textDocument/publishDiagnostics"] = vim.lsp.with(
-  --   vim.lsp.diagnostic.on_publish_diagnostics,
-  --   { virtual_text = true }
-  -- ),
-  --
-  -- ["textDocument/definition"] = function(err, result, method, ...)
-  --   if vim.islist(result) and #result > 1 then
-  --     local filtered_result = filter(result, filterReactDTS)
-  --     return vim.lsp.handlers["textDocument/definition"](err, filtered_result, method, ...)
-  --   end
-  --   return vim.lsp.handlers["textDocument/definition"](err, result, method, ...)
-  -- end,
-
-  ["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-    silent = true,
+  ["textDocument/signatureHelp"] = vim.lsp.buf.signature_help({
     border = "rounded",
   }),
-  ["textDocument/signatureHelp"] = vim.lsp.with(
-    vim.lsp.handlers.signature_help, {
-      border ="rounded",
-    }
-  ),
-  ["textDocument/publishDiagnostics"] = vim.lsp.with(
-    vim.lsp.diagnostic.on_publish_diagnostics,
-    { virtual_text = true }
-  ),
   ["textDocument/definition"] = function(err, result, method, ...)
-    if vim.tbl_islist(result) and #result > 1 then
+    if vim.islist(result) and #result > 1 then
       local filtered_result = filter(result, filterReactDTS)
       return vim.lsp.handlers["textDocument/definition"](err, filtered_result, method, ...)
     end
@@ -131,7 +94,7 @@ local init_options = {
     {
       name = "@vue/typescript-plugin",
       location = "/home/lionelstefan/.local/share/pnpm/global/5/node_modules/@vue/typescript-plugin",
-      languages = {"javascript", "typescript", "vue"},
+      languages = { "javascript", "typescript", "vue" },
     },
   },
 }

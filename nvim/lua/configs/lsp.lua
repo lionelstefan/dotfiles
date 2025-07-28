@@ -1,5 +1,3 @@
-vim.lsp.set_log_level('warn')
-
 local signs = {
   Error = " ",
   Warn = " ",
@@ -23,7 +21,10 @@ for type, icon in pairs(signs) do
 end
 
 vim.diagnostic.config({
+  virtual_text = false,
   signs = signConf,
+  underline = true,
+  severity_sort = true,
 })
 
 -- NEOVIM LSPCONFIG
@@ -35,8 +36,7 @@ local on_attach = function(client, bufnr)
     noremap = true,
     silent = true,
   }
-  -- vim.api.nvim_set_option_value("omnifunc", "v:lua.vim.lsp.omnifunc", { buf = bufnr })
-  vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
+  vim.bo[bufnr].omnifunc = "v:lua.vim.lsp.omnifunc"
 
   vim.lsp.inlay_hint.enable(true, { bufnr })
 
@@ -78,33 +78,13 @@ local on_attach = function(client, bufnr)
 end
 
 local handlers = {
-  ["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-    silent = true,
-    border = "rounded",
-  }),
-  ["textDocument/signatureHelp"] = vim.lsp.with(
-    vim.lsp.handlers.signature_help, {
+  ["textDocument/signatureHelp"] = vim.lsp.buf.signature_help, {
       border = "rounded",
-    }
-  ),
+    },
   ["textDocument/publishDiagnostics"] = function(err, result, ctx)
     require("ts-error-translator").translate_diagnostics(err, result, ctx)
     vim.lsp.diagnostic.on_publish_diagnostics(err, result, ctx)
   end
-
-  -- ADJUST FOR NEOVIM 12
-  -- ["textDocument/hover"] = function()
-  --   return vim.lsp.buf.hover({
-  --     silent = true,
-  --     border = "rounded",
-  --   })
-  -- end,
-  --
-  -- ["textDocument/signatureHelp"] = function()
-  --   return vim.lsp.buf.signature_help({
-  --     border = "rounded",
-  --   })
-  -- end,
 }
 local capabilities = require("blink.cmp").get_lsp_capabilities()
 
@@ -322,7 +302,6 @@ require("mason-lspconfig").setup({
     "yamlls",
     "jsonls",
     "vue_ls",
-    -- "ts_ls",
     "vtsls",
   },
 })

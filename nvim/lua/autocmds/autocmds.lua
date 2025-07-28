@@ -37,9 +37,9 @@ vim.cmd([[
 vim.api.nvim_create_autocmd({
   "BufWritePost",
 }, {
-  callback = function()
+  callback = function(args)
     pcall(require("conform").format, {
-      bufnr = buf,
+      bufnr = args.buf,
       async = false,
       timeout_ms = 500,
       formatters = { "trim_whitespace", "trim_newlines" },
@@ -50,21 +50,47 @@ vim.api.nvim_create_autocmd({
 vim.api.nvim_create_autocmd("BufWritePre", {
   pattern = { "*.ts", "*.tsx", "*.js", "*.jsx" },
   callback = function(args)
+    local client = nil
     local bufnr = args.buf
-    local client = vim.lsp.get_active_clients({ bufnr = bufnr, name = "tsserver" })[1]
+    for _, c in pairs(vim.lsp.get_clients({ bufnr = bufnr })) do
+      if c.name == "tsserver" then
+        client = c
+        break
+      end
+    end
+
     if client then
-      vim.lsp.buf.execute_command({
+      -- add missing imports
+      vim.lsp.buf_request(bufnr, "workspace/executeCommand", {
         command = "_typescript.addMissingImports",
         arguments = { vim.api.nvim_buf_get_name(bufnr) },
-      })
-      vim.lsp.buf.execute_command({
+      }, function(err, result, ctx, config)
+          if err then
+            vim.notify("Error running addMissingImports: " .. err.message, vim.log.levels.ERROR)
+          end
+        end)
+
+      local uri = vim.uri_from_bufnr(bufnr)
+
+      -- organize imports
+      vim.lsp.buf_request(bufnr, "workspace/executeCommand", {
         command = "_typescript.organizeImports",
-        arguments = { vim.api.nvim_buf_get_name(bufnr) },
-      })
-      vim.lsp.buf.execute_command({
+        arguments = { uri },
+      }, function(err)
+          if err then
+            vim.notify("Organize Imports failed: " .. err.message, vim.log.levels.ERROR)
+          end
+        end)
+
+      -- remove unused
+      vim.lsp.buf_request(bufnr, "workspace/executeCommand", {
         command = "_typescript.removeUnused",
-        arguments = { vim.api.nvim_buf_get_name(bufnr) },
-      })
+        arguments = { uri },
+      }, function(err)
+          if err then
+            vim.notify("Remove Unused failed: " .. err.message, vim.log.levels.ERROR)
+          end
+        end)
     end
 
     require("conform").format({ bufnr = bufnr })
@@ -121,15 +147,29 @@ vim.api.nvim_create_autocmd("ColorScheme", {
     vim.api.nvim_set_hl(0, "BlinkCmpSignatureHelpActiveParameter", { fg = colors.yellow, underline = true })
 
     vim.api.nvim_set_hl(0, "GitSignsCurrentLineBlame", {
-      fg = "gray", -- your preferred gray-ish color
+      fg = "gray",
     })
+
+    -- FIDGET
+    vim.api.nvim_set_hl(0, "FidgetDoneStyle", { fg = "#98C379" })
 
     vim.api.nvim_set_hl(0, "DapBreakpointColor", { fg = "#e45555" })
     vim.api.nvim_set_hl(0, "DapBreakpointConditionColor", { fg = "#E5C07B" })
     vim.api.nvim_set_hl(0, "DapBreakpointRejectedColor", { fg = "#BE5046" })
     vim.api.nvim_set_hl(0, "DapLogPointColor", { fg = "#56B6C2" })
     vim.api.nvim_set_hl(0, "DapStoppedColor", { fg = "#98C379", bold = true })
-    vim.api.nvim_set_hl(0, "DapStoppedLine", { bg = "#3E4452" })
+    vim.api.nvim_set_hl(0, "DapStoppedLine", { bg = colors.bg })
+
+    -- GIT CONFLICT HL
+    vim.api.nvim_set_hl(0, "DiffAdd", {
+      bg = colors.blue,
+      fg = colors.fg,
+    })
+
+    vim.api.nvim_set_hl(0, "DiffText", {
+      bg = colors.orange,
+      fg = colors.fg,
+    })
   end,
 })
 

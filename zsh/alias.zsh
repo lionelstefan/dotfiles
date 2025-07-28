@@ -55,15 +55,6 @@ function f() {
 	[ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && builtin cd -- "$cwd"
 	rm -f -- "$tmp"
 }
-function pr()
-{
-  current_branch=$(git symbolic-ref --short HEAD)
-  glab mr create \
-    --source-branch "$current_branch" \
-    --target-branch "staging" \
-    --title "Merge $current_branch into staging" \
-    --fill
-}
 function gff() {
   git flow "$1" finish "$2" && git push origin main Dev --tags
 }

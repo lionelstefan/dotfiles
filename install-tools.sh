@@ -16,30 +16,36 @@ else
     echo "✅ Cargo installed"
 fi
 
-# Check and install NVM
-if [ -d "$HOME/.nvm" ]; then
-    echo "✅ NVM is already installed"
+# Check and install FNM
+if command -v fnm >/dev/null 2>&1; then
+  echo "✅ FNM is already installed"
 else
-    echo "📦 Installing NVM (Node Version Manager)..."
-    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+  echo "📦 Installing FNM (Fast Node Manager)..."
+  curl -fsSL https://fnm.vercel.app/install | bash
 fi
 
-# Load NVM for current shell session
-export NVM_DIR="$HOME/.nvm"
-# shellcheck disable=SC1090
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-echo "✅ NVM loaded"
+# Load FNM for current shell session
+export PATH="$HOME/.fnm:$PATH"
+eval "$(fnm env)"
+echo "✅ FNM loaded"
 
-# Install latest LTS version of Node using NVM
-echo "📦 Installing latest LTS Node version with NVM..."
-nvm install --lts
-nvm use --lts
-echo "✅ Latest LTS Node version installed"
+# Install latest LTS Node.js using FNM
+echo "📦 Installing latest LTS Node version with FNM..."
+fnm install --lts
+fnm use --lts
+fnm default $(fnm current)
+echo "✅ Latest LTS Node version installed and set as default"
 
-# Install npm packages globally
-echo "📦 Installing git-jump globally using npm..."
-npm install -g git-jump
-echo "✅ git-jump installed globally"
+# Install pnpm globally using corepack (comes with Node.js >=16.13)
+echo "📦 Enabling and setting up pnpm..."
+corepack enable
+corepack prepare pnpm@latest --activate
+echo "✅ pnpm is ready"
+
+# Install global packages using pnpm
+echo "📦 Installing git-jump globally using pnpm..."
+pnpm add -g git-jump
+echo "✅ git-jump installed globally via pnpm"
 
 # Add Neovim repositories
 echo "📝 Adding Neovim stable and unstable PPAs..."
