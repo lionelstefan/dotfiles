@@ -15,29 +15,7 @@ vim.api.nvim_create_autocmd("UIEnter", {
   end,
 })
 
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "javascript", "typescript", "vue", "php" },
-  callback = function(args)
-    local two_space = { javascript = true, typescript = true, vue = true }
-    local four_space = { php = true }
-
-    if two_space[args.match] then
-      vim.opt_local.tabstop = 2
-      vim.opt_local.softtabstop = 2
-      vim.opt_local.shiftwidth = 2
-    elseif four_space[args.match] then
-      vim.opt_local.tabstop = 4
-      vim.opt_local.softtabstop = 4
-      vim.opt_local.shiftwidth = 4
-    end
-
-    vim.opt_local.expandtab = true
-  end,
-})
-
-vim.api.nvim_create_autocmd({
-  "BufWritePost",
-}, {
+vim.api.nvim_create_autocmd("BufWritePost", {
   callback = function(args)
     pcall(require("conform").format, {
       bufnr = args.buf,
@@ -63,7 +41,7 @@ vim.api.nvim_create_autocmd("BufWritePre", {
     if client then
       -- add missing imports
       vim.lsp.buf_request(bufnr, "workspace/executeCommand", {
-        command = "_typescript.addMissingImports",
+        command = "vtsls.addMissingImports",
         arguments = { vim.api.nvim_buf_get_name(bufnr) },
       }, function(err, result, ctx, config)
           if err then
@@ -75,7 +53,7 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 
       -- organize imports
       vim.lsp.buf_request(bufnr, "workspace/executeCommand", {
-        command = "_typescript.organizeImports",
+        command = "vtsls.organizeImports",
         arguments = { uri },
       }, function(err)
           if err then
@@ -85,7 +63,7 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 
       -- remove unused
       vim.lsp.buf_request(bufnr, "workspace/executeCommand", {
-        command = "_typescript.removeUnused",
+        command = "vtsls.removeUnused",
         arguments = { uri },
       }, function(err)
           if err then

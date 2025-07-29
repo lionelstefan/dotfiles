@@ -3,10 +3,10 @@ vim.cmd([[
   filetype plugin indent off
 ]])
 
-require('core.options')
+require("core.options")
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
+if not vim.uv.fs_stat(lazypath) then
   vim.fn.system({
     "git",
     "clone",
@@ -20,6 +20,7 @@ vim.opt.rtp:prepend(lazypath)
 vim.lsp.set_log_level("warn")
 
 require("plugins.lazy")
+require("core.diagnostics")
 require("core.keymaps")
 require("core.autocmds")
 
