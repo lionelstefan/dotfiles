@@ -80,8 +80,11 @@ M.on_init = function(client)
     end
     local ts_client = clients[1]
 
-    local param = table.unpack(result)
-    local id, command, payload = table.unpack(param)
+    if not result or type(result) ~= "table" or #result < 3 then
+      return
+    end
+
+    local id, command, payload = table.unpack(result)
     ts_client:exec_cmd({
       title = 'vue_request_forward', -- You can give title anything as it's used to represent a command in the UI, `:h Client:exec_cmd`
       command = 'typescript.tsserverRequest',

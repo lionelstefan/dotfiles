@@ -1,38 +1,39 @@
-vim.cmd([[
-	autocmd VimEnter * ++nested colorscheme gruvbox
-]])
+vim.api.nvim_create_autocmd("VimEnter", {
+  pattern = "*",
+  nested = true,
+  callback = function()
+    vim.cmd("colorscheme gruvbox")
+    vim.opt.fillchars = { eob = " ", fold = " " }
+  end,
+})
 
-vim.cmd([[
-	autocmd VimEnter * ++nested set fcs=eob:\ ,fold:\
-]])
+vim.api.nvim_create_autocmd("UIEnter", {
+  pattern = "*",
+  nested = true,
+  callback = function()
+    vim.cmd("colorscheme gruvbox")
+  end,
+})
 
-vim.cmd([[
-	autocmd FileType javascript setlocal ts=2 sts=2 sw=2 expandtab
-]])
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "javascript", "typescript", "vue", "php" },
+  callback = function(args)
+    local two_space = { javascript = true, typescript = true, vue = true }
+    local four_space = { php = true }
 
-vim.cmd([[
-	autocmd FileType typescript setlocal ts=2 sts=2 sw=2 expandtab
-]])
+    if two_space[args.match] then
+      vim.opt_local.tabstop = 2
+      vim.opt_local.softtabstop = 2
+      vim.opt_local.shiftwidth = 2
+    elseif four_space[args.match] then
+      vim.opt_local.tabstop = 4
+      vim.opt_local.softtabstop = 4
+      vim.opt_local.shiftwidth = 4
+    end
 
-vim.cmd([[
-	autocmd FileType vue setlocal ts=2 sts=2 sw=2 expandtab
-]])
-
-vim.cmd([[
-	autocmd FileType php setlocal ts=4 sts=4 sw=4 expandtab
-]])
-
-vim.cmd([[
-  colorscheme gruvbox
-]])
-
-vim.cmd([[
-	autocmd ColorScheme * highlight SignColumn guibg=NONE
-]])
-
-vim.cmd([[
-	autocmd VimEnter * highlight TreesitterContext guibg=#353A3C
-]])
+    vim.opt_local.expandtab = true
+  end,
+})
 
 vim.api.nvim_create_autocmd({
   "BufWritePost",
@@ -100,6 +101,7 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 vim.api.nvim_create_autocmd("ColorScheme", {
   pattern = "*",
   callback = function()
+    vim.api.nvim_set_hl(0, "SignColumn", { bg = "NONE" })
     local colors = {
       bg = "#282828",
       fg = "#fbf1c7",
@@ -159,6 +161,29 @@ vim.api.nvim_create_autocmd("ColorScheme", {
     vim.api.nvim_set_hl(0, "DapLogPointColor", { fg = "#56B6C2" })
     vim.api.nvim_set_hl(0, "DapStoppedColor", { fg = "#98C379", bold = true })
     vim.api.nvim_set_hl(0, "DapStoppedLine", { bg = colors.bg })
+
+    local signs = {
+      "DiagnosticSignWarn",
+      "DiagnosticSignError",
+      "DiagnosticSignHint",
+      "DiagnosticSignInfo",
+      "DiagnosticSignOk",
+    }
+
+    for _, group in ipairs(signs) do
+      local current = vim.api.nvim_get_hl(0, { name = group, link = false })
+      vim.api.nvim_set_hl(0, group, {
+        fg = current.fg,
+        bg = "none",
+        bold = current.bold,
+        italic = current.italic,
+        underline = current.underline,
+        reverse = current.reverse,
+        standout = current.standout,
+        strikethrough = current.strikethrough,
+        nocombine = current.nocombine,
+      })
+    end
 
     -- GIT CONFLICT HL
     vim.api.nvim_set_hl(0, "DiffAdd", {

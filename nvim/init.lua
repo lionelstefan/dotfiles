@@ -1,10 +1,9 @@
 vim.cmd([[
   syntax off
-  filetype off
   filetype plugin indent off
 ]])
 
-require('options.options')
+require('core.options')
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
@@ -20,15 +19,12 @@ end
 vim.opt.rtp:prepend(lazypath)
 vim.lsp.set_log_level("warn")
 
-require("lazy-setup")
-require("configs.docblock")
-require("configs.global-configs")
-require("autocmds.autocmds")
-require("remaps")
+require("plugins.lazy")
+require("core.keymaps")
+require("core.autocmds")
 
 vim.cmd([[
   syntax on
-  filetype on
   filetype plugin indent on
 ]])
 

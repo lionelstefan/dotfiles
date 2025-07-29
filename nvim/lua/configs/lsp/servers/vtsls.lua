@@ -57,7 +57,6 @@ local settings = {
 local filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' }
 
 local on_attach = function(client, bufnr)
-  vim.lsp.inlay_hint.enable(true, { bufnr })
   client.server_capabilities.documentFormattingProvider = false
   client.server_capabilities.documentRangeFormattingProvider = false
 end

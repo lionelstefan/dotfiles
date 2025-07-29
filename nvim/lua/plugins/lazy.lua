@@ -1,6 +1,4 @@
-require("lazy").setup(
-  require("plugins"),
-  {
+require("lazy").setup(require("plugins.list"), {
   debug = false,
   defaults = { lazy = false },
   install = {
@@ -8,7 +6,6 @@ require("lazy").setup(
       "gruvbox",
     },
   },
-  concurrency = 10,
   performance = {
     cache = {
       enabled = true,
@@ -31,9 +28,13 @@ require("lazy").setup(
         "2html_plugin",
         "logipat",
         "rrhelper",
-        "spellfile_plugin",
+        "spellfile",
+        "tohtml",
         "matchit",
-        "syntax",
+        "matchparen",
+        "osc52",
+        "rplugin",
+        "tutor",
       },
     },
   },
