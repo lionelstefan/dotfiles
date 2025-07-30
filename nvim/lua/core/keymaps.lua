@@ -51,6 +51,9 @@ map("n", "<PageDown>", "10jzz0", NR)
 -- Easy SO %
 map("n", "<leader>r", ":luafile ~/dotfiles/nvim/init.lua<cr><esc>", NR)
 
+-- reopen file
+map("n", "<leader>e", "<cmd>e<cr>", NR)
+
 -- moving bunch of lines
 map("v", "J", ":m '>+1<CR>gv=gv", NR)
 map("v", "K", ":m '<-2<CR>gv=gv", NR)

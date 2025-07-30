@@ -592,12 +592,10 @@ local plugins = {
   {
     "zeioth/garbage-day.nvim",
     lazy = true,
-    event = "BufReadPost",
+    event = "VeryLazy",
     dependencies = {
       {
         "neovim/nvim-lspconfig",
-        event = { "BufReadPre", "BufNewFile" }, -- only load on buffer read
-        lazy = true,
       },
     },
   },
@@ -619,12 +617,6 @@ local plugins = {
           },
         },
       })
-    end,
-  },
-  {
-    "neovim/nvim-lspconfig",
-    config = function()
-      require("configs.lsp")
     end,
   },
   {
@@ -656,14 +648,9 @@ local plugins = {
     dependencies = {
       {
         "mason-org/mason.nvim",
-        cmd = {
-          "Mason",
-        },
-        event = { "BufReadPre", "BufNewFile" },
       },
       {
         "neovim/nvim-lspconfig",
-        event = { "BufReadPre", "BufNewFile" },
       },
     },
   },
@@ -1080,7 +1067,8 @@ local plugins = {
   },
   {
     "folke/noice.nvim",
-    event = "UIEnter",
+    lazy = true,
+    event = "VeryLazy",
     dependencies = {
       "MunifTanjim/nui.nvim",
       "rcarriga/nvim-notify",

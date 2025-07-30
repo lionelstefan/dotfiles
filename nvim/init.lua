@@ -19,7 +19,8 @@ end
 vim.opt.rtp:prepend(lazypath)
 vim.lsp.set_log_level("warn")
 
-require("plugins.lazy")
+require("plugins")
+
 require("core.diagnostics")
 require("core.keymaps")
 require("core.autocmds")

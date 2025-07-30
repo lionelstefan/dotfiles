@@ -11,5 +11,18 @@ require("fzf-lua").setup({
     ["bg"]               = { "bg", "Normal" },
     ["fg+"]              = { "fg", "BlinkCmpKindVariable" },
     ["bg+"]              = { "bg", "Normal" },
+  },
+  keymap = {
+    builtin = {
+      ["<PageDown>"] = "preview-page-down",
+      ["<PageUp>"]   = "preview-page-up",
+    }
+  },
+  winopts = {
+    preview = {
+      winopts = {
+        number = false
+      }
+    }
   }
 })

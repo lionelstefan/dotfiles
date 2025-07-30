@@ -62,123 +62,138 @@ local handlers = {
   end,
 }
 local capabilities = require("blink.cmp").get_lsp_capabilities()
+local lsp_started = {}
 
-vim.lsp.config("phpactor", {
-  on_attach = on_attach,
-  capabilities = capabilities,
-  filetypes = { "php" },
+local function safe_setup(name, config)
+  if lsp_started[name] then
+    return
+  end
+
+  lsp_started[name] = true
+  vim.lsp.config(name, config)
+end
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "php",
+  callback = function()
+    safe_setup(name, config)("phpactor", {
+      on_attach = on_attach,
+      capabilities = capabilities,
+      filetypes = { "php" },
+    })
+  end,
 })
 
-vim.lsp.config("html", {
-  on_attach = on_attach,
-  capabilities = capabilities,
-  filetypes = { "html" },
-  init_options = {
-    configurationSection = { "html", "css", "javascript" },
-    embeddedLanguages = {
-      css = true,
-      javascript = true,
-    },
-    provideFormatter = true,
-  },
-})
-
-vim.lsp.config("bashls", {
-  on_attach = on_attach,
-  capabilities = capabilities,
-  cmd = { "bash-language-server", "start" },
-  filetypes = { "sh", "zsh" },
-})
-
-vim.lsp.config("jsonls", {
-  capabilities = capabilities,
-  handlers = handlers,
-  on_attach = on_attach,
-  settings = require("configs.lsp.servers.jsonls").settings,
-})
-
-vim.lsp.config("lua_ls", {
-  on_attach = on_attach,
-  capabilities = capabilities,
-  cmd = { "lua-language-server" },
-  filetypes = { "lua" },
-  settings = {
-    cmd = {
-      '"/home/lionelstefan/homebrew/bin/lua-language-server" "$@"',
-    },
-    runtime = {
-      version = "LuaJIT",
-    },
-    format = {
-      enable = true,
-      defaultConfig = {
-        indent_style = "space",
-        indent_size = "2",
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "html",
+  callback = function()
+    safe_setup(name, config)("html", {
+      on_attach = on_attach,
+      capabilities = capabilities,
+      filetypes = { "html" },
+      init_options = {
+        configurationSection = { "html", "css", "javascript" },
+        embeddedLanguages = {
+          css = true,
+          javascript = true,
+        },
+        provideFormatter = false,
       },
-    },
-    diagnostics = {
-      globals = { "vim" },
-    },
-    workspace = {
-      library = vim.api.nvim_get_runtime_file("", true),
-    },
-    telemetry = {
-      enable = false,
-    },
-    Lua = {
-      completion = {
-        callSnippet = "Replace",
+    })
+  end,
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "sh", "zsh" },
+  callback = function()
+    safe_setup("bashls", {
+      on_attach = on_attach,
+      capabilities = capabilities,
+      cmd = { "bash-language-server", "start" },
+    })
+  end,
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "json",
+  callback = function()
+    safe_setup("jsonls", {
+      on_attach = on_attach,
+      capabilities = capabilities,
+      handlers = handlers,
+      settings = require("configs.lsp.servers.jsonls").settings,
+    })
+  end,
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "lua",
+  callback = function()
+    safe_setup("lua_ls", {
+      on_attach = on_attach,
+      capabilities = capabilities,
+      cmd = { "lua-language-server" },
+      settings = {
+        cmd = {
+          '"' .. os.getenv("HOME") .. '/homebrew/bin/lua-language-server" "$@"',
+        },
+        runtime = { version = "LuaJIT" },
+        format = {
+          enable = false,
+          defaultConfig = {
+            indent_style = "space",
+            indent_size = "2",
+          },
+        },
+        diagnostics = {
+          globals = { "vim" },
+        },
+        workspace = {
+          library = vim.api.nvim_get_runtime_file("", true),
+        },
+        telemetry = { enable = false },
+        Lua = {
+          completion = {
+            callSnippet = "Replace",
+          },
+        },
       },
-    },
-  },
+    })
+  end,
 })
 
-vim.lsp.config("cssls", {
-  on_attach = on_attach,
-  capabilities = capabilities,
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "css",
+  callback = function()
+    safe_setup("cssls", {
+      on_attach = on_attach,
+      capabilities = capabilities,
+    })
+  end,
 })
 
-vim.lsp.config("vue_ls", {
-  filetypes = require("configs.lsp.servers.vuels").filetypes,
-  handlers = handlers,
-  init_options = require("configs.lsp.servers.vuels").init_options,
-  on_attach = require("configs.lsp.servers.vuels").on_attach,
-  settings = require("configs.lsp.servers.vuels").settings,
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "python",
+  callback = function()
+    safe_setup("ruff", {
+      on_attach = on_attach,
+      capabilities = capabilities,
+    })
+  end,
 })
 
--- vim.lsp.config('ts_ls', {
---   filetypes = require("configs.lsp.servers.tsserver").filetypes,
---   init_options = require("configs.lsp.servers.tsserver").init_options,
---   capabilities = capabilities or vim.lsp.protocol.make_client_capabilities(),
---   handlers = require("configs.lsp.servers.tsserver").handlers,
---   on_attach = require("configs.lsp.servers.tsserver").on_attach,
---   settings = require("configs.lsp.servers.tsserver").settings,
--- })
-
-vim.lsp.config("vtsls", {
-  before_init = require("configs.lsp.servers.vtsls").before_init,
-  handlers = handlers,
-  filetypes = require("configs.lsp.servers.vtsls").filetypes,
-  capabilities = capabilities or vim.lsp.protocol.make_client_capabilities(),
-  settings = require("configs.lsp.servers.vtsls").settings,
-  on_attach = require("configs.lsp.servers.vtsls").on_attach,
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "svelte",
+  callback = function()
+    safe_setup("svelte", {
+      on_attach = on_attach,
+      capabilities = capabilities,
+    })
+  end,
 })
 
-vim.lsp.config("ruff", {
-  on_attach = on_attach,
-  capabilities = capabilities,
-  filetypes = { "python" },
-})
-
-vim.lsp.config("svelte", {
-  on_attach = on_attach,
-  capabilities = capabilities,
-  filetypes = { "svelte" },
-})
-
-vim.lsp.config("tailwindcss", {
-  cmd = { "tailwindcss-language-server", "--stdio" },
-  filetypes = {
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = {
     "aspnetcorerazor",
     "astro",
     "astro-markdown",
@@ -225,26 +240,139 @@ vim.lsp.config("tailwindcss", {
     "vue",
     "svelte",
   },
+  callback = function()
+    safe_setup("tailwindcss", {
+      cmd = { "tailwindcss-language-server", "--stdio" },
+      filetypes = {
+        "aspnetcorerazor",
+        "astro",
+        "astro-markdown",
+        "clojure",
+        "django-html",
+        "htmldjango",
+        "edge",
+        "eelixir",
+        "elixir",
+        "ejs",
+        "erb",
+        "eruby",
+        "gohtml",
+        "haml",
+        "handlebars",
+        "hbs",
+        "html",
+        "html-eex",
+        "heex",
+        "jade",
+        "leaf",
+        "liquid",
+        "markdown",
+        "mdx",
+        "mustache",
+        "njk",
+        "nunjucks",
+        "razor",
+        "slim",
+        "twig",
+        "css",
+        "less",
+        "postcss",
+        "sass",
+        "scss",
+        "stylus",
+        "sugarss",
+        "javascript",
+        "javascriptreact",
+        "reason",
+        "rescript",
+        "typescript",
+        "typescriptreact",
+        "vue",
+        "svelte",
+      },
+    })
+  end,
 })
 
-vim.lsp.config("gopls", {
-  on_attach = on_attach,
-  capabilities = capabilities,
-  filetypes = { "go", "gomod", "gowork", "gotmpl" },
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "go", "gomod", "gowork", "gotmpl" },
+  callback = function()
+    safe_setup("gopls", {
+      on_attach = on_attach,
+      capabilities = capabilities,
+      filetypes = { "go", "gomod", "gowork", "gotmpl" },
+    })
+  end,
 })
 
-vim.lsp.config("marksman", {
-  on_attach = on_attach,
-  capabilities = capabilities,
-  filetypes = { "markdown" },
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "markdown",
+  callback = function()
+    safe_setup("marksman", {
+      on_attach = on_attach,
+      capabilities = capabilities,
+      filetypes = { "markdown" },
+    })
+  end,
 })
 
-vim.lsp.config("vue_ls", {
-  filetypes = require("configs.lsp.servers.vuels").filetypes,
-  init_options = require("configs.lsp.servers.vuels").init_options,
-  on_attach = require("configs.lsp.servers.vuels").on_attach,
-  on_init = require("configs.lsp.servers.vuels").on_init,
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = require("configs.lsp.servers.vtsls").settings.vtsls.filetypes,
+  callback = function()
+    safe_setup("vtsls", {
+      before_init = require("configs.lsp.servers.vtsls").before_init,
+      handlers = handlers,
+      capabilities = capabilities or vim.lsp.protocol.make_client_capabilities(),
+      settings = require("configs.lsp.servers.vtsls").settings,
+      on_attach = require("configs.lsp.servers.vtsls").on_attach,
+    })
+  end,
 })
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = require("configs.lsp.servers.vuels").filetypes,
+  callback = function()
+    local vtsls_opts = {
+      before_init = require("configs.lsp.servers.vtsls").before_init,
+      handlers = handlers,
+      capabilities = capabilities or vim.lsp.protocol.make_client_capabilities(),
+      settings = require("configs.lsp.servers.vtsls").settings,
+      on_attach = require("configs.lsp.servers.vtsls").on_attach,
+    }
+
+    safe_setup("vtsls", vtsls_opts)
+
+    safe_setup("vue_ls", {
+      filetypes = require("configs.lsp.servers.vuels").filetypes,
+      init_options = require("configs.lsp.servers.vuels").init_options,
+      on_attach = require("configs.lsp.servers.vuels").on_attach,
+      on_init = require("configs.lsp.servers.vuels").on_init,
+    })
+
+    vim.lsp.enable("vtsls")
+    vim.lsp.start({
+      cmd = { 'vtsls', '--stdio' },
+      filetypes = {
+        'javascript',
+        'javascriptreact',
+        'javascript.jsx',
+        'typescript',
+        'typescriptreact',
+        'typescript.tsx',
+      },
+      root_dir = vim.fs.dirname(vim.fs.find({ 'tsconfig.json', 'package.json', 'jsconfig.json', '.git' }, { upward = true })[1]),
+      before_init = require("configs.lsp.servers.vtsls").before_init,
+      handlers = handlers,
+      capabilities = capabilities or vim.lsp.protocol.make_client_capabilities(),
+      settings = require("configs.lsp.servers.vtsls").settings,
+      on_attach = require("configs.lsp.servers.vtsls").on_attach,
+    })
+
+    vim.lsp.enable("vue_ls")
+
+  end,
+})
+
 
 -- MASON LSPCONFIG
 
