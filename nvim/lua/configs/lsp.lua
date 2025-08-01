@@ -44,6 +44,9 @@ local on_attach = function(client, bufnr)
       lineFoldingOnly = false,
     }
 
+    -- Disable LSP semantic tokens (semantic highlighting)
+    client.server_capabilities.semanticTokensProvider = nil
+
     -- Optional debug print
     print("🧠 Enhanced capabilities applied for:", client.name, bufname)
   end
@@ -133,31 +136,7 @@ vim.api.nvim_create_autocmd("FileType", {
       on_attach = on_attach,
       capabilities = capabilities,
       cmd = { "lua-language-server" },
-      settings = {
-        cmd = {
-          '"' .. os.getenv("HOME") .. '/homebrew/bin/lua-language-server" "$@"',
-        },
-        runtime = { version = "LuaJIT" },
-        format = {
-          enable = false,
-          defaultConfig = {
-            indent_style = "space",
-            indent_size = "2",
-          },
-        },
-        diagnostics = {
-          globals = { "vim" },
-        },
-        workspace = {
-          library = vim.api.nvim_get_runtime_file("", true),
-        },
-        telemetry = { enable = false },
-        Lua = {
-          completion = {
-            callSnippet = "Replace",
-          },
-        },
-      },
+      settings = require("configs.lsp.servers.luals").settings,
     })
   end,
 })

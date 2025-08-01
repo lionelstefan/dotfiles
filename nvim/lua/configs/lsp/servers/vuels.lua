@@ -5,6 +5,9 @@ M.on_attach = function(client, bufnr)
   client.server_capabilities.documentRangeFormattingProvider = false
   client.server_capabilities.document_formatting = false
 
+  -- Disable LSP semantic tokens (semantic highlighting)
+  client.server_capabilities.semanticTokensProvider = nil
+
   local capabilities = require("blink.cmp").get_lsp_capabilities()
   capabilities.textDocument.completion.completionItem.snippetSupport = true
   capabilities.textDocument.colorProvider = { dynamicRegistration = false }

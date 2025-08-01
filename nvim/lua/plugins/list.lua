@@ -1160,7 +1160,9 @@ local plugins = {
       {
         "ff",
         function()
-          require("fzf-lua").files()
+          require("fzf-lua").files({
+            cwd = vim.loop.cwd()
+          })
         end,
         desc = "Fzf find files",
       },

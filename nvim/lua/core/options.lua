@@ -1,5 +1,5 @@
 vim.o.background = "dark"
-vim.o.colorcolumn = "120"
+vim.o.colorcolumn = "80"
 vim.o.path = vim.o.path .. "**"
 vim.o.cmdheight = 2
 vim.o.hidden = true

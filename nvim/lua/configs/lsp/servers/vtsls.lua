@@ -59,6 +59,9 @@ local filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptre
 local on_attach = function(client, bufnr)
   client.server_capabilities.documentFormattingProvider = false
   client.server_capabilities.documentRangeFormattingProvider = false
+
+  -- Disable LSP semantic tokens (semantic highlighting)
+  client.server_capabilities.semanticTokensProvider = nil
 end
 
 M.settings = settings
