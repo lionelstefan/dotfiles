@@ -643,8 +643,6 @@ local plugins = {
   },
   {
     "mason-org/mason-lspconfig.nvim",
-    event = { "VeryLazy" },
-    lazy = true,
     dependencies = {
       {
         "mason-org/mason.nvim",
@@ -1011,38 +1009,6 @@ local plugins = {
         javascriptreact = { "oxlint" },
         typescriptreact = { "oxlint" },
       }
-    end,
-  },
-  {
-    "chrisgrieser/nvim-origami",
-    event = "VeryLazy",
-    config = function()
-      require("origami").setup({
-        useLspFoldsWithTreesitterFallback = true,
-        pauseFoldsOnSearch = true,
-        foldtext = {
-          enabled = true,
-          padding = 3,
-          lineCount = {
-            template = "%d lines", -- `%d` is replaced with the number of folded lines
-            hlgroup = "Comment",
-          },
-          diagnosticsCount = true, -- uses hlgroups and icons from `vim.diagnostic.config().signs`
-          gitsignsCount = true, -- requires `gitsigns.nvim`
-        },
-        autoFold = {
-          enabled = false,
-          kinds = { "comment", "imports" }, ---@type lsp.FoldingRangeKind[]
-        },
-        foldKeymaps = {
-          setup = true, -- modifies `h` and `l`
-          hOnlyOpensOnFirstColumn = false,
-        },
-      })
-    end,
-    init = function()
-      vim.opt.foldlevel = 99
-      vim.opt.foldlevelstart = 99
     end,
   },
   {
