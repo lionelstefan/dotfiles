@@ -1,6 +1,12 @@
 -- NEOVIM LSPCONFIG
 require("lspconfig")
 
+vim.filetype.add({
+  filename = {
+    [".zshrc"] = "zsh",
+  },
+})
+
 local on_attach = function(client, bufnr)
 	local opts = {
 		buffer = bufnr,
@@ -134,9 +140,13 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 vim.api.nvim_create_autocmd("FileType", {
-	pattern = { "sh", "zsh" },
 	callback = function()
 		safe_setup("bashls", {
+      filetypes = {
+        "bash",
+        "sh",
+        "zsh"
+      },
 			on_attach = on_attach,
 			capabilities = capabilities,
 			cmd = { "bash-language-server", "start" },
@@ -163,6 +173,13 @@ vim.api.nvim_create_autocmd("FileType", {
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "lua",
 	callback = function()
+    vim.opt_local.foldmethod = "expr"
+    vim.opt_local.foldexpr ="nvim_treesitter#foldexpr()"
+    vim.opt_local.foldcolumn = "0"
+    vim.opt_local.foldlevel = 99
+    vim.opt_local.foldlevelstart = 99
+    vim.opt_local.foldenable = true
+
 		safe_setup("lua_ls", {
 			on_attach = on_attach,
 			capabilities = capabilities,
@@ -343,6 +360,13 @@ vim.api.nvim_create_autocmd("FileType", {
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = require("configs.lsp.servers.vtsls").settings.vtsls.filetypes,
 	callback = function()
+    vim.opt_local.foldmethod = "expr"
+    vim.opt_local.foldexpr ="nvim_treesitter#foldexpr()"
+    vim.opt_local.foldcolumn = "0"
+    vim.opt_local.foldlevel = 99
+    vim.opt_local.foldlevelstart = 99
+    vim.opt_local.foldenable = true
+
 		safe_setup("vtsls", {
 			before_init = require("configs.lsp.servers.vtsls").before_init,
 			handlers = handlers,
@@ -399,6 +423,13 @@ vim.api.nvim_create_autocmd("FileType", {
 		})
 
 		vim.lsp.enable("vue_ls")
+
+    vim.opt_local.foldmethod = "expr"
+    vim.opt_local.foldexpr ="nvim_treesitter#foldexpr()"
+    vim.opt_local.foldcolumn = "0"
+    vim.opt_local.foldlevel = 99
+    vim.opt_local.foldlevelstart = 99
+    vim.opt_local.foldenable = true
 	end,
 })
 

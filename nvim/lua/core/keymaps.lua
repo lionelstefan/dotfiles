@@ -1,6 +1,6 @@
 -- Remaps
 
-local map = vim.api.nvim_set_keymap
+local map = vim.keymap.set
 local NS = { noremap = true, silent = true }
 local NR = { noremap = true }
 
@@ -27,7 +27,7 @@ map("n", "<leader>1", ":BufferLineCyclePrev<CR>", { noremap = false })
 map("n", "<leader>2", ":BufferLineCycleNext<CR>", { noremap = false })
 
 -- Buffer cycle
-vim.keymap.set("n", "<leader>q", function()
+map("n", "<leader>q", function()
   local bufnr = vim.api.nvim_get_current_buf()
   local buftype = vim.api.nvim_get_option_value("buftype", { buf = bufnr })
   local buflisted = vim.fn.buflisted(bufnr) == 1
@@ -40,7 +40,7 @@ vim.keymap.set("n", "<leader>q", function()
     vim.cmd("bd")
   end
 end, { noremap = true, desc = "Close buffer or :bd for special" })
-map("n", "<leader>qa", ":bd<CR>", { noremap = false })
+map("n", "<leader>Q", "<cmd>q!<CR>", { noremap = true, silent = true })
 
 -- Scroll
 map("n", "<C-j>", "10jzz0", NR)
@@ -68,7 +68,7 @@ map("n", "<leader>j", ":m .+1<CR>==", NR)
 -- vim.keymap.set('x', 'as', function() require'align'.align_to_char(2, true, true)       end, NS) -- Aligns to 2 characters, looking left and with previews
 -- vim.keymap.set('x', 'ar', function() require'align'.align_to_string(true, true, true)  end, NS) -- Aligns to a Lua pattern, looking left and with previews
 
-vim.keymap.set("n", "<leader>zz", "za", { noremap = true, silent = true })
+map("n", "<leader>zz", "za", { noremap = true, silent = true })
 
 map("n", "<Leader>l", "<Cmd>noh<CR>", NS)
 
@@ -76,21 +76,21 @@ map("n", "<Leader>l", "<Cmd>noh<CR>", NS)
 map("n", "<Leader>db", ":lua add_phpdoc_comment()<CR>", NS)
 
 -- Smart indent after normal mode paste
-vim.keymap.set("n", "p", "p`[v`]=`]", { noremap = true, silent = true })
-vim.keymap.set("n", "P", "P`[v`]=`]", { noremap = true, silent = true })
+map("n", "p", "p`[v`]=`]", { noremap = true, silent = true })
+map("n", "P", "P`[v`]=`]", { noremap = true, silent = true })
 
 -- Smart indent after visual mode paste
-vim.keymap.set("x", "p", '"_dP`[v`]=`]', { noremap = true, silent = true })
-vim.keymap.set("x", "P", '"_dP`[v`]=`]', { noremap = true, silent = true })
+map("x", "p", '"_dP`[v`]=`]', { noremap = true, silent = true })
+map("x", "P", '"_dP`[v`]=`]', { noremap = true, silent = true })
 
 -- DAP MOVEMENT
-vim.keymap.set('n', '<C-Up>',    '<C-w>k', { noremap = true, silent = true })
-vim.keymap.set('n', '<C-Down>',  '<C-w>j', { noremap = true, silent = true })
-vim.keymap.set('n', '<C-Left>',  '<C-w>h', { noremap = true, silent = true })
-vim.keymap.set('n', '<C-Right>', '<C-w>l', { noremap = true, silent = true })
+map('n', '<C-Up>',    '<C-w>k', { noremap = true, silent = true })
+map('n', '<C-Down>',  '<C-w>j', { noremap = true, silent = true })
+map('n', '<C-Left>',  '<C-w>h', { noremap = true, silent = true })
+map('n', '<C-Right>', '<C-w>l', { noremap = true, silent = true })
 
 -- DAP HOVER
-vim.keymap.set("n", "<C-k>", function()
+map("n", "<C-k>", function()
   local widgets = require("dap.ui.widgets")
   local hover = widgets.hover()
   vim.api.nvim_buf_set_keymap(0, "n", "<Esc>", "<Cmd>close<CR>", { noremap = true, silent = true })

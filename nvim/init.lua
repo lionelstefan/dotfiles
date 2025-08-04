@@ -25,7 +25,6 @@ require("core.keymaps")
 require("core.autocmds")
 
 vim.cmd([[
-  syntax off
   filetype plugin indent on
 ]])
 

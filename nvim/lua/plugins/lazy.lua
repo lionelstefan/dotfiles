@@ -16,7 +16,6 @@ require("lazy").setup(require("plugins.list"), {
         "netrwPlugin",
         "netrwSettings",
         "netrwFileHandlers",
-        "gzip",
         "zip",
         "zipPlugin",
         "tar",
@@ -35,6 +34,8 @@ require("lazy").setup(require("plugins.list"), {
         "osc52",
         "rplugin",
         "tutor",
+        "syntax",
+        "spellfile"
       },
     },
   },
