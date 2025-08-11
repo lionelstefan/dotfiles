@@ -1126,6 +1126,13 @@ local plugins = {
 			})
 		end,
 	},
+	{
+		"nmac427/guess-indent.nvim",
+		event = "InsertEnter",
+		config = function()
+			require("guess-indent").setup({})
+		end,
+	},
 }
 
 for _, colorscheme in ipairs(colorschemes) do
