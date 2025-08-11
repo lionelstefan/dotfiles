@@ -142,6 +142,11 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 vim.api.nvim_create_autocmd("FileType", {
+  pattern = {
+    "bash",
+    "sh",
+    "zsh",
+  },
 	callback = function()
 		safe_setup("bashls", {
 			filetypes = {
