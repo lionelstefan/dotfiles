@@ -20,8 +20,8 @@ require("lualine").setup {
     icons_enabled        = true,
     theme                = 'auto',
     disabled_filetypes   = {
-      statusline = { "neo-tree" },
-      winbar = {},
+      statusline = { "neo-tree", "Avante", "AvanteChat", "AvanteSelectedFiles", "AvanteInput", "avante", "AvanteTodos" },
+      winbar = { "neo-tree", "Avante", "AvanteChat", "AvanteSelectedFiles", "AvanteInput", "avante", "AvanteTodos" },
     },
     component_separators = {
       left = '',

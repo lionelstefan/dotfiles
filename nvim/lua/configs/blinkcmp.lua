@@ -77,17 +77,36 @@ local opts = {
 
   sources = {
     default = {
-      "lazydev",
       "lsp",
       "path",
       "snippets",
       "buffer",
+      "copilot",
+      "avante",
+      "lazydev",
     },
     providers = {
       lazydev = {
         name = "LazyDev",
         module = "lazydev.integrations.blink",
         score_offset = 100,
+      },
+      avante = {
+        module = 'blink-cmp-avante',
+        name = 'Avante',
+        opts = {
+          kind_icons = {
+            AvanteCmd = "",
+            AvanteMention = "",
+            AvanteShortcut = '',
+          }
+        }
+      },
+      copilot = {
+        name = "Copilot",
+        module = "blink-copilot",
+        score_offset = 100,
+        async = true,
       },
     },
   },
@@ -156,7 +175,8 @@ local opts = {
 
     documentation = {
       draw = function(opts)
-        if opts.item and opts.item.documentation then
+        local ft = vim.bo.filetype
+        if opts.item and opts.item.documentation and (ft ~= "AvanteInput" and ft ~= "AvanteChat") then
           local out = require("pretty_hover.parser").parse(opts.item.documentation.value)
           opts.item.documentation.value = out:string()
         end

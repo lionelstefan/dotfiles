@@ -7,9 +7,7 @@ local plugins = {
 		"m-demare/hlargs.nvim",
 		lazy = true,
 		event = "VeryLazy",
-		config = function()
-			require("hlargs").setup({})
-		end,
+		opts = {},
 	},
 	{
 		"folke/trouble.nvim",
@@ -164,6 +162,7 @@ local plugins = {
 		event = { "InsertEnter", "CmdlineEnter" },
 		dependencies = {
 			"rafamadriz/friendly-snippets",
+			"Kaiser-Yang/blink-cmp-avante",
 			{
 				"L3MON4D3/LuaSnip",
 				build = "make install_jsregexp",
@@ -171,38 +170,11 @@ local plugins = {
 					require("luasnip.loaders.from_vscode").lazy_load()
 				end,
 			},
+			"fang2hou/blink-copilot",
 		},
 		build = "cargo build --release",
 		opts = require("configs.blinkcmp").opts,
 	},
-	-- {
-	--   "pmizio/typescript-tools.nvim",
-	--   event = "LspAttach",
-	--   ft = { "typescript", "typescriptreact", "javascript", "javascriptreact" },
-	--   dependencies = {
-	--     "nvim-lua/plenary.nvim",
-	--     {
-	--       "neovim/nvim-lspconfig",
-	--       event = { "BufReadPre", "BufNewFile" }, -- only load on buffer read
-	--       lazy = true,
-	--     },
-	--     {
-	--       "saghen/blink.cmp",
-	--       event = { "InsertEnter", "CmdlineEnter" },
-	--       lazy = true,
-	--     },
-	--   },
-	--   config = function()
-	--     local api = require("typescript-tools.api")
-	--     require("typescript-tools").setup({
-	--       settings = {
-	--         tsserver_file_preferences = {
-	--           importModuleSpecifierPreference = "non-relative",
-	--         },
-	--       },
-	--     })
-	--   end,
-	-- },
 	{
 		"stevearc/conform.nvim",
 		lazy = true,
@@ -773,51 +745,39 @@ local plugins = {
 			})
 		end,
 	},
-	-- {
-	--   {
-	--     "CopilotC-Nvim/CopilotChat.nvim",
-	--     dependencies = {
-	--       { "github/copilot.vim" },                   -- or zbirenbaum/copilot.lua
-	--       { "nvim-lua/plenary.nvim", branch = "master" }, -- for curl, log and async functions
-	--     },
-	--     build = "make tiktoken",                      -- Only on MacOS or Linux
-	--   },
-	-- },
-	-- {
-	--   "yetone/avante.nvim",
-	--   event = "BufReadPost",
-	--   lazy = true,
-	--   version = false, -- never set this value to "*"! never!
-	--   opts = {
-	--     provider = "claude",
-	--     claude = {
-	--       endpoint = "https://api.anthropic.com",
-	--       model = "claude-3-5-sonnet-20241022",
-	--       temperature = 0,
-	--       max_tokens = 4096,
-	--     },
-	--   },
-	--   build = "make",
-	--   dependencies = {
-	--     "nvim-treesitter/nvim-treesitter",
-	--     "stevearc/dressing.nvim",
-	--     "nvim-lua/plenary.nvim",
-	--     "muniftanjim/nui.nvim",
-	--     --- the below dependencies are optional,
-	--     "echasnovski/mini.pick",      -- for file_selector provider mini.pick
-	--     "nvim-telescope/telescope.nvim", -- for file_selector provider telescope
-	--     "hrsh7th/nvim-cmp",           -- autocompletion for avante commands and mentions
-	--     "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
-	--     {
-	--       -- make sure to set this up properly if you have lazy=true
-	--       "meanderingprogrammer/render-markdown.nvim",
-	--       opts = {
-	--         file_types = { "markdown", "avante" },
-	--       },
-	--       ft = { "markdown", "avante" },
-	--     },
-	--   },
-	-- },
+	{
+		"yetone/avante.nvim",
+		event = "VeryLazy",
+		lazy = true,
+		config = function()
+			require("configs.avante")
+		end,
+		build = "make",
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			"MunifTanjim/nui.nvim",
+			--- the below dependencies are optional,
+			"folke/snacks.nvim",
+			"ibhagwan/fzf-lua",
+			"nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
+			{
+				-- make sure to set this up properly if you have lazy=true
+				"meanderingprogrammer/render-markdown.nvim",
+				opts = {
+					file_types = { "markdown", "avante" },
+				},
+				ft = { "markdown", "avante" },
+			},
+			{
+				"zbirenbaum/copilot.lua",
+				cmd = "Copilot",
+				event = "InsertEnter",
+				config = function()
+					require("copilot").setup({})
+				end,
+			},
+		},
+	},
 	{
 		"MeanderingProgrammer/render-markdown.nvim",
 		lazy = true,
@@ -985,7 +945,7 @@ local plugins = {
 			dashboard = { enabled = false },
 			explorer = { enabled = false },
 			indent = { enabled = false },
-			input = { enabled = false },
+			input = { enabled = true },
 			picker = { enabled = false },
 			notifier = { enabled = false },
 			quickfile = { enabled = false },
@@ -1129,7 +1089,7 @@ local plugins = {
 				"ff",
 				function()
 					require("fzf-lua").files({
-						cwd = vim.loop.cwd(),
+						cwd = vim.uv.cwd(),
 					})
 				end,
 				desc = "Fzf find files",
@@ -1154,17 +1114,18 @@ local plugins = {
 			},
 		},
 	},
+	{ "typicode/bg.nvim", lazy = false },
 	{
-		"CopilotC-Nvim/CopilotChat.nvim",
-		dependencies = {
-			{ "nvim-lua/plenary.nvim", branch = "master" },
-		},
-		build = "make tiktoken",
+		"zbirenbaum/copilot.lua",
+		cmd = "Copilot",
+		build = ":Copilot auth",
 		config = function()
-			require("CopilotChat").setup()
+			require("copilot").setup({
+				suggestion = { enabled = false }, -- disable inline suggestions
+				panel = { enabled = false },
+			})
 		end,
 	},
-	{ "typicode/bg.nvim", lazy = false },
 }
 
 for _, colorscheme in ipairs(colorschemes) do

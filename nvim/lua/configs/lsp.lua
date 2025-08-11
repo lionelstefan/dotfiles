@@ -65,7 +65,7 @@ local handlers = {
 	},
 	["textDocument/publishDiagnostics"] = function(err, result, ctx)
 		require("ts-error-translator").translate_diagnostics(err, result, ctx)
-		vim.lsp.diagnostic.on_publish_diagnostics(err, result, ctx)
+		vim.lsp.handlers["textDocument/publishDiagnostics"](err, result, ctx)
 	end,
 }
 
@@ -181,7 +181,7 @@ vim.api.nvim_create_autocmd("FileType", {
 	pattern = "lua",
 	callback = function()
 		vim.opt_local.foldmethod = "expr"
-		vim.opt_local.foldexpr = "nvim_treesitter#foldexpr()"
+		vim.opt_local.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 		vim.opt_local.foldcolumn = "0"
 		vim.opt_local.foldlevel = 99
 		vim.opt_local.foldlevelstart = 99
