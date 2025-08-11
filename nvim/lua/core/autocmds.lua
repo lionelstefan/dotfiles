@@ -177,19 +177,19 @@ create_augroup("Formatting", {
 })
 
 -- LSP management
-create_augroup("LspManagement", {
-  {"LspAttach", {
-    callback = function(args)
-      local client = vim.lsp.get_client_by_id(args.data.client_id)
-      if client and client.name == "biome" then
-        vim.schedule(function()
-          vim.lsp.buf_detach_client(args.buf, client.id)
-          vim.notify("Detached biome LSP", vim.log.levels.INFO)
-        end)
-      end
-    end,
-  }},
-})
+-- create_augroup("LspManagement", {
+--   {"LspAttach", {
+--     callback = function(args)
+--       local client = vim.lsp.get_client_by_id(args.data.client_id)
+--       if client and client.name == "biome" then
+--         vim.schedule(function()
+--           vim.lsp.buf_detach_client(args.buf, client.id)
+--           vim.notify("Detached biome LSP", vim.log.levels.INFO)
+--         end)
+--       end
+--     end,
+--   }},
+-- })
 
 -- Buffer management
 create_augroup("BufferManagement", {

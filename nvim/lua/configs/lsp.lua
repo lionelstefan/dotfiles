@@ -2,9 +2,9 @@
 require("lspconfig")
 
 vim.filetype.add({
-  filename = {
-    [".zshrc"] = "zsh",
-  },
+	filename = {
+		[".zshrc"] = "zsh",
+	},
 })
 
 local on_attach = function(client, bufnr)
@@ -105,6 +105,8 @@ local function safe_setup(name, config)
 	vim.lsp.config(name, config)
 end
 
+safe_setup("biome", {})
+
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "php",
 	callback = function()
@@ -142,11 +144,11 @@ vim.api.nvim_create_autocmd("FileType", {
 vim.api.nvim_create_autocmd("FileType", {
 	callback = function()
 		safe_setup("bashls", {
-      filetypes = {
-        "bash",
-        "sh",
-        "zsh"
-      },
+			filetypes = {
+				"bash",
+				"sh",
+				"zsh",
+			},
 			on_attach = on_attach,
 			capabilities = capabilities,
 			cmd = { "bash-language-server", "start" },
@@ -173,12 +175,12 @@ vim.api.nvim_create_autocmd("FileType", {
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "lua",
 	callback = function()
-    vim.opt_local.foldmethod = "expr"
-    vim.opt_local.foldexpr ="nvim_treesitter#foldexpr()"
-    vim.opt_local.foldcolumn = "0"
-    vim.opt_local.foldlevel = 99
-    vim.opt_local.foldlevelstart = 99
-    vim.opt_local.foldenable = true
+		vim.opt_local.foldmethod = "expr"
+		vim.opt_local.foldexpr = "nvim_treesitter#foldexpr()"
+		vim.opt_local.foldcolumn = "0"
+		vim.opt_local.foldlevel = 99
+		vim.opt_local.foldlevelstart = 99
+		vim.opt_local.foldenable = true
 
 		safe_setup("lua_ls", {
 			on_attach = on_attach,
@@ -358,78 +360,25 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 vim.api.nvim_create_autocmd("FileType", {
-	pattern = require("configs.lsp.servers.vtsls").settings.vtsls.filetypes,
+	pattern = require("configs.lsp.servers.vtsls").filetypes,
 	callback = function()
-    vim.opt_local.foldmethod = "expr"
-    vim.opt_local.foldexpr ="nvim_treesitter#foldexpr()"
-    vim.opt_local.foldcolumn = "0"
-    vim.opt_local.foldlevel = 99
-    vim.opt_local.foldlevelstart = 99
-    vim.opt_local.foldenable = true
+		vim.opt_local.foldmethod = "expr"
+		vim.opt_local.foldexpr = "nvim_treesitter#foldexpr()"
+		vim.opt_local.foldcolumn = "0"
+		vim.opt_local.foldlevel = 99
+		vim.opt_local.foldlevelstart = 99
+		vim.opt_local.foldenable = true
 
 		safe_setup("vtsls", {
-			before_init = require("configs.lsp.servers.vtsls").before_init,
+      filetypes = require("configs.lsp.servers.vtsls").filetypes,
 			handlers = handlers,
 			capabilities = capabilities,
 			settings = require("configs.lsp.servers.vtsls").settings,
 			on_attach = require("configs.lsp.servers.vtsls").on_attach,
-		})
-	end,
-})
-
-vim.api.nvim_create_autocmd("FileType", {
-	pattern = require("configs.lsp.servers.vuels").filetypes,
-	callback = function()
-		local vtsls_opts = {
-			before_init = require("configs.lsp.servers.vtsls").before_init,
-			handlers = handlers,
-			capabilities = capabilities,
-			settings = require("configs.lsp.servers.vtsls").settings,
-			on_attach = require("configs.lsp.servers.vtsls").on_attach,
-		}
-
-		safe_setup("vtsls", vtsls_opts)
-
-		safe_setup("vue_ls", {
-
-      handlers = handlers,
-      capabilities = capabilities,
-			filetypes = require("configs.lsp.servers.vuels").filetypes,
-			init_options = require("configs.lsp.servers.vuels").init_options,
-			on_attach = require("configs.lsp.servers.vuels").on_attach,
-			on_init = require("configs.lsp.servers.vuels").on_init,
+      before_init = require("configs.lsp.servers.vtsls").before_init
 		})
 
 		vim.lsp.enable("vtsls")
-
-		vim.lsp.start({
-			cmd = { "vtsls", "--stdio" },
-			filetypes = {
-				"javascript",
-				"javascriptreact",
-				"javascript.jsx",
-				"typescript",
-				"typescriptreact",
-				"typescript.tsx",
-			},
-			root_dir = vim.fs.dirname(
-				vim.fs.find({ "tsconfig.json", "package.json", "jsconfig.json", ".git" }, { upward = true })[1]
-			),
-			before_init = require("configs.lsp.servers.vtsls").before_init,
-			handlers = handlers,
-			capabilities = capabilities,
-			settings = require("configs.lsp.servers.vtsls").settings,
-			on_attach = require("configs.lsp.servers.vtsls").on_attach,
-		})
-
-		vim.lsp.enable("vue_ls")
-
-    vim.opt_local.foldmethod = "expr"
-    vim.opt_local.foldexpr ="nvim_treesitter#foldexpr()"
-    vim.opt_local.foldcolumn = "0"
-    vim.opt_local.foldlevel = 99
-    vim.opt_local.foldlevelstart = 99
-    vim.opt_local.foldenable = true
 	end,
 })
 
@@ -453,11 +402,11 @@ require("mason-lspconfig").setup({
 		"dockerls",
 		"docker_compose_language_service",
 		"dotls",
-		"biome",
 		"yamlls",
 	},
 	automatic_enable = {
 		exclude = {
+			"biome",
 			"phpactor",
 			"html",
 			"bashls",

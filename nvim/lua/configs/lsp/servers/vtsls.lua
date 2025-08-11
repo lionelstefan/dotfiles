@@ -3,6 +3,7 @@ local M = {}
 local before_init = function(_, config)
 	local vue_language_server_path = vim.fn.stdpath("data")
 		.. "/mason/packages/vue-language-server/node_modules/@vue/language-server"
+
 	local vue_plugin = {
 		name = "@vue/typescript-plugin",
 		location = vue_language_server_path,
@@ -10,14 +11,19 @@ local before_init = function(_, config)
 		configNamespace = "typescript",
 		enableForWorkspaceTypeScriptVersions = true,
 	}
-	config.settings.vtsls.tsserver.globalPlugins = { vue_plugin }
+
+	if vim.bo.filetype == "vue" then
+		config.settings.vtsls.tsserver.globalPlugins = { vue_plugin }
+	else
+		config.settings.vtsls.tsserver.globalPlugins = nil
+	end
 end
 
 local settings = {
 	complete_function_calls = true,
 	vtsls = {
 		enableMoveToFileCodeAction = true,
-		autoUseWorkspaceTsdk = true,
+		autoUseWorkspaceTsdk = false,
 		experimental = {
 			maxInlayHintLength = 30,
 			completion = {
@@ -25,11 +31,19 @@ local settings = {
 			},
 		},
 		tsserver = {
-			globalPlugins = {
-        vue_plugin
-      },
+			typescript = {
+				tsdk = os.getenv("HOME") .. "/.local/share/pnpm/global/5/node_modules/typescript/lib",
+			},
 		},
-		filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" },
+		filetypes = {
+			"javascript",
+			"javascriptreact",
+			"javascript.jsx",
+			"typescript",
+			"typescriptreact",
+			"typescript.tsx",
+			"vue",
+		},
 	},
 	typescript = {
 		updateImportsOnFileMove = { enabled = "always" },
@@ -55,12 +69,20 @@ local settings = {
 	},
 }
 
-local filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" }
+local filetypes = {
+	"javascript",
+	"javascriptreact",
+	"javascript.jsx",
+	"typescript",
+	"typescriptreact",
+	"typescript.tsx",
+	"vue",
+}
 
 local on_attach = function(client, bufnr)
 	client.server_capabilities.documentFormattingProvider = false
 	client.server_capabilities.documentRangeFormattingProvider = false
-  client.server_capabilities.document_formatting = false
+	client.server_capabilities.document_formatting = false
 
 	-- Disable LSP semantic tokens (semantic highlighting)
 	client.server_capabilities.semanticTokensProvider = nil
