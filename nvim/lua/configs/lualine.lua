@@ -18,7 +18,7 @@ end
 require("lualine").setup {
   options = {
     icons_enabled        = true,
-    theme                = 'auto',
+    theme                = 'gruvbox',
     disabled_filetypes   = {
       statusline = { "neo-tree", "Avante", "AvanteChat", "AvanteSelectedFiles", "AvanteInput", "avante", "AvanteTodos" },
       winbar = { "neo-tree", "Avante", "AvanteChat", "AvanteSelectedFiles", "AvanteInput", "avante", "AvanteTodos" },
@@ -33,6 +33,12 @@ require("lualine").setup {
     }
   },
   sections = {
+    lualine_a = {
+      {
+        'mode',
+        icons_enabled = true,
+      }
+    },
     lualine_b = {
       {
         'branch',
@@ -43,22 +49,6 @@ require("lualine").setup {
       {
         'diff'
       },
-      -- {
-      --   'diagnostics',
-      --   sources = { 'nvim_diagnostic' },
-      --   sections = { 'error', 'warn', 'info', 'hint' },
-      --
-      --   diagnostics_color = {
-      --     error = 'DiagnosticError', -- Changes diagnostics' error color.
-      --     warn  = 'DiagnosticWarn', -- Changes diagnostics' warn color.
-      --     info  = 'DiagnosticInfo', -- Changes diagnostics' info color.
-      --     hint  = 'DiagnosticHint', -- Changes diagnostics' hint color.
-      --   },
-      --   symbols = { error = '  ', warn = ' ', info = '󰌵 ', hint = ' ' },
-      --   colored = true,
-      --   always_visible = false,
-      --   update_in_insert = false,
-      -- }
     },
     lualine_c = {
       {
@@ -73,6 +63,13 @@ require("lualine").setup {
         }
       }
     },
+    lualine_x = {
+      { 'searchcount' },
+      { 'encoding' },
+      { 'copilot' }
+    },
+    lualine_y = { 'lsp_status' },
+    lualine_z = { 'location' }
   },
   opts = function(_, opts)
     local trouble = require("trouble")

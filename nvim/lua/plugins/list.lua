@@ -248,6 +248,9 @@ local plugins = {
 	},
 	{
 		"nvim-lualine/lualine.nvim",
+		dependencies = {
+			"AndreM222/copilot-lualine",
+		},
 		config = function()
 			require("configs.lualine")
 		end,
@@ -733,6 +736,7 @@ local plugins = {
 				filesize = 2, -- size of the file in MiB, the plugin round file sizes to the closest MiB
 				pattern = { "*" }, -- autocmd pattern or function see <### Overriding the detection of big files>
 				features = { -- features to disable
+					"avante",
 					"indent_blankline",
 					"illuminate",
 					"lsp",
@@ -747,8 +751,6 @@ local plugins = {
 	},
 	{
 		"yetone/avante.nvim",
-		event = "VeryLazy",
-		lazy = true,
 		config = function()
 			require("configs.avante")
 		end,
@@ -761,12 +763,11 @@ local plugins = {
 			"ibhagwan/fzf-lua",
 			"nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
 			{
-				-- make sure to set this up properly if you have lazy=true
 				"meanderingprogrammer/render-markdown.nvim",
 				opts = {
-					file_types = { "markdown", "avante" },
+					file_types = { "markdown", "Avante" },
 				},
-				ft = { "markdown", "avante" },
+				ft = { "markdown", "Avante" },
 			},
 			{
 				"zbirenbaum/copilot.lua",
@@ -780,19 +781,17 @@ local plugins = {
 	},
 	{
 		"MeanderingProgrammer/render-markdown.nvim",
-		lazy = true,
-		event = "VeryLazy",
 		dependencies = {
 			"nvim-treesitter/nvim-treesitter",
 			"nvim-tree/nvim-web-devicons",
 		}, -- if you prefer nvim-web-devicons
-		opts = {},
-		filetypes = { "markdown" },
+		filetypes = { "markdown", "Avante" },
 		config = function()
 			require("render-markdown").setup({
 				completions = {
 					lsp = { enabled = true },
 					blink = { enabled = true },
+					file_types = { "markdown", "Avante" },
 				},
 			})
 		end,
@@ -1132,6 +1131,48 @@ local plugins = {
 		config = function()
 			require("guess-indent").setup({})
 		end,
+	},
+	{
+		"m4xshen/smartcolumn.nvim",
+		event = "BufReadPost",
+		config = function()
+			require("smartcolumn").setup({
+				colorcolumn = "120",
+				disabled_filetypes = {
+					"text",
+					"markdown",
+					"mason",
+					"checkhealth",
+					"lspinfo",
+					"neo-tree",
+					"lazy",
+					"TelescopePrompt",
+					"help",
+					"dashboard",
+					"Avante",
+					"AvanteChat",
+					"AvanteSelectedFiles",
+					"AvanteInput",
+					"avante",
+					"AvanteTodos",
+				},
+			})
+		end,
+	},
+	{
+		"NickvanDyke/opencode.nvim",
+		dependencies = { "folke/snacks.nvim" },
+		opts = {},
+    keys = {
+      { '<leader>oc', function() require('opencode').toggle() end, desc = 'Toggle embedded opencode', },
+      { '<leader>oa', function() require('opencode').ask() end, desc = 'Ask opencode', mode = 'n', },
+      { '<leader>oa', function() require('opencode').ask('@selection: ') end, desc = 'Ask opencode about selection', mode = 'v', },
+      { '<leader>op', function() require('opencode').select_prompt() end, desc = 'Select prompt', mode = { 'n', 'v', }, },
+      { '<leader>on', function() require('opencode').command('session_new') end, desc = 'New session', },
+      { '<leader>oy', function() require('opencode').command('messages_copy') end, desc = 'Copy last message', },
+      { '<S-C-u>',    function() require('opencode').command('messages_half_page_up') end, desc = 'Scroll messages up', },
+      { '<S-C-d>',    function() require('opencode').command('messages_half_page_down') end, desc = 'Scroll messages down', },
+    },
 	},
 }
 

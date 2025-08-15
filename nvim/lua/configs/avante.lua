@@ -1,3 +1,7 @@
+require("render-markdown").setup({
+  file_types = { "markdown", "Avante" },
+})
+
 require("avante").setup({
   provider = "copilot",
   selector = {
@@ -11,7 +15,7 @@ require("avante").setup({
   windows = {
     position = "right", -- right sidebar
     wrap = true,
-    width = 35, -- 30% of screen width
+    width = 40, -- 30% of screen width
     sidebar_header = {
       enabled = true,
       align = "center",

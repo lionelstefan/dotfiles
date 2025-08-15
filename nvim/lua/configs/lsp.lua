@@ -111,6 +111,7 @@ vim.api.nvim_create_autocmd("FileType", {
 	pattern = "php",
 	callback = function()
 		safe_setup("phpactor", {
+      cmd = { 'phpactor', 'language-server' },
 			on_attach = on_attach,
 			capabilities = capabilities,
 			filetypes = { "php" },

@@ -60,13 +60,13 @@ require("conform").setup({
 		},
 		prettier = {
 			ft_parsers = {
-        javascript = "babel",
-        javascriptreact = "babel",
-        typescript = "typescript",
-        typescriptreact = "typescript",
+				javascript = "babel",
+				javascriptreact = "babel",
+				typescript = "typescript",
+				typescriptreact = "typescript",
 				vue = "vue",
 				--     css = "css",
-        scss = "scss",
+				scss = "scss",
 				--     less = "less",
 				--     html = "html",
 				-- json = "json",

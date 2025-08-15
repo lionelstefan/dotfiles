@@ -191,6 +191,32 @@ create_augroup("Formatting", {
 	},
 })
 
+-- Auto-refresh for file changes
+create_augroup("AutoRefresh", {
+	{
+		{ "FocusGained", "BufEnter", "CursorHold" },
+		{
+			callback = function()
+				vim.cmd("silent! checktime")
+			end,
+			desc = "Auto-reload files changed outside of Neovim",
+		},
+	},
+	{
+		"FileChangedShellPost",
+		{
+			callback = function(args)
+				vim.notify(
+					("File reloaded: %s"):format(args.file or vim.api.nvim_buf_get_name(0)),
+					vim.log.levels.INFO,
+					{ title = "autoread" }
+				)
+			end,
+			desc = "Notify on external file change reload",
+		},
+	},
+})
+
 -- Custom commands
 vim.api.nvim_create_user_command("CloseFindReplace", function()
 	for _, buf in ipairs(vim.api.nvim_list_bufs()) do
