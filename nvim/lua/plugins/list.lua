@@ -45,22 +45,6 @@ local plugins = {
 			require("configs.harpoon")
 		end,
 	},
-	-- {
-	-- 	"m4xshen/hardtime.nvim",
-	--    lazy = true,
-	--    event = "VeryLazy",
-	-- 	dependencies = { "MunifTanjim/nui.nvim", "nvim-lua/plenary.nvim" },
-	-- 	opts = {},
-	-- 	config = function()
-	-- 		require("hardtime").setup({
-	-- 			disabled_filetypes = {
-	-- 				"neo-tree",
-	-- 				"lazy",
-	-- 				"TelescopePrompt",
-	-- 			},
-	-- 		})
-	-- 	end,
-	-- },
 	{
 		"b0o/incline.nvim",
 		lazy = true,
@@ -162,7 +146,6 @@ local plugins = {
 		event = { "InsertEnter", "CmdlineEnter" },
 		dependencies = {
 			"rafamadriz/friendly-snippets",
-			"Kaiser-Yang/blink-cmp-avante",
 			{
 				"L3MON4D3/LuaSnip",
 				build = "make install_jsregexp",
@@ -736,7 +719,7 @@ local plugins = {
 				filesize = 2, -- size of the file in MiB, the plugin round file sizes to the closest MiB
 				pattern = { "*" }, -- autocmd pattern or function see <### Overriding the detection of big files>
 				features = { -- features to disable
-					"avante",
+					"codecompanion",
 					"indent_blankline",
 					"illuminate",
 					"lsp",
@@ -745,53 +728,6 @@ local plugins = {
 					"matchparen",
 					"vimopts",
 					"filetype",
-				},
-			})
-		end,
-	},
-	{
-		"yetone/avante.nvim",
-		config = function()
-			require("configs.avante")
-		end,
-		build = "make",
-		dependencies = {
-			"nvim-lua/plenary.nvim",
-			"MunifTanjim/nui.nvim",
-			--- the below dependencies are optional,
-			"folke/snacks.nvim",
-			"ibhagwan/fzf-lua",
-			"nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
-			{
-				"meanderingprogrammer/render-markdown.nvim",
-				opts = {
-					file_types = { "markdown", "Avante" },
-				},
-				ft = { "markdown", "Avante" },
-			},
-			{
-				"zbirenbaum/copilot.lua",
-				cmd = "Copilot",
-				event = "InsertEnter",
-				config = function()
-					require("copilot").setup({})
-				end,
-			},
-		},
-	},
-	{
-		"MeanderingProgrammer/render-markdown.nvim",
-		dependencies = {
-			"nvim-treesitter/nvim-treesitter",
-			"nvim-tree/nvim-web-devicons",
-		}, -- if you prefer nvim-web-devicons
-		filetypes = { "markdown", "Avante" },
-		config = function()
-			require("render-markdown").setup({
-				completions = {
-					lsp = { enabled = true },
-					blink = { enabled = true },
-					file_types = { "markdown", "Avante" },
 				},
 			})
 		end,
@@ -1149,31 +1085,60 @@ local plugins = {
 					"TelescopePrompt",
 					"help",
 					"dashboard",
-					"Avante",
-					"AvanteChat",
-					"AvanteSelectedFiles",
-					"AvanteInput",
-					"avante",
-					"AvanteTodos",
+					"codecompanion",
 				},
 			})
 		end,
 	},
-	{
-		"NickvanDyke/opencode.nvim",
-		dependencies = { "folke/snacks.nvim" },
-		opts = {},
-    keys = {
-      { '<leader>oc', function() require('opencode').toggle() end, desc = 'Toggle embedded opencode', },
-      { '<leader>oa', function() require('opencode').ask() end, desc = 'Ask opencode', mode = 'n', },
-      { '<leader>oa', function() require('opencode').ask('@selection: ') end, desc = 'Ask opencode about selection', mode = 'v', },
-      { '<leader>op', function() require('opencode').select_prompt() end, desc = 'Select prompt', mode = { 'n', 'v', }, },
-      { '<leader>on', function() require('opencode').command('session_new') end, desc = 'New session', },
-      { '<leader>oy', function() require('opencode').command('messages_copy') end, desc = 'Copy last message', },
-      { '<S-C-u>',    function() require('opencode').command('messages_half_page_up') end, desc = 'Scroll messages up', },
-      { '<S-C-d>',    function() require('opencode').command('messages_half_page_down') end, desc = 'Scroll messages down', },
+  {
+    "olimorris/codecompanion.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      {
+        "echasnovski/mini.diff",
+        config = function()
+          require("mini.diff").setup({
+            source = require("mini.diff").gen_source.none(),
+          })
+        end,
+      },
+      {
+        "MeanderingProgrammer/render-markdown.nvim",
+        dependencies = {
+          "nvim-treesitter/nvim-treesitter",
+          "nvim-tree/nvim-web-devicons",
+        },
+        ft = { "markdown", "codecompanion" },
+        config = function()
+          require("render-markdown").setup({
+            completions = {
+              lsp = { enabled = true },
+              blink = { enabled = true },
+              file_types = { "markdown", "codecompanion" },
+            },
+            html = {
+              enabled = true,
+              tag = {
+                buf         = { icon = ' ',  highlight = 'CodeCompanionChatVariable' },
+                file        = { icon = ' ',  highlight = 'CodeCompanionChatVariable' },
+                help        = { icon = '󰘥 ',  highlight = 'CodeCompanionChatVariable' },
+                image       = { icon = ' ',  highlight = 'CodeCompanionChatVariable' },
+                symbols     = { icon = ' ',  highlight = 'CodeCompanionChatVariable' },
+                url         = { icon = '󰖟 ',  highlight = 'CodeCompanionChatVariable' },
+                var         = { icon = ' ',  highlight = 'CodeCompanionChatVariable' },
+                tool        = { icon = ' ',  highlight = 'CodeCompanionChatTool' },
+                user_prompt = { icon = ' ',  highlight = 'CodeCompanionChatTool' },
+                group       = { icon = ' ',  highlight = 'CodeCompanionChatToolGroup' },
+              },
+            },
+          })
+        end,
+      },
     },
-	},
+    config = function()
+      require("configs.codecompanion")
+    end,
+  }
 }
 
 for _, colorscheme in ipairs(colorschemes) do

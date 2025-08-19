@@ -236,3 +236,18 @@ vim.cmd([[
   highlight! link NeoTreeDirectoryName NvimTreeOpenedFolderName
   highlight! link NeoTreeFileNameOpened NvimTreeOpenedFile
 ]])
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "codecompanion",
+  callback = function()
+    vim.opt_local.number = false
+    vim.opt_local.relativenumber = false
+  end,
+})
+vim.api.nvim_create_autocmd("BufEnter", {
+  pattern = "*CodeCompanion*",
+  callback = function()
+    vim.opt_local.number = false
+    vim.opt_local.relativenumber = false
+  end,
+})

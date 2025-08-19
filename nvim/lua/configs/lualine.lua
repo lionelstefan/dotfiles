@@ -20,8 +20,8 @@ require("lualine").setup {
     icons_enabled        = true,
     theme                = 'gruvbox',
     disabled_filetypes   = {
-      statusline = { "neo-tree", "Avante", "AvanteChat", "AvanteSelectedFiles", "AvanteInput", "avante", "AvanteTodos" },
-      winbar = { "neo-tree", "Avante", "AvanteChat", "AvanteSelectedFiles", "AvanteInput", "avante", "AvanteTodos" },
+      statusline = { "neo-tree", "codecompanion" },
+      winbar = { "neo-tree", "codecompanion" },
     },
     component_separators = {
       left = '',

@@ -58,3 +58,4 @@ function f() {
 function gff() {
   git flow "$1" finish "$2" && git push origin main Dev --tags
 }
+alias vv="NVIM_APPNAME=nvim-optimize nvim"

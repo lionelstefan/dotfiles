@@ -1,14 +1,4 @@
 local actions = require("fzf-lua").actions
-local function get_git_root()
-	local path = vim.fn.expand("%:p:h")
-	while path ~= "/" do
-		if vim.fn.isdirectory(path .. "/.git") == 1 then
-			return path
-		end
-		path = vim.fn.fnamemodify(path, ":h")
-	end
-	return vim.fn.getcwd()
-end
 
 require("fzf-lua").setup({
 	files = {
