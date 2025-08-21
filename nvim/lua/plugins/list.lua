@@ -64,7 +64,7 @@ local plugins = {
 	{
 		"NvChad/nvim-colorizer.lua",
 		lazy = true,
-		ft = { "css", "javascript", "javascriptreact", "typescript", "typescriptreact", "html", "blade", "lua" },
+		ft = { "css", "javascript", "javascriptreact", "typescript", "typescriptreact", "html", "blade", "lua", "smarty", "php" },
 		config = function()
 			require("colorizer").setup({
 				filetypes = {
@@ -76,6 +76,8 @@ local plugins = {
 					"html",
 					"blade",
 					"lua",
+					"smarty",
+					"php"
 				},
 			})
 		end,
@@ -173,7 +175,7 @@ local plugins = {
 			{
 				"kf",
 				function()
-					require("conform").format({ async = true, timeout_ms = 500, lsp_format = "last" })
+					require("conform").format({ async = true, timeout_ms = 500, lsp_format = "last", range = true })
 				end,
 				mode = "v",
 				desc = "Format selection (Conform)",
@@ -188,6 +190,12 @@ local plugins = {
 		lazy = true,
 		event = "VeryLazy",
 		ft = { "blade" },
+	},
+	{
+		"Kibadda/tree-sitter-smarty",
+		lazy = true,
+		event = "VeryLazy",
+		ft = { "smarty" },
 	},
 	{
 		"rcarriga/nvim-notify",
@@ -710,28 +718,28 @@ local plugins = {
 		event = "VeryLazy",
 		ft = "wezterm",
 	},
-	{
-		"LunarVim/bigfile.nvim",
-		lazy = true,
-		event = "VeryLazy",
-		config = function()
-			require("bigfile").setup({
-				filesize = 2, -- size of the file in MiB, the plugin round file sizes to the closest MiB
-				pattern = { "*" }, -- autocmd pattern or function see <### Overriding the detection of big files>
-				features = { -- features to disable
-					"codecompanion",
-					"indent_blankline",
-					"illuminate",
-					"lsp",
-					"treesitter",
-					"syntax",
-					"matchparen",
-					"vimopts",
-					"filetype",
-				},
-			})
-		end,
-	},
+	-- {
+	-- 	"LunarVim/bigfile.nvim",
+	-- 	lazy = true,
+	-- 	event = "VeryLazy",
+	-- 	config = function()
+	-- 		require("bigfile").setup({
+	-- 			filesize = 2, -- size of the file in MiB, the plugin round file sizes to the closest MiB
+	-- 			pattern = { "*" }, -- autocmd pattern or function see <### Overriding the detection of big files>
+	-- 			features = { -- features to disable
+	-- 				"codecompanion",
+	-- 				"indent_blankline",
+	-- 				"illuminate",
+	-- 				"lsp",
+	-- 				"treesitter",
+	-- 				"syntax",
+	-- 				"matchparen",
+	-- 				"vimopts",
+	-- 				"filetype",
+	-- 			},
+	-- 		})
+	-- 	end,
+	-- },
 	{
 		"dmmulroy/ts-error-translator.nvim",
 		lazy = true,

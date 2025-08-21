@@ -8,6 +8,14 @@ parser_config.blade = {
   filetype = "blade",
 }
 
+parser_config.smarty = {
+  install_info = {
+    url = "https://github.com/Kibadda/tree-sitter-smarty",
+    files = { "src/parser.c" },
+    branch = "main",
+  },
+}
+
 require("nvim-treesitter.configs").setup({
   playground = {
     enable = true,

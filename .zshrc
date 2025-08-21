@@ -107,9 +107,9 @@ agent_run_state=$(ssh-add -l >| /dev/null 2>&1; echo $?)
 
 if [ ! "$SSH_AUTH_SOCK" ] || [ $agent_run_state = 2 ]; then
     agent_start
-    ssh-add ~/.ssh/pertama_gitlab ~/.ssh/github_lionelstefan
+    ssh-add ~/.ssh/pertama_gitlab ~/.ssh/github_lionelstefan ~/.ssh/github_stefan-dev
 elif [ "$SSH_AUTH_SOCK" ] && [ $agent_run_state = 1 ]; then
-    ssh-add ~/.ssh/pertama_gitlab ~/.ssh/github_lionelstefan
+    ssh-add ~/.ssh/pertama_gitlab ~/.ssh/github_lionelstefan ~/.ssh/github_stefan-dev
 fi
 
 unset env

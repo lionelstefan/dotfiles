@@ -118,6 +118,32 @@ vim.api.nvim_create_autocmd("FileType", {
 		})
 
 		vim.lsp.enable("phpactor")
+
+    safe_setup("intelephense", {
+      cmd = { 'intelephense', '--stdio' },
+      init_options = {
+        licenceKey = "LICENSECODEXXXX"
+      },
+      on_attach = on_attach,
+      capabilities = capabilities,
+      filetypes = { "php" },
+      settings = {
+        intelephense = {
+          environment = {
+            includePaths = {
+              "./vendor",
+              "./classes",
+              "./controllers",
+              "./config",
+              "./modules",
+              "./override",
+            }
+          }
+        },
+      }
+    })
+
+    vim.lsp.enable("intelephense")
 	end,
 })
 
