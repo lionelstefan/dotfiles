@@ -1,5 +1,6 @@
 -- NEOVIM LSPCONFIG
 require("lspconfig")
+local util = require("lspconfig.util")
 
 vim.filetype.add({
 	filename = {
@@ -131,12 +132,13 @@ vim.api.nvim_create_autocmd("FileType", {
         intelephense = {
           environment = {
             includePaths = {
-              "./vendor",
-              "./classes",
-              "./controllers",
-              "./config",
-              "./modules",
-              "./override",
+              "vendor",
+              "classes",
+              "controllers",
+              "config",
+              "modules",
+              "override",
+              "stubs",
             }
           }
         },
@@ -407,7 +409,14 @@ vim.api.nvim_create_autocmd("FileType", {
 			capabilities = capabilities,
 			settings = require("configs.lsp.servers.vtsls").settings,
 			on_attach = require("configs.lsp.servers.vtsls").on_attach,
-      before_init = require("configs.lsp.servers.vtsls").before_init
+      before_init = require("configs.lsp.servers.vtsls").before_init,
+      root_dir = function(bufnr, on_dir)
+        local markers = { "package-lock.json", "yarn.lock", "pnpm-lock.yaml", "bun.lockb", "bun.lock", ".git" }
+        local root = vim.fs.root(bufnr, markers)
+        if root then
+          on_dir(root)
+        end
+      end
 		})
 
 		vim.lsp.enable("vtsls")

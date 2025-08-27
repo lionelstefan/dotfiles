@@ -2,8 +2,8 @@ local file_path = vim.api.nvim_buf_get_name(0)
 local args = {
 	-- "fix",
 	-- file_path,
-	"--allow-risky=yes",
-	[[--rules={"@PhpCsFixer":true,"braces_position":{"control_structures_opening_brace":"next_line_unless_newline_at_signature_end"},"multiline_whitespace_before_semicolons":{"strategy":"no_multi_line"},"no_superfluous_phpdoc_tags":{"allow_hidden_params":true,"remove_inheritdoc":true,"allow_mixed":true},"phpdoc_to_return_type":{"scalar_types":false,"union_types":false},"phpdoc_scalar":false}]],
+	-- "--allow-risky=yes",
+	-- [[--rules={"@PhpCsFixer":true,"braces_position":{"control_structures_opening_brace":"next_line_unless_newline_at_signature_end"},"multiline_whitespace_before_semicolons":{"strategy":"no_multi_line"},"no_superfluous_phpdoc_tags":{"allow_hidden_params":true,"remove_inheritdoc":true,"allow_mixed":true},"phpdoc_to_return_type":{"scalar_types":false,"union_types":false},"phpdoc_scalar":false}]],
 }
 local util = require("conform.util")
 
@@ -16,10 +16,10 @@ require("conform").setup({
 		javascriptreact = { "biome", "trim_whitespace", "trim_newlines" },
 		typescript = { "biome", "trim_whitespace", "trim_newlines" },
 		typescriptreact = { "biome", "trim_whitespace", "trim_newlines" },
-		json = { "prettier", "trim_whitespace", "trim_newlines" },
+		json = { "biome", "trim_whitespace", "trim_newlines" },
 		html = { "prettier", "trim_whitespace", "trim_newlines" },
     smarty = { "prettier", "trim_whitespace", "trim_newlines" },
-		css = { "biome", "trim_whitespace", "trim_newlines" },
+		css = { "prettier", "trim_whitespace", "trim_newlines" },
 		vue = { "prettier", "trim_whitespace", "trim_newlines" },
 		php = { "php_cs_fixer" },
 		rust = { "ast-grep" },
@@ -36,7 +36,7 @@ require("conform").setup({
 		},
 		biome = {
 			command = util.find_executable({
-        vim.fn.expand("$MASON/bin/biome"),
+        vim.fn.expand(vim.env.MASON .. "/bin/biome"),
 			}, "biome"),
 			stdin = true,
 			args = {
@@ -55,7 +55,6 @@ require("conform").setup({
 		php_cs_fixer = {
 			inherit = false,
 			command = util.find_executable({
-				"/usr/local/bin/php-cs-fixer",
 				"vendor/bin/php-cs-fixer",
 			}, "php-cs-fixer"),
 			args = args,

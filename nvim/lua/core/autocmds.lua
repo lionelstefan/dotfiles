@@ -35,12 +35,15 @@ create_augroup("ThemeSetup", {
 			end,
 		},
 	},
-	{ "UIEnter", {
-		nested = true,
-		callback = function()
-			vim.cmd("colorscheme gruvbox")
-		end,
-	} },
+	{
+    "UIEnter",
+    {
+      nested = true,
+      callback = function()
+        vim.cmd("colorscheme gruvbox")
+      end,
+    }
+  },
 	{
 		"ColorScheme",
 		{
@@ -126,6 +129,13 @@ create_augroup("ThemeSetup", {
 			end,
 		},
 	},
+})
+
+vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
+	pattern = "*.config",
+	callback = function()
+		vim.bo.filetype = "conf" -- or "ini"
+	end,
 })
 
 -- Formatting and linting
@@ -217,6 +227,13 @@ create_augroup("AutoRefresh", {
 	},
 })
 
+vim.api.nvim_create_autocmd("User", {
+  pattern = "BlinkCmpMenuOpen",
+  callback = function()
+    vim.b.copilot_suggestion_hidden = true
+  end,
+})
+
 -- Custom commands
 vim.api.nvim_create_user_command("CloseFindReplace", function()
 	for _, buf in ipairs(vim.api.nvim_list_bufs()) do
@@ -227,6 +244,23 @@ vim.api.nvim_create_user_command("CloseFindReplace", function()
 	end
 end, {})
 
+vim.api.nvim_create_autocmd("User", {
+  pattern = "BlinkCmpMenuClose",
+  callback = function()
+    vim.b.copilot_suggestion_hidden = false
+  end,
+})
+
+vim.api.nvim_create_autocmd("LspAttach", {
+  callback = function(args)
+    local client = vim.lsp.get_client_by_id(args.data.client_id)
+
+    if client and client.name ~= "copilot" then
+      vim.cmd("Copilot enable")
+    end
+  end,
+})
+
 -- NeoTree highlighting
 vim.cmd([[
   highlight! link NeoTreeDirectoryIcon NvimTreeFolderIcon
@@ -236,18 +270,3 @@ vim.cmd([[
   highlight! link NeoTreeDirectoryName NvimTreeOpenedFolderName
   highlight! link NeoTreeFileNameOpened NvimTreeOpenedFile
 ]])
-
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = "codecompanion",
-  callback = function()
-    vim.opt_local.number = false
-    vim.opt_local.relativenumber = false
-  end,
-})
-vim.api.nvim_create_autocmd("BufEnter", {
-  pattern = "*CodeCompanion*",
-  callback = function()
-    vim.opt_local.number = false
-    vim.opt_local.relativenumber = false
-  end,
-})

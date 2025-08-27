@@ -2,7 +2,7 @@ local dap = require("dap")
 local dapui = require("dapui")
 
 require("nvim-dap-virtual-text").setup()
-local js_debug_path = vim.fn.expand("$MASON/packages/js-debug-adapter")
+local js_debug_path = vim.fn.expand(vim.env.MASON .. "/packages/js-debug-adapter")
 
 -- dap.adapters.php = {
 -- 	type = "executable",

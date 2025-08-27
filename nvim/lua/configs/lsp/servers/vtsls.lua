@@ -82,10 +82,9 @@ local filetypes = {
 local on_attach = function(client, bufnr)
 	client.server_capabilities.documentFormattingProvider = false
 	client.server_capabilities.documentRangeFormattingProvider = false
-	client.server_capabilities.document_formatting = false
 
 	-- Disable LSP semantic tokens (semantic highlighting)
-	client.server_capabilities.semanticTokensProvider = nil
+	-- client.server_capabilities.semanticTokensProvider = nil
 end
 
 M.settings = settings

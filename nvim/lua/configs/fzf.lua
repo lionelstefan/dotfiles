@@ -2,7 +2,8 @@ local actions = require("fzf-lua").actions
 
 require("fzf-lua").setup({
 	files = {
-		cwd = vim.fs.dirname(vim.fs.find({ ".git" }, { upward = true })[1]),
+		cwd_prompt = true,
+    path_shorten = 3,
 	},
 	actions = {
 		files = {

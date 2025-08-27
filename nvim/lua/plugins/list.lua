@@ -64,7 +64,18 @@ local plugins = {
 	{
 		"NvChad/nvim-colorizer.lua",
 		lazy = true,
-		ft = { "css", "javascript", "javascriptreact", "typescript", "typescriptreact", "html", "blade", "lua", "smarty", "php" },
+		ft = {
+			"css",
+			"javascript",
+			"javascriptreact",
+			"typescript",
+			"typescriptreact",
+			"html",
+			"blade",
+			"lua",
+			"smarty",
+			"php",
+		},
 		config = function()
 			require("colorizer").setup({
 				filetypes = {
@@ -77,7 +88,7 @@ local plugins = {
 					"blade",
 					"lua",
 					"smarty",
-					"php"
+					"php",
 				},
 			})
 		end,
@@ -913,6 +924,7 @@ local plugins = {
 				typescriptreact = { "oxlint" },
 				json = { "jsonlint" },
 				jsonc = { "jsonlint" },
+				sass = { "stylelint" },
 			}
 		end,
 	},
@@ -1031,9 +1043,14 @@ local plugins = {
 			{
 				"ff",
 				function()
+          local function get_git_root()
+            local git_dir = vim.fs.find(".git", { upward = true, type = "directory" })[1]
+            return git_dir and vim.fs.dirname(git_dir) or nil
+          end
+
 					require("fzf-lua").files({
-						cwd = vim.uv.cwd(),
-					})
+            cwd = get_git_root()
+          })
 				end,
 				desc = "Fzf find files",
 			},
@@ -1064,7 +1081,9 @@ local plugins = {
 		build = ":Copilot auth",
 		config = function()
 			require("copilot").setup({
-				suggestion = { enabled = false }, -- disable inline suggestions
+				suggestion = {
+					enabled = false,
+				},
 				panel = { enabled = false },
 			})
 		end,
@@ -1093,60 +1112,25 @@ local plugins = {
 					"TelescopePrompt",
 					"help",
 					"dashboard",
-					"codecompanion",
 				},
 			})
 		end,
 	},
-  {
-    "olimorris/codecompanion.nvim",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      {
-        "echasnovski/mini.diff",
-        config = function()
-          require("mini.diff").setup({
-            source = require("mini.diff").gen_source.none(),
-          })
-        end,
-      },
-      {
-        "MeanderingProgrammer/render-markdown.nvim",
-        dependencies = {
-          "nvim-treesitter/nvim-treesitter",
-          "nvim-tree/nvim-web-devicons",
+	{
+		"MeanderingProgrammer/render-markdown.nvim",
+		dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" }, -- if you prefer nvim-web-devicons
+		config = function()
+			require("render-markdown").setup({
+				enabled = true,
+				render_modes = true,
+				completions = {
+          blink = {
+            enabled = true
+          }
         },
-        ft = { "markdown", "codecompanion" },
-        config = function()
-          require("render-markdown").setup({
-            completions = {
-              lsp = { enabled = true },
-              blink = { enabled = true },
-              file_types = { "markdown", "codecompanion" },
-            },
-            html = {
-              enabled = true,
-              tag = {
-                buf         = { icon = ' ',  highlight = 'CodeCompanionChatVariable' },
-                file        = { icon = ' ',  highlight = 'CodeCompanionChatVariable' },
-                help        = { icon = '󰘥 ',  highlight = 'CodeCompanionChatVariable' },
-                image       = { icon = ' ',  highlight = 'CodeCompanionChatVariable' },
-                symbols     = { icon = ' ',  highlight = 'CodeCompanionChatVariable' },
-                url         = { icon = '󰖟 ',  highlight = 'CodeCompanionChatVariable' },
-                var         = { icon = ' ',  highlight = 'CodeCompanionChatVariable' },
-                tool        = { icon = ' ',  highlight = 'CodeCompanionChatTool' },
-                user_prompt = { icon = ' ',  highlight = 'CodeCompanionChatTool' },
-                group       = { icon = ' ',  highlight = 'CodeCompanionChatToolGroup' },
-              },
-            },
-          })
-        end,
-      },
-    },
-    config = function()
-      require("configs.codecompanion")
-    end,
-  }
+			})
+		end,
+	},
 }
 
 for _, colorscheme in ipairs(colorschemes) do

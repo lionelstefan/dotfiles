@@ -76,14 +76,22 @@ local opts = {
   },
 
   sources = {
-    default = {
-      "lsp",
-      "path",
-      "snippets",
-      "buffer",
-      "copilot",
-      "lazydev",
-      "codecompanion",
+    default = function ()
+      local success, node = pcall(vim.treesitter.get_node)
+
+      if success and node then
+      return {
+          "lsp",
+          "path",
+          "snippets",
+          "buffer",
+          "copilot",
+          "lazydev",
+        }
+      end
+    end,
+    per_filetype = {
+      conf = { "path" }, -- or {} if you want no completion
     },
     providers = {
       lazydev = {
@@ -111,7 +119,10 @@ local opts = {
           { "label",     "label_description", gap = 1 },
           { "kind_icon", "kind",              gap = 1 },
         },
-        treesitter = {},
+
+        treesitter = {
+          'lsp'
+        },
 
         components = {
           label = {
@@ -164,11 +175,15 @@ local opts = {
 
     documentation = {
       draw = function(opts)
-        local ft = vim.bo.filetype
-        -- if opts.item and opts.item.documentation and (ft ~= "codecompanion") then
-        local out = require("pretty_hover.parser").parse(opts.item.documentation.value)
-        opts.item.documentation.value = out:string()
-        -- end
+        local doc = opts.item.documentation
+
+        if type(doc) == "table" and doc.value then
+          local out = require("pretty_hover.parser").parse(doc.value)
+          opts.item.documentation.value = out:string()
+        elseif type(doc) == "string" then
+          local out = require("pretty_hover.parser").parse(doc)
+          opts.item.documentation = out:string()
+        end
 
         opts.default_implementation(opts)
       end,

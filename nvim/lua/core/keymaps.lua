@@ -32,11 +32,13 @@ map("n", "<leader>q", function()
   local buftype = vim.api.nvim_get_option_value("buftype", { buf = bufnr })
   local buflisted = vim.fn.buflisted(bufnr) == 1
 
-  if buftype == "" and buflisted then
+  if vim.bo.filetype == "vim" and vim.bo.buftype == "nofile" then
+    vim.cmd("q")
+  elseif vim.bo.buftype == "" and vim.bo.buflisted then
     -- Normal listed buffer: use MiniBufremove
     require("mini.bufremove").delete(bufnr, false)
   else
-    -- Special buffer (nofile, terminal, etc.): use plain :bd
+    -- Special buffer (terminal, help, etc.): plain :bd
     vim.cmd("bd")
   end
 end, { noremap = true, desc = "Close buffer or :bd for special" })

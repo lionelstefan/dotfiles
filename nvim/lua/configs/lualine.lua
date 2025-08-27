@@ -20,8 +20,8 @@ require("lualine").setup {
     icons_enabled        = true,
     theme                = 'gruvbox',
     disabled_filetypes   = {
-      statusline = { "neo-tree", "codecompanion" },
-      winbar = { "neo-tree", "codecompanion" },
+      statusline = { "neo-tree" },
+      winbar = { "neo-tree" },
     },
     component_separators = {
       left = '',
