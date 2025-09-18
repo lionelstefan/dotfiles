@@ -18,6 +18,7 @@ if [[ -f "$HOME/.local/share/zinit/zinit.git/zinit.zsh" ]]; then
 else
   echo "Zinit not found at ~/.local/share/zinit/zinit.git/zinit.zsh — please install it."
 fi
+
 # ─────────────────────────────────────────────────────────────
 # Zinit Annexes (required for some advanced features)
 # ─────────────────────────────────────────────────────────────
@@ -170,6 +171,9 @@ export PATH="$PATH:$HOME/.config/composer/vendor/bin"
 
 #MASON NEOVIM
 export PATH="$PATH:$HOME/.local/share/nvim/mason/bin"
+
+# ELASTIC BEANSTAL
+export PATH="$HOME/.ebcli-virtual-env/bin:$PATH"
 
 #BIOME
 start_biome_quiet() {

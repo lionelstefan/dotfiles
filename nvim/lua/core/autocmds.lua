@@ -134,7 +134,7 @@ create_augroup("ThemeSetup", {
 vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
 	pattern = "*.config",
 	callback = function()
-		vim.bo.filetype = "conf" -- or "ini"
+		vim.bo.filetype = "yaml"
 	end,
 })
 

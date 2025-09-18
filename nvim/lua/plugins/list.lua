@@ -1057,7 +1057,10 @@ local plugins = {
 			{
 				"fg",
 				function()
-					require("fzf-lua").live_grep()
+          require("fzf-lua").live_grep_native({
+            silent = true,
+            rg_opts = "--column --glob '!CHANGELOG.md' --glob '!**/CHANGELOG.md' --glob '!CHANGELOG.txt' --glob '!**/CHANGELOG.txt'"
+          })
 				end,
 				desc = "Fzf find files",
 			},

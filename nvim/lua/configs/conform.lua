@@ -1,9 +1,7 @@
 local file_path = vim.api.nvim_buf_get_name(0)
 local args = {
-	-- "fix",
-	-- file_path,
-	-- "--allow-risky=yes",
-	-- [[--rules={"@PhpCsFixer":true,"braces_position":{"control_structures_opening_brace":"next_line_unless_newline_at_signature_end"},"multiline_whitespace_before_semicolons":{"strategy":"no_multi_line"},"no_superfluous_phpdoc_tags":{"allow_hidden_params":true,"remove_inheritdoc":true,"allow_mixed":true},"phpdoc_to_return_type":{"scalar_types":false,"union_types":false},"phpdoc_scalar":false}]],
+	"--allow-risky=yes",
+	[[--rules={"@Symfony":true,"@PhpCsFixer":true,"concat_space":{"spacing":"one"},"array_syntax":{"syntax":"short"},"array_indentation":true,"braces_position":{"control_structures_opening_brace":"next_line_unless_newline_at_signature_end"},"multiline_whitespace_before_semicolons":{"strategy":"no_multi_line"},"no_superfluous_phpdoc_tags":{"allow_hidden_params":true,"remove_inheritdoc":true,"allow_mixed":true},"phpdoc_to_return_type":{"scalar_types":false,"union_types":false},"phpdoc_scalar":false}]],
 }
 local util = require("conform.util")
 
@@ -55,7 +53,7 @@ require("conform").setup({
 		php_cs_fixer = {
 			inherit = false,
 			command = util.find_executable({
-				"vendor/bin/php-cs-fixer",
+        vim.fn.expand(vim.env.MASON .. "/bin/php-cs-fixer"),
 			}, "php-cs-fixer"),
 			args = args,
 		},

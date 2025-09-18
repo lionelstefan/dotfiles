@@ -1,205 +1,216 @@
 local M = {}
 
 local opts = {
-  appearance = {
-    kind_icons = {
-      Copilot = "",
-      Text = "󰉿",
-      Method = "󰊕",
-      Function = "󰊕",
-      Constructor = "󰒓",
+	appearance = {
+		kind_icons = {
+			Copilot = "",
+			Text = "󰉿",
+			Method = "󰊕",
+			Function = "󰊕",
+			Constructor = "󰒓",
 
-      Field = "󰜢",
-      Variable = "󰆦",
-      Property = "󰖷",
+			Field = "󰜢",
+			Variable = "󰆦",
+			Property = "󰖷",
 
-      Class = "󱡠",
-      Interface = "󱡠",
-      Struct = "󱡠",
-      Module = "󰅩",
+			Class = "󱡠",
+			Interface = "󱡠",
+			Struct = "󱡠",
+			Module = "󰅩",
 
-      Unit = "󰪚",
-      Value = "󰦨",
-      Enum = "󰦨",
-      EnumMember = "󰦨",
+			Unit = "󰪚",
+			Value = "󰦨",
+			Enum = "󰦨",
+			EnumMember = "󰦨",
 
-      Keyword = "󰻾",
-      Constant = "󰏿",
+			Keyword = "󰻾",
+			Constant = "󰏿",
 
-      Snippet = "󱄽",
-      Color = "󰏘",
-      File = "󰈔",
-      Reference = "󰬲",
-      Folder = "󰉋",
-      Event = "󱐋",
-      Operator = "󰪚",
-      TypeParameter = "󰬛",
-    },
-  },
+			Snippet = "󱄽",
+			Color = "󰏘",
+			File = "󰈔",
+			Reference = "󰬲",
+			Folder = "󰉋",
+			Event = "󱐋",
+			Operator = "󰪚",
+			TypeParameter = "󰬛",
+		},
+	},
 
-  cmdline = {
-    keymap = { preset = "inherit" },
-    completion = {
-      menu = {
-        auto_show = true,
-      },
-    },
-  },
+	cmdline = {
+		keymap = { preset = "inherit" },
+		completion = {
+			menu = {
+				auto_show = true,
+			},
+		},
+	},
 
-  fuzzy = {
-    implementation = "prefer_rust",
-    sorts = {
-      "score",
-    },
-  },
+	fuzzy = {
+		implementation = "prefer_rust",
+		sorts = {
+			"score",
+		},
+	},
 
-  keymap = {
-    preset = "super-tab",
-    ["<S-k>"] = { "scroll_documentation_up", "fallback" },
-    ["<S-j>"] = { "scroll_documentation_down", "fallback" },
-  },
+	keymap = {
+		preset = "super-tab",
+		["<S-k>"] = { "scroll_documentation_up", "fallback" },
+		["<S-j>"] = { "scroll_documentation_down", "fallback" },
+	},
 
-  snippets = {
-    preset = "luasnip",
-    expand = function(snippet)
-      require("luasnip").lsp_expand(snippet)
-    end,
-    active = function(filter)
-      if filter and filter.direction then
-        return require("luasnip").jumpable(filter.direction)
-      end
-      return require("luasnip").in_snippet()
-    end,
-    jump = function(direction)
-      require("luasnip").jump(direction)
-    end,
-  },
+	snippets = {
+		preset = "luasnip",
+		expand = function(snippet)
+			require("luasnip").lsp_expand(snippet)
+		end,
+		active = function(filter)
+			if filter and filter.direction then
+				return require("luasnip").jumpable(filter.direction)
+			end
+			return require("luasnip").in_snippet()
+		end,
+		jump = function(direction)
+			require("luasnip").jump(direction)
+		end,
+	},
 
-  sources = {
-    default = function ()
-      local success, node = pcall(vim.treesitter.get_node)
+	sources = {
+		default = function()
+			local success, node = pcall(vim.treesitter.get_node)
 
-      if success and node then
-      return {
-          "lsp",
-          "path",
-          "snippets",
-          "buffer",
-          "copilot",
-          "lazydev",
-        }
-      end
-    end,
-    per_filetype = {
-      conf = { "path" }, -- or {} if you want no completion
-    },
-    providers = {
-      lazydev = {
-        name = "LazyDev",
-        module = "lazydev.integrations.blink",
-        score_offset = 100,
-      },
-      copilot = {
-        name = "Copilot",
-        module = "blink-copilot",
-        score_offset = 100,
-        async = true,
-      },
-    },
-  },
+			if success and node then
+				return {
+					"lsp",
+					"copilot",
+					"snippets",
+					"path",
+					"buffer",
+				}
+			end
 
-  completion = {
-    keyword = {
-      range = "prefix",
-    },
+			-- fallback so it never returns nil
+			return { "path" }
+		end,
+		per_filetype = {
+			["neo-tree-popup"] = {},
+			["dressing-input"] = {},
+			conf = { "path" }, -- or {} if you want no completion
+			zsh = {
+				"lsp",
+				"path",
+				"snippets",
+				"buffer",
+				"copilot",
+			},
+		},
+		providers = {
+			-- lazydev = {
+			-- 	name = "LazyDev",
+			-- 	module = "lazydev.integrations.blink",
+			-- 	score_offset = 100,
+			-- },
+			copilot = {
+				name = "Copilot",
+				module = "blink-copilot",
+				score_offset = 100,
+				async = true,
+			},
+		},
+	},
 
-    menu = {
-      draw = {
-        columns = {
-          { "label",     "label_description", gap = 1 },
-          { "kind_icon", "kind",              gap = 1 },
-        },
+	completion = {
+		keyword = {
+			range = "prefix",
+		},
 
-        treesitter = {
-          'lsp'
-        },
+		menu = {
+			draw = {
+				columns = {
+					{ "label", "label_description", gap = 1 },
+					{ "kind_icon", "kind", gap = 1 },
+				},
 
-        components = {
-          label = {
-            text = function(ctx)
-              return require("colorful-menu").blink_components_text(ctx)
-            end,
-            highlight = function(ctx)
-              return require("colorful-menu").blink_components_highlight(ctx)
-            end,
-          },
+				treesitter = {
+					"lsp",
+				},
 
-          kind_icon = {
-            text = function(ctx)
-              local icon = ctx.kind_icon
-              if vim.tbl_contains({ "Path" }, ctx.source_name) then
-                local dev_icon, _ = require("nvim-web-devicons").get_icon(ctx.label)
-                if dev_icon then
-                  icon = dev_icon
-                end
-              else
-                icon = require("lspkind").symbolic(ctx.kind, {
-                  mode = "symbol",
-                })
-              end
+				components = {
+					label = {
+						text = function(ctx)
+							return require("colorful-menu").blink_components_text(ctx)
+						end,
+						highlight = function(ctx)
+							return require("colorful-menu").blink_components_highlight(ctx)
+						end,
+					},
 
-              return icon .. ctx.icon_gap
-            end,
+					kind_icon = {
+						text = function(ctx)
+							local icon = ctx.kind_icon
+							if vim.tbl_contains({ "Path" }, ctx.source_name) then
+								local dev_icon, _ = require("nvim-web-devicons").get_icon(ctx.label)
+								if dev_icon then
+									icon = dev_icon
+								end
+							else
+								icon = require("lspkind").symbolic(ctx.kind, {
+									mode = "symbol",
+								})
+							end
 
-            -- Optionally, use the highlight groups from nvim-web-devicons
-            -- You can also add the same function for `kind.highlight` if you want to
-            -- keep the highlight groups in sync with the icons.
-            highlight = function(ctx)
-              local hl = ctx.kind_hl
-              if vim.tbl_contains({ "Path" }, ctx.source_name) then
-                local dev_icon, dev_hl = require("nvim-web-devicons").get_icon(ctx.label)
-                if dev_icon then
-                  hl = dev_hl
-                end
-              end
-              return hl
-            end,
-          },
-        },
-      },
-    },
+							return icon .. ctx.icon_gap
+						end,
 
-    accept = {
-      auto_brackets = { enabled = false },
-    },
+						-- Optionally, use the highlight groups from nvim-web-devicons
+						-- You can also add the same function for `kind.highlight` if you want to
+						-- keep the highlight groups in sync with the icons.
+						highlight = function(ctx)
+							local hl = ctx.kind_hl
+							if vim.tbl_contains({ "Path" }, ctx.source_name) then
+								local dev_icon, dev_hl = require("nvim-web-devicons").get_icon(ctx.label)
+								if dev_icon then
+									hl = dev_hl
+								end
+							end
+							return hl
+						end,
+					},
+				},
+			},
+		},
 
-    documentation = {
-      draw = function(opts)
-        local doc = opts.item.documentation
+		accept = {
+			auto_brackets = { enabled = false },
+		},
 
-        if type(doc) == "table" and doc.value then
-          local out = require("pretty_hover.parser").parse(doc.value)
-          opts.item.documentation.value = out:string()
-        elseif type(doc) == "string" then
-          local out = require("pretty_hover.parser").parse(doc)
-          opts.item.documentation = out:string()
-        end
+		documentation = {
+			draw = function(opts)
+				local doc = opts.item.documentation
 
-        opts.default_implementation(opts)
-      end,
-      auto_show = true,
-      auto_show_delay_ms = 500,
-      treesitter_highlighting = true,
-    },
+				if type(doc) == "table" and doc.value then
+					local out = require("pretty_hover.parser").parse(doc.value)
+					opts.item.documentation.value = out:string()
+				elseif type(doc) == "string" then
+					local out = require("pretty_hover.parser").parse(doc)
+					opts.item.documentation = out:string()
+				end
 
-    ghost_text = {
-      enabled = false,
-    },
-  },
+				opts.default_implementation(opts)
+			end,
+			auto_show = true,
+			auto_show_delay_ms = 500,
+			treesitter_highlighting = true,
+		},
 
-  signature = {
-    enabled = false,
-  },
+		ghost_text = {
+			enabled = false,
+		},
+	},
+
+	signature = {
+		enabled = false,
+	},
 }
 
 M.opts = opts
